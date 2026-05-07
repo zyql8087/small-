@@ -1,0 +1,2 @@
+model,mse,mae,rmse,nrmse,nrmse_pct,best_train_scaled_mse,epochs_ran,val_probe_best_scaled_mse,val_probe_epochs
+paper_inverse_baseline_mlp,71.49150085449219,2.0827972888946533,8.455264682698715,0.025111639093652348,2.511163909365235,0.19912415439952869,180,0.2477378775846113,95

@@ -1,0 +1,4 @@
+module,model,aligned_metric,score,improvement_vs_paper_pct
+forward,paper_baseline_tableS2_best,mean_test_score_from_tableS2,0.04558,0.0
+forward,gat,nrmse_ratio_from_test,0.023187499801574002,49.12790741207986
+forward,transformer_ens_5,nrmse_ratio_from_test,0.018433014670918173,59.5589849255854

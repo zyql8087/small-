@@ -1,0 +1,4 @@
+module,model,aligned_metric,score,improvement_vs_paper_pct,param_mse_top1,param_rmse_top1
+inverse,paper_baseline_tableS1_best,mean_test_score_from_tableS1,0.00164,0.0,,
+inverse,cvae,param_nrmse_ratio_from_test_top1,0.034253044870916446,-1988.6002970071004,133.015625,11.533240004439342
+inverse,diffusion,param_nrmse_ratio_from_test_top1,0.020326506106599432,-1139.4211040609412,46.84138870239258,6.844076906522353

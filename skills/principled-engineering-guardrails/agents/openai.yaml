@@ -1,4 +1,0 @@
-interface:
-  display_name: "Principled Engineering Guardrails"
-  short_description: "Apply first-principles checks and strict implementation constraints"
-  default_prompt: "Apply first-principles reasoning, stop for clarification when goals are unclear, enforce typescript-project-specifications before writing TypeScript, and provide only shortest-path, end-to-end logic-validated solutions."

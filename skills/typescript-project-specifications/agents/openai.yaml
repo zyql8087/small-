@@ -1,4 +1,0 @@
-interface:
-  display_name: "Typescript Project Specifications"
-  short_description: "Enforce strict TypeScript implementation and validation standards"
-  default_prompt: "Apply strict TypeScript project specifications: clarify scope when unclear, enforce strong typing and strict compiler settings, avoid compatibility patches, implement shortest-path changes, and validate end-to-end behavior before final output."

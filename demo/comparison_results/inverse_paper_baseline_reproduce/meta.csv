@@ -1,0 +1,2 @@
+supp_docx_path,paper_table_s1_best,train_samples,test_samples,epochs,batch_size,lr,weight_decay,patience
+C:\Users\48186\Desktop\文献\逆向设计优化\smll202500634-sup-0001-suppmat.docx,0.00164,20444,5111,180,512,0.0008,1e-05,25

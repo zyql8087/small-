@@ -1,0 +1,16 @@
+# IDE
+.cursor/
+.idea/
+
+# Python caches
+__pycache__/
+code/__pycache__/
+*.py[cod]
+
+# Runtime temp outputs
+*.err.log
+*.log
+start_process_probe.txt
+
+# Local archival folder for ad-hoc run artifacts
+tmp_artifacts/
