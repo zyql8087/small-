@@ -1,0 +1,187 @@
+{
+  "csv_files": 29,
+  "source_counts": {
+    "miura": 26,
+    "tmp": 3
+  },
+  "issues_count": 0,
+  "issues": [],
+  "rel_stiff_error_by_source": {
+    "miura": {
+      "count": 156,
+      "mean": 0.005329805965102004,
+      "max": 0.09254422031351466,
+      "p95": 0.01754808478962028
+    },
+    "tmp": {
+      "count": 18,
+      "mean": 0.014142521308586441,
+      "max": 0.10186240123706304,
+      "p95": 0.044774091540450325
+    }
+  },
+  "secant_stiff_cv_by_source": {
+    "miura": {
+      "count": 156,
+      "mean": 0.0016799934652849595,
+      "max": 0.02805230482779925,
+      "p95": 0.005538595699619396
+    },
+    "tmp": {
+      "count": 18,
+      "mean": 0.004386351603726375,
+      "max": 0.030830557977528796,
+      "p95": 0.013699402914354862
+    }
+  },
+  "timing_by_source_from_file_write_intervals": {
+    "miura": {
+      "samples": 26,
+      "first_file": "miura_00001",
+      "last_file": "miura_00026",
+      "mean_output_interval_sec": 228.08047332763672,
+      "median_output_interval_sec": 60.61320900917053,
+      "max_output_interval_sec": 4014.3775856494904
+    },
+    "tmp": {
+      "samples": 3,
+      "first_file": "tmp_00001",
+      "last_file": "tmp_00003",
+      "mean_output_interval_sec": 372.10815715789795,
+      "median_output_interval_sec": 372.10815715789795,
+      "max_output_interval_sec": 503.3997550010681
+    }
+  },
+  "worst_rel_stiff_errors": [
+    {
+      "sample_id": "tmp_00002",
+      "source_name": "tmp",
+      "pattern": 2,
+      "curve_id": 2,
+      "load_case": "bending",
+      "deployment": 0.9,
+      "source_stiff": 502.015169843317,
+      "curve_final_stiff": 553.1516405009893,
+      "rel_stiff_error": 0.10186240123706304,
+      "secant_stiff_cv": 0.030830557977528796,
+      "disp_final": 0.0542346759973974
+    },
+    {
+      "sample_id": "miura_00013",
+      "source_name": "miura",
+      "pattern": 1,
+      "curve_id": 1,
+      "load_case": "bending",
+      "deployment": 0.6,
+      "source_stiff": 853.433270772327,
+      "curve_final_stiff": 932.4135874055646,
+      "rel_stiff_error": 0.09254422031351466,
+      "secant_stiff_cv": 0.02805230482779925,
+      "disp_final": 0.0321745633109818
+    },
+    {
+      "sample_id": "miura_00013",
+      "source_name": "miura",
+      "pattern": 1,
+      "curve_id": 0,
+      "load_case": "bending",
+      "deployment": 0.3,
+      "source_stiff": 2333.23777066176,
+      "curve_final_stiff": 2442.371569280951,
+      "rel_stiff_error": 0.04677354361027606,
+      "secant_stiff_cv": 0.014352816847636393,
+      "disp_final": 0.0122831433092845
+    },
+    {
+      "sample_id": "miura_00013",
+      "source_name": "miura",
+      "pattern": 1,
+      "curve_id": 2,
+      "load_case": "bending",
+      "deployment": 0.9,
+      "source_stiff": 886.641010083469,
+      "curve_final_stiff": 921.4256861092832,
+      "rel_stiff_error": 0.039231972839311284,
+      "secant_stiff_cv": 0.012061268067484738,
+      "disp_final": 0.0325582414862721
+    },
+    {
+      "sample_id": "tmp_00003",
+      "source_name": "tmp",
+      "pattern": 2,
+      "curve_id": 2,
+      "load_case": "bending",
+      "deployment": 0.9,
+      "source_stiff": 868.765990681124,
+      "curve_final_stiff": 898.911895981601,
+      "rel_stiff_error": 0.03469968394693055,
+      "secant_stiff_cv": 0.010676257903206554,
+      "disp_final": 0.0333736822642005
+    },
+    {
+      "sample_id": "tmp_00003",
+      "source_name": "tmp",
+      "pattern": 2,
+      "curve_id": 4,
+      "load_case": "axial",
+      "deployment": 0.6,
+      "source_stiff": 14539.9669101723,
+      "curve_final_stiff": 14905.382394951377,
+      "rel_stiff_error": 0.02513179617509512,
+      "secant_stiff_cv": 0.007963777675896712,
+      "disp_final": 0.0020126957635224
+    },
+    {
+      "sample_id": "miura_00005",
+      "source_name": "miura",
+      "pattern": 1,
+      "curve_id": 4,
+      "load_case": "axial",
+      "deployment": 0.6,
+      "source_stiff": 18943.9415701235,
+      "curve_final_stiff": 19397.976705744186,
+      "rel_stiff_error": 0.023967300254807783,
+      "secant_stiff_cv": 0.007598330586024576,
+      "disp_final": 0.001546553048036
+    },
+    {
+      "sample_id": "tmp_00003",
+      "source_name": "tmp",
+      "pattern": 2,
+      "curve_id": 3,
+      "load_case": "axial",
+      "deployment": 0.3,
+      "source_stiff": 7144.17376545976,
+      "curve_final_stiff": 7315.016334014638,
+      "rel_stiff_error": 0.02391355168051175,
+      "secant_stiff_cv": 0.007576837161223055,
+      "disp_final": 0.0041011528382378
+    },
+    {
+      "sample_id": "miura_00009",
+      "source_name": "miura",
+      "pattern": 1,
+      "curve_id": 4,
+      "load_case": "axial",
+      "deployment": 0.6,
+      "source_stiff": 20389.0455757056,
+      "curve_final_stiff": 20810.200879163556,
+      "rel_stiff_error": 0.020655959686498505,
+      "secant_stiff_cv": 0.006557206239839617,
+      "disp_final": 0.0014416006925737
+    },
+    {
+      "sample_id": "miura_00014",
+      "source_name": "miura",
+      "pattern": 1,
+      "curve_id": 4,
+      "load_case": "axial",
+      "deployment": 0.6,
+      "source_stiff": 15224.6925105527,
+      "curve_final_stiff": 15534.367119987743,
+      "rel_stiff_error": 0.020340286624534253,
+      "secant_stiff_cv": 0.0064571112136803666,
+      "disp_final": 0.0019312019452276
+    }
+  ]
+}

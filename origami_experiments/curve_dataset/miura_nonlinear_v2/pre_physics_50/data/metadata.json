@@ -1,0 +1,21 @@
+{
+  "dataset_name": "origami_force_displacement_curve",
+  "split": "random",
+  "curve_points": 80,
+  "num_conditions": 6,
+  "target_for_model": "y is displacement magnitude flattened as [condition, step]",
+  "full_curve_storage": "curve_raw stores [displacement, force] at each condition and step",
+  "input_columns": [
+    "pattern",
+    "m",
+    "n",
+    "tcrease",
+    "tpanel",
+    "W",
+    "creaseE",
+    "panelE"
+  ],
+  "train_samples": 40,
+  "test_samples": 10,
+  "allow_partial": true
+}

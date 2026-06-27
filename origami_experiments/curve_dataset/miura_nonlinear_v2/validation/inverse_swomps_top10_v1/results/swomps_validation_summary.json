@@ -1,0 +1,35 @@
+{
+  "summary": {
+    "samples": 10,
+    "displacement_rmse_mean": 4.146615069657855e-05,
+    "displacement_rmse_max": 0.000138980831252411,
+    "force_rmse_mean": 26.47373056411743,
+    "force_rmse_max": 55.28575134277344,
+    "displacement_nrmse_std_percent_mean": 0.999910289246937,
+    "displacement_nrmse_std_percent_max": 3.3087245295811725,
+    "force_nrmse_std_percent_mean": 3.325065213354706,
+    "force_nrmse_std_percent_max": 9.089946054043178,
+    "negative_displacement_fraction_mean": 0.0,
+    "negative_displacement_fraction_max": 0.0,
+    "negative_force_fraction_mean": 0.0,
+    "negative_force_fraction_max": 0.0,
+    "swomps_converged_fraction_mean": 1.0,
+    "swomps_converged_fraction_max": 1.0
+  },
+  "paths": {
+    "per_candidate_metrics": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\results\\swomps_validation_metrics.csv",
+    "summary_plot": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\results\\swomps_validation_nrmse.png",
+    "curve_plots": [
+      "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\results\\curve_plots\\invval_0001_miura_00074_true_swomps.png",
+      "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\results\\curve_plots\\invval_0002_miura_00863_true_swomps.png",
+      "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\results\\curve_plots\\invval_0003_miura_01477_true_swomps.png",
+      "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\results\\curve_plots\\invval_0004_miura_00951_true_swomps.png",
+      "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\results\\curve_plots\\invval_0005_miura_01589_true_swomps.png",
+      "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\results\\curve_plots\\invval_0006_miura_00430_true_swomps.png",
+      "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\results\\curve_plots\\invval_0007_miura_00968_true_swomps.png",
+      "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\results\\curve_plots\\invval_0008_miura_01675_true_swomps.png",
+      "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\results\\curve_plots\\invval_0009_miura_00620_true_swomps.png",
+      "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\results\\curve_plots\\invval_0010_miura_01315_true_swomps.png"
+    ]
+  }
+}

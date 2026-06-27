@@ -1,0 +1,104 @@
+{
+  "best_epoch": 49,
+  "best_val_total": 0.015023593630555065,
+  "final": {
+    "epoch": 50,
+    "train_total": 0.0077846160514434435,
+    "train_curve": 0.0077846160514434435,
+    "train_physics": 0.0,
+    "val_total": 0.015459471975648125,
+    "val_curve": 0.015459471975648125,
+    "val_physics": 0.0
+  },
+  "denormalized_curve_metrics": {
+    "displacement_mae": 0.00023063350818119943,
+    "displacement_rmse": 0.0007403520867228508,
+    "force_mae": 78.8292465209961,
+    "force_rmse": 149.6797637939453
+  },
+  "typical_curve_plots": [
+    "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_main_only_50ep\\typical_curves\\miura_00676_pred_vs_target.png",
+    "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_main_only_50ep\\typical_curves\\miura_00275_pred_vs_target.png",
+    "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_main_only_50ep\\typical_curves\\miura_01970_pred_vs_target.png",
+    "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_main_only_50ep\\typical_curves\\miura_00787_pred_vs_target.png",
+    "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_main_only_50ep\\typical_curves\\miura_01755_pred_vs_target.png",
+    "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_main_only_50ep\\typical_curves\\miura_01063_pred_vs_target.png"
+  ],
+  "config": {
+    "data_dir": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\data",
+    "result_dir": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_main_only_50ep",
+    "epochs": 50,
+    "batch_size": 32,
+    "hidden_dim": 64,
+    "encoder_layers": 2,
+    "decoder_layers": 2,
+    "num_heads": 4,
+    "gnn_heads": 4,
+    "dropout": 0.05,
+    "lr": 0.0003,
+    "weight_decay": 0.0001,
+    "aux_physics_weight": 0.0,
+    "physics_clip": 8.0,
+    "init_checkpoint": null,
+    "max_train_samples": 0,
+    "max_test_samples": 0,
+    "plot_samples": 6,
+    "device": "auto",
+    "seed": 42
+  },
+  "metadata": {
+    "input_cols": [
+      "pattern",
+      "m",
+      "n",
+      "tcrease",
+      "tpanel",
+      "W",
+      "creaseE",
+      "panelE"
+    ],
+    "physics_cols": [
+      "strain_energy_total",
+      "strain_energy_crease",
+      "strain_energy_panel",
+      "max_bar_stress",
+      "max_bar_strain",
+      "max_crease_moment",
+      "max_crease_rotation"
+    ],
+    "category_maps": [
+      {
+        "1.0": 0
+      },
+      {
+        "24.0": 0,
+        "30.0": 1,
+        "36.0": 2
+      },
+      {
+        "6.0": 0,
+        "9.0": 1,
+        "12.0": 2
+      }
+    ],
+    "curve_scaler": {
+      "mean": [
+        0.0074689388275146484,
+        875.797607421875
+      ],
+      "std": [
+        0.00529680447652936,
+        1459.9881591796875
+      ]
+    },
+    "physics_scaler": null,
+    "train_samples": 1570,
+    "test_samples": 430
+  },
+  "init_checkpoint": {
+    "loaded": false,
+    "path": null,
+    "missing_keys": [],
+    "unexpected_keys": []
+  }
+}

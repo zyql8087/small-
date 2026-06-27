@@ -1,0 +1,30 @@
+{
+  "device": "cpu",
+  "batch_size": 4,
+  "curve_raw_shape": [
+    1570,
+    6,
+    80,
+    2
+  ],
+  "forward_output_shape": [
+    4,
+    6,
+    80,
+    2
+  ],
+  "inverse_output_shape": [
+    4,
+    8
+  ],
+  "forward_loss": 1.5683287382125854,
+  "inverse_loss": 1.0559378862380981,
+  "curve_channel_mean": [
+    0.0074689388275146484,
+    875.797607421875
+  ],
+  "curve_channel_std": [
+    0.00529680447652936,
+    1459.9881591796875
+  ]
+}

@@ -1,0 +1,117 @@
+{
+  "best_epoch": 2,
+  "best_val_total": 0.05601136453969534,
+  "final": {
+    "epoch": 2,
+    "train_total": 0.060153730602780724,
+    "train_curve": 0.05266819417856301,
+    "train_physics": 0.14971072597868124,
+    "val_total": 0.05601136453969534,
+    "val_curve": 0.05041686539040056,
+    "val_physics": 0.11188997134219768
+  },
+  "config": {
+    "data_dir": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\data",
+    "result_dir": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_with_physics_aux",
+    "epochs": 2,
+    "batch_size": 32,
+    "hidden_dim": 64,
+    "encoder_layers": 2,
+    "decoder_layers": 2,
+    "num_heads": 4,
+    "gnn_heads": 4,
+    "dropout": 0.05,
+    "lr": 0.0003,
+    "weight_decay": 0.0001,
+    "aux_physics_weight": 0.05,
+    "physics_clip": 8.0,
+    "init_checkpoint": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_main_only\\curve_forward_gnn_transformer_best.pth",
+    "max_train_samples": 0,
+    "max_test_samples": 0,
+    "device": "auto",
+    "seed": 42
+  },
+  "metadata": {
+    "input_cols": [
+      "pattern",
+      "m",
+      "n",
+      "tcrease",
+      "tpanel",
+      "W",
+      "creaseE",
+      "panelE"
+    ],
+    "physics_cols": [
+      "strain_energy_total",
+      "strain_energy_crease",
+      "strain_energy_panel",
+      "max_bar_stress",
+      "max_bar_strain",
+      "max_crease_moment",
+      "max_crease_rotation"
+    ],
+    "category_maps": [
+      {
+        "1.0": 0
+      },
+      {
+        "24.0": 0,
+        "30.0": 1,
+        "36.0": 2
+      },
+      {
+        "6.0": 0,
+        "9.0": 1,
+        "12.0": 2
+      }
+    ],
+    "curve_scaler": {
+      "mean": [
+        0.0074689388275146484,
+        875.797607421875
+      ],
+      "std": [
+        0.00529680447652936,
+        1459.9881591796875
+      ]
+    },
+    "physics_scaler": {
+      "transform": "signed_log1p_robust_iqr",
+      "clip": 8.0,
+      "center": [
+        0.6933088898658752,
+        0.11799967288970947,
+        0.33242443203926086,
+        16.029102325439453,
+        0.003309479681774974,
+        0.2689952850341797,
+        1.9143531322479248
+      ],
+      "scale": [
+        1.337795376777649,
+        0.8308500051498413,
+        1.0180922746658325,
+        1.4681273698806763,
+        0.004707355983555317,
+        0.5016565322875977,
+        0.15319767594337463
+      ]
+    },
+    "train_samples": 1570,
+    "test_samples": 430
+  },
+  "init_checkpoint": {
+    "loaded": true,
+    "path": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_main_only\\curve_forward_gnn_transformer_best.pth",
+    "missing_keys": [
+      "physics_head.0.weight",
+      "physics_head.0.bias",
+      "physics_head.1.weight",
+      "physics_head.1.bias",
+      "physics_head.4.weight",
+      "physics_head.4.bias"
+    ],
+    "unexpected_keys": []
+  }
+}

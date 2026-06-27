@@ -1,0 +1,36 @@
+{
+  "device": "cpu",
+  "torch_version": "2.7.0+cu128",
+  "train_samples": 40,
+  "test_samples": 10,
+  "x_dim": 8,
+  "curve_dim": 480,
+  "curve_raw_shape_train": [
+    40,
+    6,
+    80,
+    2
+  ],
+  "curve_raw_shape_test": [
+    10,
+    6,
+    80,
+    2
+  ],
+  "forward_x_to_curve": {
+    "initial_train_mse": 1.1490198373794556,
+    "initial_test_mse": 1.3117880821228027,
+    "final_train_mse": 0.6051664352416992,
+    "final_test_mse": 1.1378010511398315,
+    "train_mse_reduction": 0.5438534021377563,
+    "train_mse_reduction_ratio": 0.473319419252248
+  },
+  "inverse_curve_to_x": {
+    "initial_train_mse": 1.137483835220337,
+    "initial_test_mse": 1.051651954650879,
+    "final_train_mse": 0.36113473773002625,
+    "final_test_mse": 0.9976204037666321,
+    "train_mse_reduction": 0.7763490974903107,
+    "train_mse_reduction_ratio": 0.6825144001628186
+  }
+}

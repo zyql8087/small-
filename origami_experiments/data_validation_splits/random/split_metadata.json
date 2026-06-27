@@ -1,0 +1,26 @@
+{
+  "split": "random",
+  "test_size": 0.2,
+  "seed": 42,
+  "n_total": 4000,
+  "n_train": 3200,
+  "n_test": 800,
+  "input_cols": [
+    "pattern",
+    "m",
+    "n",
+    "tcrease",
+    "tpanel",
+    "W",
+    "creaseE",
+    "panelE"
+  ],
+  "output_cols": [
+    "bendstiff30",
+    "bendstiff60",
+    "bendstiff90",
+    "axialstiff30",
+    "axialstiff60",
+    "axialstiff90"
+  ]
+}

@@ -1,0 +1,100 @@
+TPMS Agent / AI workflow terminal evidence
+Generated for application proof on 2026-05-08
+Workspace: F:\TPMS
+
+1. Project working tree snapshot
+
+Command:
+  git status --short
+
+Observed output:
+  ?? .claude/
+  ?? external/
+  ?? origami_experiments/
+
+Notes:
+  The workspace contains the Agent interaction/config directory, external origami dataset sources,
+  and the new origami_experiments pipeline generated during the Agent-assisted research iteration.
+
+
+2. Forward model evaluation evidence
+
+Command:
+  Get-Content GNNTransform\forward_test_results\forward_test_metrics.csv
+
+Observed output:
+  model,mse,mae,r2,nrmse_pct
+  gat,11.484012603759766,1.0617573261260986,0.9759511947631836,2.3187499801574
+  transformer_ens_5,7.257358074188232,0.7950584292411804,0.9846495389938354,1.8433014670918175
+
+Interpretation:
+  The Agent-assisted forward modeling loop compared GAT and Transformer ensemble models.
+  The Transformer ensemble achieved R2=0.98465 and NRMSE=1.8433%, which supports its use
+  as a fast surrogate verifier for inverse-design candidates.
+
+
+3. Inverse design evaluation evidence
+
+Command:
+  Get-Content diffusion\inverse_test_results\inverse_test_metrics.csv
+
+Observed output:
+  model,top_k,param_mse,param_mae,curve_mse,curve_mae,curve_nrmse_pct,oracle_topk_param_mse,oracle_topk_param_mae,topk_param_diversity
+  cvae,3,133.015625,3.6545186042785645,28.8452205657959,2.019345998764038,3.6748873019818995,51.782447814941406,2.2051198482513428,2.2186737060546875
+  diffusion,3,46.84138870239258,1.1495782136917114,2.5385849475860596,0.7308552265167236,1.0901918808261781,34.59794616699219,0.7873895764350891,0.6688835024833679
+
+Interpretation:
+  The Agent-assisted inverse-design loop compared CVAE and conditional diffusion.
+  Diffusion improved the generated candidate quality, reducing curve NRMSE from 3.6749%
+  to 1.0902% in the Top-K evaluation.
+
+
+4. Long training pipeline log evidence
+
+Command:
+  Get-Content origami_experiments\training_log.txt -TotalCount 80
+
+Observed excerpt:
+  =========================================
+  Starting full training pipeline
+  Started at: Fri May  8 00:00:59     2026
+  =========================================
+
+  ===== 1/5: Forward GNN (500 epochs) =====
+  [Device] Running on CUDA: NVIDIA GeForce RTX 5060 Ti
+
+  Loading data from: F:\TPMS\origami_experiments\data\origami_train.npz
+
+    X shape: (3200, 8), y shape: (3200, 6)
+
+    Train: 2560, Val: 640
+
+  Checkpoints saved to: F:\TPMS\origami_experiments\checkpoints\forward_gnn
+
+  ==================== Training GNN Pipeline 1/1 ====================
+
+  Epoch 1/500 | MSE: 0.941592 | Val: 1.029574 | MAE: 0.680533 | Best: 0.680533 | LR: 5.00e-05
+  Epoch 10/500 | MSE: 0.067353 | Val: 0.032018 | MAE: 0.110135 | Best: 0.110135 | LR: 5.00e-04
+  Epoch 20/500 | MSE: 0.021574 | Val: 0.014738 | MAE: 0.068398 | Best: 0.068398 | LR: 5.00e-04
+  Epoch 100/500 | MSE: 0.006527 | Val: 0.002223 | MAE: 0.029912 | Best: 0.026121 | LR: 1.25e-04
+  Epoch 200/500 | MSE: 0.005036 | Val: 0.000776 | MAE: 0.015834 | Best: 0.015834 | LR: 3.13e-05
+  Epoch 290/500 | MSE: 0.004841 | Val: 0.000829 | MAE: 0.015993 | Best: 0.015596 | LR: 1.95e-06
+
+Interpretation:
+  This terminal evidence shows a real multi-stage training run started on 2026-05-08,
+  using CUDA GPU execution, generated data arrays, validation split, checkpoints,
+  and epoch-level optimization logs.
+
+
+5. Files that can be uploaded as additional proof
+
+  F:\TPMS\origami_experiments\training_log.txt
+  F:\TPMS\origami_experiments\results\summary.csv
+  F:\TPMS\GNNTransform\forward_test_results\forward_test_metrics.csv
+  F:\TPMS\GNNTransform\forward_test_results\forward_test_comparison.png
+  F:\TPMS\GNNTransform\forward_test_results\forward_test_comparison_stratified.png
+  F:\TPMS\diffusion\inverse_test_results\inverse_test_metrics.csv
+  F:\TPMS\diffusion\inverse_test_results\inverse_test_comparison.png
+  F:\TPMS\CVAE\cvae_checkpoints\cvae_curve_0.png
+  F:\TPMS\diffusion\inverse_diffusion_checkpoints\single_pipeline_20260319\inverse_diffusion_curve_0.png
+

@@ -1,0 +1,42 @@
+# ───────────── small++ (Origami / Miura) workspace .gitignore ─────────────
+# Goal: track code, configs, docs and result summaries; ignore large binaries
+# and regenerable artifacts so the repo stays lean.
+
+# ── Python ──
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# ── Trained model weights (the main bulk: ~1.3 GB of checkpoints) ──
+*.pth
+*.pt
+*.ckpt
+
+# ── Packed datasets / scalers (regenerable from external + prepare_*.py) ──
+*.npz
+
+# ── Raw SWOMPS simulation outputs (force-displacement CSV batches get huge) ──
+**/raw_curves/
+
+# ── Logs & scratch ──
+*.log
+*.err.log
+**/logs/
+tmp/
+tmp_artifacts/
+start_process_probe.txt
+
+# ── Third-party upstream clone ──
+# external/ holds the SWOMPS simulator + GenerateOrigamiDataSet, which is itself
+# a git clone (nested .git) with its own provenance and is large/re-cloneable.
+# Ignored to avoid embedded-repo gitlinks and bloat. Remove this line (and the
+# nested .git) if you want to vendor it into this repo.
+external/
+
+# ── IDE / OS ──
+.idea/
+.vscode/
+.cursor/
+Thumbs.db
+.DS_Store

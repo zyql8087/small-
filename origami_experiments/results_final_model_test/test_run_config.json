@@ -1,0 +1,8 @@
+{
+  "device": "cuda",
+  "test_path": "F:\\TPMS\\origami_experiments\\data\\origami_test.npz",
+  "n_test": 800,
+  "cvae_samples": 50,
+  "diffusion_samples": 50,
+  "includes_split_cont_diffusion": true
+}

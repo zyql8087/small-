@@ -1,0 +1,9 @@
+{
+  "generated_csv": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\inverse_diffusion_quality_filtered_150ep_v2_physical\\generated_parameters_closed_loop.csv",
+  "original_job_dir": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\jobs_miura",
+  "top_k": 10,
+  "selection_metric": "closed_loop_scaled_mse",
+  "reference_job_dir": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\jobs_reference",
+  "selected_candidates": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\selected_candidates.csv",
+  "reference_stiffness_workflow": "Run fixed FinalLoad=3, CurvePoints=3 SWOMPS curves, then compute stiffness=final_force/final_displacement."
+}

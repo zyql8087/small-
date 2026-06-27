@@ -1,0 +1,140 @@
+{
+  "best_epoch": 2,
+  "best_val_total": 0.8950893580913544,
+  "final": {
+    "epoch": 2,
+    "train_total": 0.9406143724918365,
+    "train_curve": 0.9259186834096909,
+    "train_physics": 0.29391369223594666,
+    "train_smoothness": 4.5573964513323517e-07,
+    "train_force_monotonic": 0.0,
+    "train_displacement_monotonic": 0.0,
+    "val_total": 0.8950893580913544,
+    "val_curve": 0.8801498711109161,
+    "val_physics": 0.2987895756959915,
+    "val_smoothness": 3.38885513428977e-07,
+    "val_force_monotonic": 0.0,
+    "val_displacement_monotonic": 0.0
+  },
+  "denormalized_curve_metrics": {
+    "displacement_mae": 0.0037292824126780033,
+    "displacement_rmse": 0.005291069857776165,
+    "force_mae": 0.0,
+    "force_rmse": 0.0,
+    "displacement_nrmse_range_percent": 7.53445809498003,
+    "force_nrmse_range_percent": 0.0,
+    "displacement_nrmse_std_percent": 93.73961334929638,
+    "force_nrmse_std_percent": 0.0
+  },
+  "training_loss_plot": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_force_conditioned_smoke\\training_loss_curves.png",
+  "typical_curve_plots": [
+    "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_force_conditioned_smoke\\typical_curves\\miura_01119_pred_vs_target.png",
+    "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_force_conditioned_smoke\\typical_curves\\miura_00585_pred_vs_target.png"
+  ],
+  "config": {
+    "data_dir": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\data_random",
+    "result_dir": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\training_results\\curve_forward_force_conditioned_smoke",
+    "epochs": 2,
+    "batch_size": 16,
+    "hidden_dim": 32,
+    "encoder_layers": 1,
+    "decoder_layers": 1,
+    "temporal_refiner_layers": 1,
+    "temporal_kernel_size": 5,
+    "num_heads": 4,
+    "gnn_heads": 2,
+    "dropout": 0.05,
+    "lr": 0.0003,
+    "weight_decay": 0.0001,
+    "aux_physics_weight": 0.05,
+    "physics_clip": 8.0,
+    "smoothness_weight": 0.01,
+    "force_monotonic_weight": 0.01,
+    "displacement_monotonic_weight": 0.0,
+    "displacement_loss_weight": 1.0,
+    "force_loss_weight": 1.0,
+    "force_conditioned_decoder": true,
+    "init_checkpoint": null,
+    "max_train_samples": 64,
+    "max_test_samples": 32,
+    "plot_samples": 2,
+    "device": "auto",
+    "seed": 42
+  },
+  "metadata": {
+    "input_cols": [
+      "pattern",
+      "m",
+      "n",
+      "tcrease",
+      "tpanel",
+      "W",
+      "creaseE",
+      "panelE"
+    ],
+    "physics_cols": [
+      "strain_energy_total",
+      "strain_energy_crease",
+      "strain_energy_panel",
+      "max_bar_stress",
+      "max_bar_strain",
+      "max_crease_moment",
+      "max_crease_rotation"
+    ],
+    "category_maps": [
+      {
+        "1.0": 0
+      },
+      {
+        "24.0": 0,
+        "30.0": 1,
+        "36.0": 2
+      },
+      {
+        "6.0": 0,
+        "9.0": 1,
+        "12.0": 2
+      }
+    ],
+    "curve_scaler": {
+      "mean": [
+        0.007595151662826538,
+        1022.0482177734375
+      ],
+      "std": [
+        0.005639819428324699,
+        1602.61376953125
+      ]
+    },
+    "physics_scaler": {
+      "transform": "signed_log1p_robust_iqr",
+      "clip": 8.0,
+      "center": [
+        0.8112764954566956,
+        0.1382681280374527,
+        0.413054883480072,
+        16.16385269165039,
+        0.003416158491745591,
+        0.3621527850627899,
+        1.9142932891845703
+      ],
+      "scale": [
+        1.4371212720870972,
+        0.8872647881507874,
+        1.2057334184646606,
+        1.4332181215286255,
+        0.004924988839775324,
+        0.647614598274231,
+        0.1533202975988388
+      ]
+    },
+    "train_samples": 64,
+    "test_samples": 32
+  },
+  "init_checkpoint": {
+    "loaded": false,
+    "path": null,
+    "missing_keys": [],
+    "unexpected_keys": []
+  }
+}

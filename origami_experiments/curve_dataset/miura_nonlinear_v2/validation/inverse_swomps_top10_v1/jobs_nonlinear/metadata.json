@@ -1,0 +1,7 @@
+{
+  "reference_job_dir": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\jobs_reference",
+  "reference_curves_dir": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\raw_curves_reference",
+  "output_job_dir": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\validation\\inverse_swomps_top10_v1\\jobs_nonlinear",
+  "curve_points_for_reference": 3,
+  "stiffness_formula": "final_force / final_displacement at fixed small-load response"
+}

@@ -1,0 +1,100 @@
+{
+  "best_epoch": 1,
+  "best_val_total": 0.6588742733001709,
+  "final": {
+    "epoch": 1,
+    "train_total": 1.0336606204509735,
+    "train_curve": 1.0336606204509735,
+    "train_physics": 0.0,
+    "val_total": 0.6588742733001709,
+    "val_curve": 0.6588742733001709,
+    "val_physics": 0.0
+  },
+  "denormalized_curve_metrics": {
+    "displacement_mae": 0.0036650558467954397,
+    "displacement_rmse": 0.004502167459577322,
+    "force_mae": 764.8855590820312,
+    "force_rmse": 1253.120849609375
+  },
+  "typical_curve_plots": [
+    "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\smoke_results\\curve_forward_eval_outputs\\typical_curves\\miura_00014_pred_vs_target.png",
+    "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\smoke_results\\curve_forward_eval_outputs\\typical_curves\\miura_00002_pred_vs_target.png"
+  ],
+  "config": {
+    "data_dir": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\data",
+    "result_dir": "F:\\TPMS\\origami_experiments\\curve_dataset\\miura_nonlinear_v2\\smoke_results\\curve_forward_eval_outputs",
+    "epochs": 1,
+    "batch_size": 4,
+    "hidden_dim": 32,
+    "encoder_layers": 1,
+    "decoder_layers": 1,
+    "num_heads": 4,
+    "gnn_heads": 4,
+    "dropout": 0.05,
+    "lr": 0.0003,
+    "weight_decay": 0.0001,
+    "aux_physics_weight": 0.0,
+    "physics_clip": 8.0,
+    "init_checkpoint": null,
+    "max_train_samples": 8,
+    "max_test_samples": 4,
+    "plot_samples": 2,
+    "device": "cpu",
+    "seed": 42
+  },
+  "metadata": {
+    "input_cols": [
+      "pattern",
+      "m",
+      "n",
+      "tcrease",
+      "tpanel",
+      "W",
+      "creaseE",
+      "panelE"
+    ],
+    "physics_cols": [
+      "strain_energy_total",
+      "strain_energy_crease",
+      "strain_energy_panel",
+      "max_bar_stress",
+      "max_bar_strain",
+      "max_crease_moment",
+      "max_crease_rotation"
+    ],
+    "category_maps": [
+      {
+        "1.0": 0
+      },
+      {
+        "24.0": 0,
+        "30.0": 1,
+        "36.0": 2
+      },
+      {
+        "6.0": 0,
+        "9.0": 1,
+        "12.0": 2
+      }
+    ],
+    "curve_scaler": {
+      "mean": [
+        0.007891112938523293,
+        852.6651611328125
+      ],
+      "std": [
+        0.0065404875203967094,
+        1364.0894775390625
+      ]
+    },
+    "physics_scaler": null,
+    "train_samples": 8,
+    "test_samples": 4
+  },
+  "init_checkpoint": {
+    "loaded": false,
+    "path": null,
+    "missing_keys": [],
+    "unexpected_keys": []
+  }
+}

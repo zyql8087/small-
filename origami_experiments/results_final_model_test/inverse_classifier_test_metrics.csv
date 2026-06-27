@@ -1,0 +1,4 @@
+Model,Group,Accuracy
+Inverse Classifier,pattern,1.0
+Inverse Classifier,m,0.95125
+Inverse Classifier,n,0.995

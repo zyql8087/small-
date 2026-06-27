@@ -1,0 +1,10 @@
+{
+  "displacement_mae": 0.0034533494617789984,
+  "displacement_rmse": 0.00505289388820529,
+  "force_mae": 1143.3751220703125,
+  "force_rmse": 1620.30859375,
+  "displacement_nrmse_range_percent": 7.195296656896648,
+  "force_nrmse_range_percent": 16.203555903916353,
+  "displacement_nrmse_std_percent": 89.51995193925946,
+  "force_nrmse_std_percent": 95.37490657280524
+}

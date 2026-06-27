@@ -1,0 +1,43 @@
+{
+  "device": "cpu",
+  "torch_version": "2.7.0+cu128",
+  "train_samples": 1570,
+  "test_samples": 430,
+  "diagnostic_only": false,
+  "diagnostic_note": "",
+  "x_dim": 8,
+  "curve_dim": 3840,
+  "curve_raw_shape_train": [
+    1570,
+    6,
+    80,
+    2
+  ],
+  "curve_raw_shape_test": [
+    430,
+    6,
+    80,
+    2
+  ],
+  "target": {
+    "target_mode": "displacement_physics",
+    "displacement_target_dim": 480,
+    "physics_target_dim": 3360
+  },
+  "forward_x_to_curve": {
+    "initial_train_mse": 1.1416996717453003,
+    "initial_test_mse": 2.507061531246592e+16,
+    "final_train_mse": 0.0008800644427537918,
+    "final_test_mse": 2.507061531246592e+16,
+    "train_mse_reduction": 1.1408196073025465,
+    "train_mse_reduction_ratio": 0.9992291629186435
+  },
+  "inverse_curve_to_x": {
+    "initial_train_mse": 1.0205700397491455,
+    "initial_test_mse": 1.4488145112991333,
+    "final_train_mse": 0.016795719042420387,
+    "final_test_mse": 0.47402021288871765,
+    "train_mse_reduction": 1.0037743207067251,
+    "train_mse_reduction_ratio": 0.9835428060904583
+  }
+}

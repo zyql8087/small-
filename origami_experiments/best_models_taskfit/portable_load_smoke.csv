@@ -1,0 +1,8 @@
+name,portable_checkpoint,load_state_ok,missing_keys,unexpected_keys
+forward_resmlp,F:\TPMS\origami_experiments\best_models_taskfit\forward_resmlp_portable.pth,True,,
+forward_gat_physical_sparse,F:\TPMS\origami_experiments\best_models_taskfit\forward_gat_physical_sparse_portable.pth,True,,
+forward_transformer,F:\TPMS\origami_experiments\best_models_taskfit\forward_transformer_portable.pth,True,,
+inverse_resmlp,F:\TPMS\origami_experiments\best_models_taskfit\inverse_resmlp_portable.pth,True,,
+inverse_cvae_physical,F:\TPMS\origami_experiments\best_models_taskfit\inverse_cvae_physical_portable.pth,True,,
+inverse_diffusion_x0,F:\TPMS\origami_experiments\best_models_taskfit\inverse_diffusion_x0_portable.pth,True,,
+inverse_classifier,F:\TPMS\origami_experiments\best_models_taskfit\inverse_classifier_portable.pth,True,,

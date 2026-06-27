@@ -1,0 +1,54 @@
+{
+  "dataset_name": "origami_force_displacement_curve",
+  "split": "random",
+  "curve_points": 80,
+  "num_conditions": 6,
+  "target_for_model": "y is displacement magnitude flattened as [condition, step]",
+  "full_curve_storage": "curve_raw stores [displacement, force] at each condition and step",
+  "physics_storage": "physics_raw stores per-step physical summaries listed in physics_cols",
+  "input_columns": [
+    "pattern",
+    "m",
+    "n",
+    "tcrease",
+    "tpanel",
+    "W",
+    "creaseE",
+    "panelE"
+  ],
+  "physics_columns": [
+    "strain_energy_total",
+    "strain_energy_crease",
+    "strain_energy_panel",
+    "max_bar_stress",
+    "max_bar_strain",
+    "max_crease_moment",
+    "max_crease_rotation"
+  ],
+  "train_samples": 1599,
+  "test_samples": 400,
+  "allow_partial": true,
+  "require_physics": true,
+  "quality_filter": {
+    "enabled": true,
+    "max_physics_abs": null,
+    "max_displacement": null,
+    "max_bar_strain": 1.0,
+    "max_bar_stress": null,
+    "input_samples": 2000,
+    "kept_samples": 1999,
+    "removed_samples": 1,
+    "removed_sample_ids": [
+      "miura_00434"
+    ],
+    "removed_reasons": {
+      "miura_00434": [
+        "max_bar_strain>1.0"
+      ]
+    }
+  },
+  "job_tables": {
+    "parameters_csv": "one row per sample with original parameters and stiffness labels for QC",
+    "simulation_jobs_csv": "one row per sample-condition pair; validated for consistency but not used as ML input"
+  }
+}

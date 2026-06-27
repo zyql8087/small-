@@ -1,0 +1,2 @@
+epoch,train_total,train_curve,train_physics,train_smoothness,train_force_monotonic,train_displacement_monotonic,val_total,val_curve,val_physics,val_smoothness,val_force_monotonic,val_displacement_monotonic
+1,1.1024653315544128,1.1023951172828674,0.0,0.05847777612507343,0.011759968008846045,0.007811445044353604,0.7531664371490479,0.753109872341156,0.0,0.046898409724235535,0.009639333933591843,0.006031595170497894

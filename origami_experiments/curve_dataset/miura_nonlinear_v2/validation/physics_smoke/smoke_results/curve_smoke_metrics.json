@@ -1,0 +1,43 @@
+{
+  "device": "cpu",
+  "torch_version": "2.7.0+cu128",
+  "train_samples": 1,
+  "test_samples": 1,
+  "diagnostic_only": true,
+  "diagnostic_note": "Training metrics are protocol-only because train/test sample counts are small.",
+  "x_dim": 8,
+  "curve_dim": 3840,
+  "curve_raw_shape_train": [
+    1,
+    6,
+    80,
+    2
+  ],
+  "curve_raw_shape_test": [
+    1,
+    6,
+    80,
+    2
+  ],
+  "target": {
+    "target_mode": "displacement_physics",
+    "displacement_target_dim": 480,
+    "physics_target_dim": 3360
+  },
+  "forward_x_to_curve": {
+    "initial_train_mse": 0.14865344762802124,
+    "initial_test_mse": 34303016697856.0,
+    "final_train_mse": 0.03685735911130905,
+    "final_test_mse": 34303016697856.0,
+    "train_mse_reduction": 0.11179608851671219,
+    "train_mse_reduction_ratio": 0.7520584978053249
+  },
+  "inverse_curve_to_x": {
+    "initial_train_mse": 0.10648112744092941,
+    "initial_test_mse": 4.4607568131968205e+17,
+    "final_train_mse": 0.03178396821022034,
+    "final_test_mse": 4.4607568131968205e+17,
+    "train_mse_reduction": 0.07469715923070908,
+    "train_mse_reduction_ratio": 0.701506088693017
+  }
+}
