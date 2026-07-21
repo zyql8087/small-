@@ -58,23 +58,21 @@ SWOMPS (MATLAB)  →  GenerateOrigamiDataSet/*.txt  →  prepare_data.py  →  d
 F:\small++\
 ├── README.md                       # ← 本文件
 ├── .gitignore
+├── .workspace_cache/               # 临时脚本、运行日志与 Python 字节码（gitignore）
 ├── origami_experiments/            # 折纸 ML 实验主体
-│   ├── prepare_data.py             # external/*.txt → data/origami_{train,test}.npz (+ scaler_*.pkl)
-│   ├── prepare_validation_splits.py# 论文式划分：random / group_pattern_mn / extrapolate_high_W
-│   ├── modules/                    # 5 种架构的折纸版 + taskfit 版 + 曲线版
-│   ├── train_forward_gnn.py        # 正向 GAT (8→6)
-│   ├── train_forward_transformer.py# 正向 Transformer (8→6)
-│   ├── train_inverse_resnet.py     # 逆向 ResNet1D (6→8)
-│   ├── train_inverse_cvae.py       # 逆向 CVAE (6→8)
-│   ├── train_inverse_diffusion.py  # 逆向扩散 (6→8)
-│   ├── train_taskfit.py            # 【推荐】任务适配训练：离散变量分类化 + 闭环一致性
-│   ├── evaluate_all.py             # 基础 5 模型统一评估
-│   ├── evaluate_taskfit.py         # taskfit 评估（含逐参数 R²、闭环刚度还原）
-│   ├── evaluate_all_final_models.py# 最终模型综合评估
+│   ├── models/                     # 折纸版、taskfit 版与曲线版模型定义
+│   ├── workflows/
+│   │   ├── data/                   # 数据制备与验证集划分
+│   │   ├── training/               # 正向/逆向训练入口与批量训练脚本
+│   │   ├── evaluation/             # 基础、taskfit 与最终模型评估
+│   │   ├── analysis/               # 审计、汇总、损失曲线与预测展示
+│   │   └── publishing/             # DOCX、PPT 与便携检查点导出
 │   ├── data/                       # 生成的 .npz + scaler（.npz 默认被 gitignore）
 │   ├── checkpoints*/  results*/  *_grid/  *_round*/  split_diff_*/   # 各轮训练/调参产物
 │   ├── curve_dataset/              # 力-位移全曲线数据集管线（见其 README / EXPERIMENT_PLAN）
+│   │   ├── probes/snap_probe/      # 可复用的非线性曲线探针与 Abaqus 验证材料
 │   │   └── miura_nonlinear_v2/     # 2000 样本 × 6 工况 × 80 步 + 物理量 的全量计划
+│   ├── tests/                      # 模型形状与目录结构回归测试
 │   └── 实验总结报告.md             # 第一版（朴素连续回归）实验中文报告 + 结果
 ├── external/                       # 第三方上游（gitignore）：SWOMPS + 数据生成器
 ├── output/                         # 论文产物：Miura 文档、图、PDF（含 small++.docx）
@@ -113,27 +111,27 @@ pip install numpy pandas scikit-learn matplotlib torch torch-geometric networkx 
 
 ```powershell
 # 1) 制备数据：读取 external/*.txt → data/origami_{train,test}.npz + scaler_*.pkl
-python origami_experiments\prepare_data.py
+python origami_experiments\workflows\data\prepare_data.py
 
 # 2) 训练 —— 方式 ① 推荐：taskfit（离散变量分类化 + log 刚度 + 闭环一致性）
 #    默认依次训练 forward_resmlp → inverse_resmlp → forward_gat → inverse_cvae
-python origami_experiments\train_taskfit.py
+python origami_experiments\workflows\training\train_taskfit.py
 #    可选更多 stage / 图结构：
-python origami_experiments\train_taskfit.py --stages forward_gat inverse_cvae --gat_graph physical_sparse
+python origami_experiments\workflows\training\train_taskfit.py --stages forward_gat inverse_cvae --gat_graph physical_sparse
 
 #    训练 —— 方式 ② 基础五件套（朴素连续回归，对照用）
-python origami_experiments\train_forward_gnn.py
-python origami_experiments\train_forward_transformer.py
-python origami_experiments\train_inverse_resnet.py
-python origami_experiments\train_inverse_cvae.py
-python origami_experiments\train_inverse_diffusion.py
+python origami_experiments\workflows\training\train_forward_gnn.py
+python origami_experiments\workflows\training\train_forward_transformer.py
+python origami_experiments\workflows\training\train_inverse_resnet.py
+python origami_experiments\workflows\training\train_inverse_cvae.py
+python origami_experiments\workflows\training\train_inverse_diffusion.py
 
 # 3) 评估
-python origami_experiments\evaluate_taskfit.py      # taskfit：逐参数 R² + 闭环刚度还原（参数见 --help）
-python origami_experiments\evaluate_all.py          # 基础五件套统一评估
+python origami_experiments\workflows\evaluation\evaluate_taskfit.py      # taskfit：逐参数 R² + 闭环刚度还原（参数见 --help）
+python origami_experiments\workflows\evaluation\evaluate_all.py          # 基础五件套统一评估
 
 # 4) （可选）论文式更严格划分：未见 (m,n) 结构族 / W 外推
-python origami_experiments\prepare_validation_splits.py --split group_pattern_mn
+python origami_experiments\workflows\data\prepare_validation_splits.py --split group_pattern_mn
 ```
 
 默认产物：`origami_experiments/data/`（npz+scaler）、`checkpoints_taskfit/`（权重）、`results_taskfit/`（指标与曲线）。
@@ -183,6 +181,7 @@ python origami_experiments\curve_dataset\smoke_train_curve_dataset.py
 
 - 模型权重 `*.pth`（约 1.3 GB，全部忽略）、打包数据 `*.npz`、`raw_curves/`
 - `__pycache__/`、日志、IDE/OS 文件
+- `.workspace_cache/`：统一存放临时脚本、历史运行日志和可再生成的 Python 字节码；不含源码、训练数据、模型或正式报告。
 - **`external/`**（第三方上游，含自带 `.git`）
 
 如需把 `external/GenerateOrigamiDataSet` 纳入本仓库版本管理，删除 `.gitignore` 中的 `external/` 行并移除其嵌套 `.git` 后再 `git add`。

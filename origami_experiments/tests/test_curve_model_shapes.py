@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 import torch
 
-from origami_experiments.modules.origami_curve_models import (
+from origami_experiments.models.origami_curve_models import (
     OrigamiCurveConditionalDiffusion,
     OrigamiCurveGNNTransformerForward,
     build_parameter_adjacency,

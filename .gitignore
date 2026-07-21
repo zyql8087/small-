@@ -18,6 +18,7 @@ __pycache__/
 
 # ── Raw SWOMPS simulation outputs (force-displacement CSV batches get huge) ──
 **/raw_curves/
+**/raw_curves_*/
 
 # ── Logs & scratch ──
 *.log
@@ -26,6 +27,8 @@ __pycache__/
 tmp/
 tmp_artifacts/
 start_process_probe.txt
+.workspace_cache/
+docs/superpowers/reports/*-workspace-reorganization-before.json
 
 # ── Third-party upstream clone ──
 # external/ holds the SWOMPS simulator + GenerateOrigamiDataSet, which is itself

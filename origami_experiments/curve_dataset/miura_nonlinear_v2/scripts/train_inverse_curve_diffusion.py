@@ -22,7 +22,7 @@ REPO_ROOT = SCRIPT_DIR.parents[3]
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from origami_experiments.modules.origami_curve_models import (  # noqa: E402
+from origami_experiments.models.origami_curve_models import (  # noqa: E402
     OrigamiCurveConditionalDiffusion,
     OrigamiCurveGNNTransformerForward,
     build_parameter_adjacency,
