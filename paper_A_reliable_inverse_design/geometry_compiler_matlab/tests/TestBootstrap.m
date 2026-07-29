@@ -131,17 +131,12 @@ classdef TestBootstrap < matlab.unittest.TestCase
         end
 
         function testImageProcessingToolbox(testCase)
-            % Verify bwdist, bwconncomp, bwskel are available
-            hasIPT = false;
             try
-                dummy_img = false(10, 10, 10);
-                distance_map = bwdist(dummy_img);
-                hasIPT = true;
+                bwdist(false(10, 10, 10));
             catch
-                hasIPT = false;
+                testCase.verifyTrue(false, 'Image Processing Toolbox is mandatory');
+                return;
             end
-
-            testCase.verifyTrue(hasIPT, 'Image Processing Toolbox is mandatory');
 
             essential_funcs = {'bwdist', 'bwconncomp', 'bwskel'};
             for i = 1:length(essential_funcs)

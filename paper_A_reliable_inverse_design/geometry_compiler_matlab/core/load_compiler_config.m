@@ -538,8 +538,9 @@ end
 
 function validate_bounds_match_manifest(bounds, manifest_bounds, mname, ERROR_ID)
 %VALIDATE_BOUNDS_MATCH_MANIFEST Compare config bounds to manifest compiler_bounds.
-    for vname = fieldnames(bounds)'
-        vname = vname{1};
+    bound_names = fieldnames(bounds)';
+    for idx = 1:numel(bound_names)
+        vname = bound_names{idx};
         b = bounds.(vname);
         if ~isfield(manifest_bounds, vname)
             continue; % manifest may not have all variables
