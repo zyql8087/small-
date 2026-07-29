@@ -1,0 +1,136 @@
+{
+    "schema_version": "1.0",
+    "descriptor_contract": "bootstrap-fixed-order",
+    "descriptors": [
+        {
+            "name": "relativeVolume",
+            "metric_type": "fraction",
+            "definition": "Ratio of solid material volume to total bounding box volume",
+            "formula": "relativeVolume = nnz(solid) / numel(solid)",
+            "units": "dimensionless (0-1)",
+            "computation_method": "voxel_counting",
+            "dependencies": ["binary_volume"],
+            "precision_requirements": {
+                "absolute_tolerance": 1e-6,
+                "max_error_contribution": 0.001
+            }
+        },
+        {
+            "name": "relativeArea",
+            "metric_type": "specific_surface_area",
+            "definition": "Specific surface area: total solid surface area divided by reference volume",
+            "formula": "relativeArea = A_surface_mm2 / V_ref_mm3",
+            "units": "mm^-1",
+            "computation_method": "marching_cubes_surface_integration",
+            "dependencies": ["surface_mesh", "reference_volume_mm3"],
+            "precision_requirements": {
+                "absolute_tolerance": 1e-5,
+                "max_error_contribution": 0.005
+            }
+        },
+        {
+            "name": "thickness",
+            "metric_type": "material_property",
+            "definition": "Median local material thickness: compute Euclidean distance field of the void phase, index it at solid-phase skeleton voxels, take the median, and double it",
+            "formula": "D = bwdist(~solid); skel = bwskel(solid); thickness = 2 * median(D(skel)) * voxel_size_mm",
+            "units": "mm",
+            "computation_method": "medial_axis_thickness",
+            "required_toolbox": "Image Processing Toolbox",
+            "required_functions": ["bwdist", "bwskel"],
+            "dependencies": ["binary_volume", "voxel_size_mm"],
+            "algorithm_params": {
+                "step_1_distance_field": "D = bwdist(~solid)",
+                "step_2_skeleton": "skel = bwskel(solid)",
+                "step_3_index": "thickness_values = D(skel)",
+                "step_4_statistic": "thickness = 2 * median(thickness_values) * voxel_size_mm",
+                "distance_transform": "euclidean",
+                "skeletonizer": "bwskel",
+                "statistic": "median",
+                "scaling": "voxel_size_mm"
+            },
+            "precision_requirements": {
+                "absolute_tolerance": 0.01,
+                "max_error_contribution": 0.02
+            }
+        },
+        {
+            "name": "poreDiameter",
+            "metric_type": "geometric_property",
+            "definition": "Diameter of the largest inscribed sphere in the largest connected void component: compute Euclidean distance field from solid voxels, restrict to the largest 26-connected void component, and take twice the maximum distance. Returns NaN if no void exists.",
+            "formula": "voidMask = ~solid; D = bwdist(~voidMask); cc = bwconncomp(voidMask, 26); if cc.NumObjects == 0, poreDiameter = NaN; else, counts = cellfun(@numel, cc.PixelIdxList); [~, largestIdx] = max(counts); largestVoid = cc.PixelIdxList{largestIdx}; poreDiameter = 2 * max(D(largestVoid)) * voxel_size_mm; end",
+            "units": "mm",
+            "computation_method": "void_inscribed_diameter",
+            "required_toolbox": "Image Processing Toolbox",
+            "required_functions": ["bwdist", "bwconncomp"],
+            "dependencies": ["binary_volume", "voxel_size_mm"],
+            "algorithm_params": {
+                "step_1_void_mask": "voidMask = ~solid",
+                "step_2_distance_field": "D = bwdist(~voidMask)",
+                "step_3_connected_components": "cc = bwconncomp(voidMask, 26)",
+                "step_4_empty_check": "if cc.NumObjects == 0, poreDiameter = NaN; return; end",
+                "step_5_largest_component": "counts = cellfun(@numel, cc.PixelIdxList); [~, largestIdx] = max(counts); largestVoid = cc.PixelIdxList{largestIdx}",
+                "step_6_inscribed_sphere": "poreDiameter = 2 * max(D(largestVoid)) * voxel_size_mm",
+                "connectivity": 26,
+                "connected_component_func": "bwconncomp",
+                "distance_input": "~voidMask (distance to nearest solid voxel)",
+                "filter": "largest_connected_component",
+                "metric": "maximum_inscribed_sphere",
+                "empty_void_behavior": "return NaN"
+            },
+            "precision_requirements": {
+                "absolute_tolerance": 0.01,
+                "max_error_contribution": 0.02
+            }
+        },
+        {
+            "name": "areaMean",
+            "metric_type": "distribution_statistic",
+            "definition": "Mean of the largest connected pore cross-sectional area at 26 uniformly spaced z-slices along the gradient axis, computed in physical coordinates with 8-connectivity, excluding empty slices, and reported in mm^2",
+            "formula": "sliceIndices = round(linspace(1, Nz, 26)); areas = []; for i = 1:26, sl = ~solid(:,:,sliceIndices(i)); cc2 = bwconncomp(sl, 8); if cc2.NumObjects > 0, counts = cellfun(@numel, cc2.PixelIdxList); areas(end+1) = max(counts) * voxel_size_mm^2; end; end; areaMean = mean(areas)",
+            "units": "mm^2",
+            "computation_method": "axial_section_statistics",
+            "required_toolbox": "Image Processing Toolbox",
+            "required_functions": ["bwconncomp"],
+            "dependencies": ["binary_volume", "voxel_size_mm"],
+            "algorithm_params": {
+                "slice_count": 26,
+                "direction": "z-axis",
+                "spacing_mode": "uniform",
+                "slice_index_generation": "sliceIndices = round(linspace(1, Nz, 26))",
+                "endpoint_inclusion": true,
+                "coordinate_system": "voxel index mapped to physical z via z_phys = (sliceIndex - 1) * voxel_size_mm",
+                "per_slice_connectivity": 8,
+                "per_slice_metric": "area_of_largest_connected_pore_region",
+                "area_normalization": "pixel_count * voxel_size_mm^2",
+                "empty_slice_handling": "excluded from mean (skipped, not counted as zero)",
+                "statistic": "mean",
+                "all_slices_empty_behavior": "return NaN"
+            },
+            "precision_requirements": {
+                "absolute_tolerance": 0.001,
+                "max_error_contribution": 0.005
+            }
+        }
+    ],
+    "global_constraints": {
+        "solid_convention": "sheet_band",
+        "conformal_mapping": "preserved_topology",
+        "gradient_direction": "z_primary",
+        "boundary_conditions": ["M1", "M2", "M3"]
+    },
+    "version_history": [
+        {
+            "version": "1.0",
+            "date": "2026-07-29",
+            "changes": [
+                "Bootstrap fixed descriptor order",
+                "poreDiameter: bwdist(~voidMask) with MATLAB-compatible max(counts) instead of argmax",
+                "poreDiameter: explicit cc.NumObjects==0 handling returns NaN",
+                "thickness: distance field indexed at skeleton voxels, median statistic",
+                "relativeArea: specific surface area (mm^-1)",
+                "areaMean: frozen with 26 uniform slices including endpoints, 8-connectivity, empty slices excluded, pixel_count*voxel_size_mm^2 normalization",
+                "All formulas expressed as executable MATLAB code"
+            ]
+        }
+    ]
+}

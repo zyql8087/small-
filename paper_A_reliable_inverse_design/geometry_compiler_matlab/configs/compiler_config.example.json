@@ -1,0 +1,72 @@
+{
+    "schema_version": "1.0",
+    "reference_length_mm": 1.0,
+    "resolution": 128,
+    "descriptor_names": ["relativeVolume", "relativeArea", "thickness", "poreDiameter", "areaMean"],
+    "descriptor_definition_path": "descriptor_definition.json",
+    "solid_convention": "sheet_band",
+    "method_bounds": {
+        "M1": {
+            "description": "Axial threshold profile: c0,c1,c2 active; w fixed at 0",
+            "active_variables": ["c0", "c1", "c2"],
+            "fixed_variables": {"w": 0},
+            "projection": null,
+            "bounds": {
+                "c0": {"lower": 0.03, "upper": 0.20},
+                "c1": {"lower": 0.03, "upper": 0.20},
+                "c2": {"lower": 0.03, "upper": 0.20}
+            },
+            "bounds_source": "Small archived valid records (train-4canshu.xlsx + test-4canshu.xlsx, M1/class1 subset)",
+            "levels": [96, 128, 160],
+            "convergence_tolerance": 1e-4,
+            "max_iterations": 500
+        },
+        "M2": {
+            "description": "Axial cell-size profile: c0=c1=c2 projected to single value; w active",
+            "active_variables": ["c_projected", "w"],
+            "fixed_variables": {},
+            "projection": {
+                "type": "equal",
+                "variables": ["c0", "c1", "c2"],
+                "projected_name": "c_projected"
+            },
+            "bounds": {
+                "c_projected": {"lower": 0.03, "upper": 0.20},
+                "w": {"lower": 0.0, "upper": 2.5}
+            },
+            "bounds_source": "Small archived valid records (train-4canshu.xlsx + test-4canshu.xlsx, M2/class2 subset)",
+            "levels": [96, 128, 160],
+            "convergence_tolerance": 1e-5,
+            "max_iterations": 1000
+        },
+        "M3": {
+            "description": "Combined profile: all four continuous controls active",
+            "active_variables": ["c0", "c1", "c2", "w"],
+            "fixed_variables": {},
+            "projection": null,
+            "bounds": {
+                "c0": {"lower": 0.03, "upper": 0.20},
+                "c1": {"lower": 0.03, "upper": 0.20},
+                "c2": {"lower": 0.03, "upper": 0.20},
+                "w": {"lower": 0.0, "upper": 2.5}
+            },
+            "bounds_source": "Small archived valid records (train-4canshu.xlsx + test-4canshu.xlsx, M3/class3 subset)",
+            "levels": [128, 160, 192],
+            "convergence_tolerance": 1e-6,
+            "max_iterations": 2000
+        }
+    },
+    "geometry_parameters": {
+        "Lx": 1.0,
+        "Ly": 1.0,
+        "Lz0": 1.5,
+        "units": "mm"
+    },
+    "mesh_qc": {
+        "min_edge_length_ratio": 0.2,
+        "max_angle_deviations": 15.0,
+        "surface_tolerance_mm": 0.01,
+        "self_intersect_check": true,
+        "watertight_enforced": true
+    }
+}
