@@ -664,6 +664,16 @@ function validate_mesh_qc(mq, ERROR_ID)
         end
     end
 
+    % Step 5: Tighten mesh-QC value ranges
+    if mq.min_edge_length_ratio > 1
+        throw(MException(ERROR_ID, ...
+            'mesh_qc.min_edge_length_ratio must be <= 1, got %g', mq.min_edge_length_ratio));
+    end
+    if mq.max_angle_deviations > 180
+        throw(MException(ERROR_ID, ...
+            'mesh_qc.max_angle_deviations must be <= 180, got %g', mq.max_angle_deviations));
+    end
+
     logical_fields = {'self_intersect_check', 'watertight_enforced'};
     for i = 1:length(logical_fields)
         fname = logical_fields{i};

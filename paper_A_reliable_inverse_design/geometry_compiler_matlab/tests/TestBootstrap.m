@@ -207,28 +207,9 @@ classdef TestBootstrap < matlab.unittest.TestCase
         end
 
         function testWrongDescriptorOrderRejected(testCase)
-            % Verify wrong descriptor order throws MATLABGyroid:InvalidConfig
-            tempDir = tempname;
-            mkdir(tempDir);
-            cleanupDir = onCleanup(@() TestBootstrap.deleteDir(tempDir));
-
-            % Copy descriptor definition into temp dir (relative path)
-            srcDesc = fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json');
-            copyfile(srcDesc, fullfile(tempDir, 'descriptor_definition.json'));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.descriptor_names = {"areaMean", "relativeVolume", "relativeArea", "thickness", "poreDiameter"};
-            data.descriptor_definition_path = 'descriptor_definition.json';
-            tempFile = fullfile(tempDir, 'bad_order.json');
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for wrong descriptor order');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'Descriptor order'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.descriptor_names = {"areaMean", "relativeVolume", "relativeArea", "thickness", "poreDiameter"};
+            TestBootstrap.expectConfigError(testCase, fixture, 'Descriptor order');
         end
 
         %% ===== Negative tests: type validation =====
@@ -270,97 +251,36 @@ classdef TestBootstrap < matlab.unittest.TestCase
         end
 
         function testInvalidMethodBoundsTypeRejected(testCase)
-            % Verify method_bounds=1 (scalar) is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.method_bounds = 1;
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for scalar method_bounds');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'method_bounds'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds = 1;
+            TestBootstrap.expectConfigError(testCase, fixture, 'method_bounds');
         end
 
         function testInvalidMeshQcTypeRejected(testCase)
-            % Verify mesh_qc=1 (scalar) is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.mesh_qc = 1;
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for scalar mesh_qc');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'mesh_qc'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.mesh_qc = 1;
+            TestBootstrap.expectConfigError(testCase, fixture, 'mesh_qc');
         end
 
         %% ===== Negative tests: method_bounds structure =====
 
         function testMissingMethodRejected(testCase)
-            % Verify method_bounds without M2 is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.method_bounds = rmfield(data.method_bounds, 'M2');
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for missing M2');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'M2'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds = rmfield(fixture.data.method_bounds, 'M2');
+            TestBootstrap.expectConfigError(testCase, fixture, 'M2');
         end
 
         function testInvalidBoundsNestedStructureRejected(testCase)
-            % Verify bounds with wrong nested structure is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            % Replace M1.bounds.c0 with a scalar instead of struct
-            data.method_bounds.M1.bounds.c0 = 0.5;
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for invalid bounds structure');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'bounds'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds.M1.bounds.c0 = 0.5;
+            TestBootstrap.expectConfigError(testCase, fixture, 'bounds');
         end
 
         function testLowerGreaterThanUpperRejected(testCase)
-            % Verify lower > upper is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.method_bounds.M1.bounds.c0.lower = 0.95;
-            data.method_bounds.M1.bounds.c0.upper = 0.10;
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for lower > upper');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'lower'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds.M1.bounds.c0.lower = 0.95;
+            fixture.data.method_bounds.M1.bounds.c0.upper = 0.10;
+            TestBootstrap.expectConfigError(testCase, fixture, 'lower');
         end
 
         %% ===== Negative tests: solid_convention =====
@@ -386,13 +306,11 @@ classdef TestBootstrap < matlab.unittest.TestCase
         %% ===== Negative tests: descriptor definition consistency =====
 
         function testDescriptorDefinitionOrderMismatchRejected(testCase)
-            % Verify descriptor definition with wrong order is rejected
             tempDir = tempname;
             mkdir(tempDir);
             cleanupDir = onCleanup(@() TestBootstrap.deleteDir(tempDir));
-
-            % Create a minimal descriptor definition with wrong order
-            % (relativeArea before relativeVolume)
+            copyfile(fullfile(testCase.BaseDir, 'configs', 'parameter_domain_manifest.json'), ...
+                fullfile(tempDir, 'parameter_domain_manifest.json'));
             badDescJson = ['{"schema_version":"1.0","descriptors":[' ...
                 '{"name":"relativeArea","formula":"x","units":"mm","computation_method":"x"},' ...
                 '{"name":"relativeVolume","formula":"x","units":"mm","computation_method":"x"},' ...
@@ -401,16 +319,13 @@ classdef TestBootstrap < matlab.unittest.TestCase
                 '{"name":"areaMean","formula":"x","units":"mm","computation_method":"x"}' ...
                 ']}'];
             badDescPath = fullfile(tempDir, 'descriptor_definition.json');
-            fid = fopen(badDescPath, 'w');
-            fprintf(fid, '%s', badDescJson);
-            fclose(fid);
-
-            % Config with correct order but pointing to bad descriptor definition
+            fid = fopen(badDescPath, 'w'); fprintf(fid, '%s', badDescJson); fclose(fid);
             data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
             data.descriptor_definition_path = 'descriptor_definition.json';
+            data.descriptor_definition_sha256 = lower(char(string( ...
+                sha256_file(badDescPath, testCase.ERROR_ID, 'test'))));
             tempFile = fullfile(tempDir, 'config.json');
             TestBootstrap.writeJson(tempFile, data);
-
             try
                 load_compiler_config(tempFile);
                 testCase.fail('Expected error for descriptor definition order mismatch');
@@ -421,26 +336,22 @@ classdef TestBootstrap < matlab.unittest.TestCase
         end
 
         function testDescriptorDefinitionSchemaMismatchRejected(testCase)
-            % Verify descriptor definition with wrong schema_version is rejected
             tempDir = tempname;
             mkdir(tempDir);
             cleanupDir = onCleanup(@() TestBootstrap.deleteDir(tempDir));
-
-            % Create a descriptor definition with wrong schema_version
-            % using string replacement to avoid jsonencode roundtrip issues
+            copyfile(fullfile(testCase.BaseDir, 'configs', 'parameter_domain_manifest.json'), ...
+                fullfile(tempDir, 'parameter_domain_manifest.json'));
             srcDesc = fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json');
             raw = fileread(srcDesc);
             raw = strrep(raw, '"schema_version": "1.0"', '"schema_version": "2.0"');
             badDescPath = fullfile(tempDir, 'descriptor_definition.json');
-            fid = fopen(badDescPath, 'w');
-            fprintf(fid, '%s', raw);
-            fclose(fid);
-
+            fid = fopen(badDescPath, 'w'); fprintf(fid, '%s', raw); fclose(fid);
             data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
             data.descriptor_definition_path = 'descriptor_definition.json';
+            data.descriptor_definition_sha256 = lower(char(string( ...
+                sha256_file(badDescPath, testCase.ERROR_ID, 'test'))));
             tempFile = fullfile(tempDir, 'config.json');
             TestBootstrap.writeJson(tempFile, data);
-
             try
                 load_compiler_config(tempFile);
                 testCase.fail('Expected error for descriptor definition schema mismatch');
@@ -466,19 +377,19 @@ classdef TestBootstrap < matlab.unittest.TestCase
             testCase.assertEqual(m1.bounds.c2.lower, 0.03);
             testCase.assertEqual(m1.bounds.c2.upper, 0.20);
 
-            % M2: c_projected in [0.03, 0.20], w in [0.0, 2.5]
+            % M2: c_projected in [0.03, 0.20], w in (2,8)
             m2 = config.method_bounds.M2;
             testCase.assertEqual(m2.bounds.c_projected.lower, 0.03);
             testCase.assertEqual(m2.bounds.c_projected.upper, 0.20);
-            testCase.assertEqual(m2.bounds.w.lower, 0.0);
-            testCase.assertEqual(m2.bounds.w.upper, 2.5);
+            testCase.assertEqual(m2.bounds.w.lower, 2.0);
+            testCase.assertEqual(m2.bounds.w.upper, 8.0);
 
-            % M3: c0,c1,c2 in [0.03, 0.20], w in [0.0, 2.5]
+            % M3: c0,c1,c2 in [0.03, 0.20], w in (2,8)
             m3 = config.method_bounds.M3;
             testCase.assertEqual(m3.bounds.c0.lower, 0.03);
             testCase.assertEqual(m3.bounds.c0.upper, 0.20);
-            testCase.assertEqual(m3.bounds.w.lower, 0.0);
-            testCase.assertEqual(m3.bounds.w.upper, 2.5);
+            testCase.assertEqual(m3.bounds.w.lower, 2.0);
+            testCase.assertEqual(m3.bounds.w.upper, 8.0);
         end
 
         function testM1LevelsInclude160(testCase)
@@ -497,178 +408,79 @@ classdef TestBootstrap < matlab.unittest.TestCase
 
             testCase.assertTrue(isfield(config, 'geometry_parameters'));
             gp = config.geometry_parameters;
-            testCase.assertEqual(gp.Lx, 1.0);
-            testCase.assertEqual(gp.Ly, 1.0);
-            testCase.assertEqual(gp.Lz0, 1.5);
-            testCase.assertEqual(char(string(gp.units)), 'mm');
+            testCase.assertEqual(gp.Lx_over_l, 1.0);
+            testCase.assertEqual(gp.Ly_over_l, 1.0);
+            testCase.assertEqual(gp.Lz0_over_l, 1.5);
+            testCase.assertEqual(char(string(gp.output_units)), 'mm');
         end
 
         %% ===== v4 negative tests: geometry_parameters =====
 
         function testMissingGeometryParametersRejected(testCase)
-            % Verify missing geometry_parameters is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data = rmfield(data, 'geometry_parameters');
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for missing geometry_parameters');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'geometry_parameters'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data = rmfield(fixture.data, 'geometry_parameters');
+            TestBootstrap.expectConfigError(testCase, fixture, 'geometry_parameters');
         end
 
         function testInvalidGeometryParametersTypeRejected(testCase)
-            % Verify geometry_parameters as string is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.geometry_parameters = 'bad';
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for non-struct geometry_parameters');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'geometry_parameters'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.geometry_parameters = 'bad';
+            TestBootstrap.expectConfigError(testCase, fixture, 'geometry_parameters');
         end
 
         %% ===== v4 negative tests: active_variables / fixed_variables / projection =====
 
         function testIllegalActiveVariableRejected(testCase)
-            % Verify active_variables=["banana"] is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.method_bounds.M1.active_variables = {"banana"};
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for illegal active variable');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'illegal variable'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds.M1.active_variables = {"banana"};
+            TestBootstrap.expectConfigError(testCase, fixture, 'illegal variable');
         end
 
         function testMissingFixedVariablesRejected(testCase)
-            % Verify removing fixed_variables from M1 is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.method_bounds.M1 = rmfield(data.method_bounds.M1, 'fixed_variables');
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for missing fixed_variables');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'fixed_variables'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds.M1 = rmfield(fixture.data.method_bounds.M1, 'fixed_variables');
+            TestBootstrap.expectConfigError(testCase, fixture, 'fixed_variables');
         end
 
         function testMissingProjectionInM2Rejected(testCase)
-            % Verify removing projection from M2 is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.method_bounds.M2 = rmfield(data.method_bounds.M2, 'projection');
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for missing projection in M2');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds.M2 = rmfield(fixture.data.method_bounds.M2, 'projection');
+            TestBootstrap.expectConfigError(testCase, fixture, 'M2.projection');
         end
 
         %% ===== v4 negative tests: levels validation =====
 
         function testEmptyLevelsRejected(testCase)
-            % Verify empty levels array is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.method_bounds.M1.levels = [];
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for empty levels');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'levels'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds.M1.levels = [];
+            TestBootstrap.expectConfigError(testCase, fixture, 'levels');
         end
 
         function testNonIncreasingLevelsRejected(testCase)
-            % Verify non-strictly-increasing levels [128, 96, 160] is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.method_bounds.M1.levels = [128, 96, 160];
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for non-increasing levels');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'levels'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds.M1.levels = [128, 96, 160];
+            TestBootstrap.expectConfigError(testCase, fixture, 'levels');
         end
 
         function testNonIntegerLevelsRejected(testCase)
-            % Verify non-integer levels [96, 128.5, 160] is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.method_bounds.M1.levels = [96, 128.5, 160];
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for non-integer levels');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'levels'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds.M1.levels = [96, 128.5, 160];
+            TestBootstrap.expectConfigError(testCase, fixture, 'levels');
         end
 
         function testNonFiniteLevelsRejected(testCase)
-            % Verify levels containing Infinity is rejected
             tempDir = tempname;
             mkdir(tempDir);
             cleanupDir = onCleanup(@() TestBootstrap.deleteDir(tempDir));
-
-            srcDesc = fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json');
-            copyfile(srcDesc, fullfile(tempDir, 'descriptor_definition.json'));
-
+            copyfile(fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json'), ...
+                fullfile(tempDir, 'descriptor_definition.json'));
+            copyfile(fullfile(testCase.BaseDir, 'configs', 'parameter_domain_manifest.json'), ...
+                fullfile(tempDir, 'parameter_domain_manifest.json'));
             srcCfg = fullfile(testCase.BaseDir, 'configs', 'compiler_config.example.json');
             rawCfg = fileread(srcCfg);
             rawCfg = strrep(rawCfg, '"levels": [96, 128, 160]', '"levels": [96, Infinity, 160]');
             tempFile = fullfile(tempDir, 'config.json');
-            fid = fopen(tempFile, 'w');
-            fprintf(fid, '%s', rawCfg);
-            fclose(fid);
-
+            fid = fopen(tempFile, 'w'); fprintf(fid, '%s', rawCfg); fclose(fid);
             try
                 load_compiler_config(tempFile);
                 testCase.fail('Expected error for non-finite levels');
@@ -681,40 +493,24 @@ classdef TestBootstrap < matlab.unittest.TestCase
         %% ===== v4 negative tests: type strictness =====
 
         function testNonLogicalBooleanRejected(testCase)
-            % Verify mesh_qc.self_intersect_check = [1, 0] (numeric) is rejected
-            tempFile = [tempname '.json'];
-            cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
-
-            data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.mesh_qc.self_intersect_check = [1, 0];
-            TestBootstrap.writeJson(tempFile, data);
-
-            try
-                load_compiler_config(tempFile);
-                testCase.fail('Expected error for non-logical boolean');
-            catch ME
-                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'logical'));
-            end
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.mesh_qc.self_intersect_check = [1, 0];
+            TestBootstrap.expectConfigError(testCase, fixture, 'logical');
         end
 
         function testNonFiniteBoundRejected(testCase)
-            % Verify bounds with Infinity value is rejected
             tempDir = tempname;
             mkdir(tempDir);
             cleanupDir = onCleanup(@() TestBootstrap.deleteDir(tempDir));
-
-            srcDesc = fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json');
-            copyfile(srcDesc, fullfile(tempDir, 'descriptor_definition.json'));
-
+            copyfile(fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json'), ...
+                fullfile(tempDir, 'descriptor_definition.json'));
+            copyfile(fullfile(testCase.BaseDir, 'configs', 'parameter_domain_manifest.json'), ...
+                fullfile(tempDir, 'parameter_domain_manifest.json'));
             srcCfg = fullfile(testCase.BaseDir, 'configs', 'compiler_config.example.json');
             rawCfg = fileread(srcCfg);
             rawCfg = strrep(rawCfg, '0.03', 'Infinity');
             tempFile = fullfile(tempDir, 'config.json');
-            fid = fopen(tempFile, 'w');
-            fprintf(fid, '%s', rawCfg);
-            fclose(fid);
-
+            fid = fopen(tempFile, 'w'); fprintf(fid, '%s', rawCfg); fclose(fid);
             try
                 load_compiler_config(tempFile);
                 testCase.fail('Expected error for non-finite bound');
@@ -743,13 +539,76 @@ classdef TestBootstrap < matlab.unittest.TestCase
         end
 
         function testNonexistentConfigFileRejected(testCase)
-            % Verify nonexistent config file throws MATLABGyroid:InvalidConfig
             try
                 load_compiler_config(fullfile(tempname, 'nonexistent.json'));
                 testCase.fail('Expected error for nonexistent file');
             catch ME
                 testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
             end
+        end
+
+        %% ===== v5 Step 4: Boundary tests for public input =====
+
+        function testNoArgumentsRejected(testCase)
+            try
+                load_compiler_config();
+                testCase.fail('Expected error for no arguments');
+            catch ME
+                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
+                testCase.verifyTrue(contains(ME.message, 'exactly one config_path'));
+            end
+        end
+
+        function testNumericPathRejected(testCase)
+            try
+                load_compiler_config(1);
+                testCase.fail('Expected error for numeric path');
+            catch ME
+                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
+                testCase.verifyTrue(contains(ME.message, 'config_path'));
+            end
+        end
+
+        function testStringArrayPathRejected(testCase)
+            try
+                load_compiler_config(["a", "b"]);
+                testCase.fail('Expected error for string array path');
+            catch ME
+                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
+                testCase.verifyTrue(contains(ME.message, 'config_path'));
+            end
+        end
+
+        function testMissingDescriptorFileRejected(testCase)
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            delete(fullfile(fixture.dir, 'descriptor_definition.json'));
+            TestBootstrap.expectConfigError(testCase, fixture, 'Descriptor definition not found');
+        end
+
+        function testMissingManifestFileRejected(testCase)
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            delete(fullfile(fixture.dir, 'parameter_domain_manifest.json'));
+            TestBootstrap.expectConfigError(testCase, fixture, 'Parameter-domain manifest not found');
+        end
+
+        function testResolutionOverflowRejected(testCase)
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.resolution = 2^32;
+            TestBootstrap.expectConfigError(testCase, fixture, 'uint32 capacity');
+        end
+
+        %% ===== v5 Step 5: mesh-QC range tests =====
+
+        function testMeshQcEdgeRatioTooLargeRejected(testCase)
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.mesh_qc.min_edge_length_ratio = 1.1;
+            TestBootstrap.expectConfigError(testCase, fixture, 'min_edge_length_ratio');
+        end
+
+        function testMeshQcAngleTooLargeRejected(testCase)
+            fixture = TestBootstrap.createFixture(testCase.BaseDir);
+            fixture.data.mesh_qc.max_angle_deviations = 181;
+            TestBootstrap.expectConfigError(testCase, fixture, 'max_angle_deviations');
         end
 
     end
@@ -777,6 +636,29 @@ classdef TestBootstrap < matlab.unittest.TestCase
             fid = fopen(filePath, 'w');
             fprintf(fid, '%s', jsonencode(data));
             fclose(fid);
+        end
+
+        function fixture = createFixture(baseDir)
+            fixture.dir = tempname;
+            mkdir(fixture.dir);
+            fixture.cleanup = onCleanup(@() TestBootstrap.deleteDir(fixture.dir));
+            copyfile(fullfile(baseDir, 'configs', 'descriptor_definition.json'), ...
+                fullfile(fixture.dir, 'descriptor_definition.json'));
+            copyfile(fullfile(baseDir, 'configs', 'parameter_domain_manifest.json'), ...
+                fullfile(fixture.dir, 'parameter_domain_manifest.json'));
+            fixture.data = TestBootstrap.loadExampleConfig(baseDir);
+            fixture.configPath = fullfile(fixture.dir, 'compiler_config.json');
+        end
+
+        function expectConfigError(testCase, fixture, expectedMsgFragment)
+            TestBootstrap.writeJson(fixture.configPath, fixture.data);
+            try
+                load_compiler_config(fixture.configPath);
+                testCase.fail(sprintf('Expected error containing "%s"', expectedMsgFragment));
+            catch ME
+                testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
+                testCase.verifyTrue(contains(ME.message, expectedMsgFragment));
+            end
         end
     end
 end
