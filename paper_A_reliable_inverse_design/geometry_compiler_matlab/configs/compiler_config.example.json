@@ -4,63 +4,77 @@
     "resolution": 128,
     "descriptor_names": ["relativeVolume", "relativeArea", "thickness", "poreDiameter", "areaMean"],
     "descriptor_definition_path": "descriptor_definition.json",
+    "descriptor_definition_sha256": "18acf9ec4fdfb3b2d50db7c905b0d8eccb3790222c3e03351c563dcdac1c06d1",
+    "parameter_domain_manifest_path": "parameter_domain_manifest.json",
+    "parameter_domain_manifest_sha256": "d152142ea2ff5cc6aa55ee366a71483f621fdd618117b87467d69137049c2eb2",
     "solid_convention": "sheet_band",
     "method_bounds": {
         "M1": {
-            "description": "Axial threshold profile: c0,c1,c2 active; w fixed at 0",
+            "description": "Piecewise-linear threshold profile; c0,c1,c2 active; w fixed at 0",
             "active_variables": ["c0", "c1", "c2"],
             "fixed_variables": {"w": 0},
             "projection": null,
+            "bounds_manifest_method": "M1",
             "bounds": {
-                "c0": {"lower": 0.03, "upper": 0.20},
-                "c1": {"lower": 0.03, "upper": 0.20},
-                "c2": {"lower": 0.03, "upper": 0.20}
+                "c0": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true},
+                "c1": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true},
+                "c2": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true}
             },
-            "bounds_source": "Small archived valid records (train-4canshu.xlsx + test-4canshu.xlsx, M1/class1 subset)",
             "levels": [96, 128, 160],
             "convergence_tolerance": 1e-4,
             "max_iterations": 500
         },
         "M2": {
-            "description": "Axial cell-size profile: c0=c1=c2 projected to single value; w active",
+            "description": "Uniform threshold after L2 projection; published gamma(z)=1.5+z/w profile",
             "active_variables": ["c_projected", "w"],
             "fixed_variables": {},
             "projection": {
-                "type": "equal",
+                "type": "orthogonal_l2_equal_subspace",
                 "variables": ["c0", "c1", "c2"],
-                "projected_name": "c_projected"
+                "projected_name": "c_projected",
+                "formula": "c_projected=mean([c0,c1,c2]); c0=c1=c2=c_projected"
             },
+            "bounds_manifest_method": "M2",
             "bounds": {
-                "c_projected": {"lower": 0.03, "upper": 0.20},
-                "w": {"lower": 0.0, "upper": 2.5}
+                "c_projected": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true},
+                "w": {"lower": 2.0, "upper": 8.0, "lower_inclusive": false, "upper_inclusive": false}
             },
-            "bounds_source": "Small archived valid records (train-4canshu.xlsx + test-4canshu.xlsx, M2/class2 subset)",
             "levels": [96, 128, 160],
             "convergence_tolerance": 1e-5,
             "max_iterations": 1000
         },
         "M3": {
-            "description": "Combined profile: all four continuous controls active",
+            "description": "Combined threshold and published gamma(z)=1.5+z/w profiles",
             "active_variables": ["c0", "c1", "c2", "w"],
             "fixed_variables": {},
             "projection": null,
+            "bounds_manifest_method": "M3",
             "bounds": {
-                "c0": {"lower": 0.03, "upper": 0.20},
-                "c1": {"lower": 0.03, "upper": 0.20},
-                "c2": {"lower": 0.03, "upper": 0.20},
-                "w": {"lower": 0.0, "upper": 2.5}
+                "c0": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true},
+                "c1": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true},
+                "c2": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true},
+                "w": {"lower": 2.0, "upper": 8.0, "lower_inclusive": false, "upper_inclusive": false}
             },
-            "bounds_source": "Small archived valid records (train-4canshu.xlsx + test-4canshu.xlsx, M3/class3 subset)",
-            "levels": [128, 160, 192],
+            "levels": [96, 128, 160, 192],
             "convergence_tolerance": 1e-6,
             "max_iterations": 2000
         }
     },
     "geometry_parameters": {
-        "Lx": 1.0,
-        "Ly": 1.0,
-        "Lz0": 1.5,
-        "units": "mm"
+        "coordinate_units": "normalized_by_reference_length",
+        "output_units": "mm",
+        "Lx_over_l": 1.0,
+        "Ly_over_l": 1.0,
+        "Lz0_over_l": 1.5,
+        "domain_over_l": {
+            "x": [0.0, 1.0],
+            "y": [0.0, 1.0],
+            "z": [0.0, 2.0]
+        },
+        "w_units": "normalized_denominator_parameter",
+        "cell_size_profile": "gamma(z)=1.5+z/w",
+        "physical_conversion": "multiply normalized coordinates by reference_length_mm exactly once",
+        "validation_status": "candidate_pending_gate0"
     },
     "mesh_qc": {
         "min_edge_length_ratio": 0.2,

@@ -1,6 +1,21 @@
 {
     "schema_version": "1.0",
     "descriptor_contract": "bootstrap-fixed-order",
+    "validation_status": "candidate_pending_gate0",
+    "grid_convention": {
+        "resolution_definition": "voxel-centre samples per reference length",
+        "spacing_policy": "isotropic_required",
+        "voxel_counts": "Ni=round(domain_length_i/reference_length_mm*resolution)",
+        "voxel_spacing": "di=domain_length_i/Ni",
+        "coordinate_location": "cell centres",
+        "area_element": "dx_mm*dy_mm",
+        "volume_element": "dx_mm*dy_mm*dz_mm"
+    },
+    "finite_domain_boundary_policy": {
+        "outside_domain": "non-void barrier for inscribed-sphere distance",
+        "void_connectivity_3d": 26,
+        "slice_connectivity_2d": 8
+    },
     "descriptors": [
         {
             "name": "relativeVolume",
@@ -56,23 +71,24 @@
         {
             "name": "poreDiameter",
             "metric_type": "geometric_property",
-            "definition": "Diameter of the largest inscribed sphere in the largest connected void component: compute Euclidean distance field from solid voxels, restrict to the largest 26-connected void component, and take twice the maximum distance. Returns NaN if no void exists.",
-            "formula": "voidMask = ~solid; D = bwdist(~voidMask); cc = bwconncomp(voidMask, 26); if cc.NumObjects == 0, poreDiameter = NaN; else, counts = cellfun(@numel, cc.PixelIdxList); [~, largestIdx] = max(counts); largestVoid = cc.PixelIdxList{largestIdx}; poreDiameter = 2 * max(D(largestVoid)) * voxel_size_mm; end",
+            "definition": "Diameter of the largest inscribed sphere in the largest connected void component: pad the void mask with one layer of non-void on all faces to enforce the finite-domain boundary, compute Euclidean distance field, restrict to the largest 26-connected void component, and take twice the maximum distance. Returns NaN if no void exists.",
+            "formula": "voidMask = ~solid; paddedVoid = padarray(voidMask, [1 1 1], false, 'both'); Dpad = bwdist(~paddedVoid); D = Dpad(2:end-1, 2:end-1, 2:end-1); cc = bwconncomp(voidMask, 26); if cc.NumObjects == 0, poreDiameter = NaN; else, counts = cellfun(@numel, cc.PixelIdxList); [~, largestIdx] = max(counts); poreDiameter = 2 * max(D(cc.PixelIdxList{largestIdx})) * voxel_size_mm; end",
             "units": "mm",
             "computation_method": "void_inscribed_diameter",
             "required_toolbox": "Image Processing Toolbox",
-            "required_functions": ["bwdist", "bwconncomp"],
+            "required_functions": ["bwdist", "bwconncomp", "padarray"],
             "dependencies": ["binary_volume", "voxel_size_mm"],
             "algorithm_params": {
                 "step_1_void_mask": "voidMask = ~solid",
-                "step_2_distance_field": "D = bwdist(~voidMask)",
+                "step_1b_pad_boundary": "paddedVoid = padarray(voidMask, [1 1 1], false, 'both')",
+                "step_2_distance_field": "Dpad = bwdist(~paddedVoid); D = Dpad(2:end-1, 2:end-1, 2:end-1)",
                 "step_3_connected_components": "cc = bwconncomp(voidMask, 26)",
                 "step_4_empty_check": "if cc.NumObjects == 0, poreDiameter = NaN; return; end",
-                "step_5_largest_component": "counts = cellfun(@numel, cc.PixelIdxList); [~, largestIdx] = max(counts); largestVoid = cc.PixelIdxList{largestIdx}",
-                "step_6_inscribed_sphere": "poreDiameter = 2 * max(D(largestVoid)) * voxel_size_mm",
+                "step_5_largest_component": "counts = cellfun(@numel, cc.PixelIdxList); [~, largestIdx] = max(counts)",
+                "step_6_inscribed_sphere": "poreDiameter = 2 * max(D(cc.PixelIdxList{largestIdx})) * voxel_size_mm",
                 "connectivity": 26,
                 "connected_component_func": "bwconncomp",
-                "distance_input": "~voidMask (distance to nearest solid voxel)",
+                "distance_input": "~paddedVoid via padarray (distance to nearest solid or domain boundary)",
                 "filter": "largest_connected_component",
                 "metric": "maximum_inscribed_sphere",
                 "empty_void_behavior": "return NaN"
@@ -98,12 +114,13 @@
                 "spacing_mode": "uniform",
                 "slice_index_generation": "sliceIndices = round(linspace(1, Nz, 26))",
                 "endpoint_inclusion": true,
-                "coordinate_system": "voxel index mapped to physical z via z_phys = (sliceIndex - 1) * voxel_size_mm",
+                "coordinate_system": "z_mm = z_min_mm + (k - 0.5) * dz_mm",
                 "per_slice_connectivity": 8,
                 "per_slice_metric": "area_of_largest_connected_pore_region",
-                "area_normalization": "pixel_count * voxel_size_mm^2",
+                "area_normalization": "pixel_count * dx_mm * dy_mm",
                 "empty_slice_handling": "excluded from mean (skipped, not counted as zero)",
                 "statistic": "mean",
+                "slice_coordinate": "z_mm = z_min_mm + (k - 0.5) * dz_mm",
                 "all_slices_empty_behavior": "return NaN"
             },
             "precision_requirements": {
@@ -124,12 +141,13 @@
             "date": "2026-07-29",
             "changes": [
                 "Bootstrap fixed descriptor order",
-                "poreDiameter: bwdist(~voidMask) with MATLAB-compatible max(counts) instead of argmax",
+                "poreDiameter: padarray finite-domain boundary, bwdist(~paddedVoid) with MATLAB-compatible max(counts)",
                 "poreDiameter: explicit cc.NumObjects==0 handling returns NaN",
                 "thickness: distance field indexed at skeleton voxels, median statistic",
                 "relativeArea: specific surface area (mm^-1)",
-                "areaMean: frozen with 26 uniform slices including endpoints, 8-connectivity, empty slices excluded, pixel_count*voxel_size_mm^2 normalization",
-                "All formulas expressed as executable MATLAB code"
+                "areaMean: frozen with 26 uniform slices including endpoints, 8-connectivity, empty slices excluded, pixel_count*dx_mm*dy_mm normalization",
+                "All formulas expressed as executable MATLAB code",
+                "v5: added validation_status, grid_convention, finite_domain_boundary_policy, padarray for pore boundary"
             ]
         }
     ]

@@ -1,0 +1,63 @@
+{
+  "schema_version": "1.0",
+  "contract": "small-archived-parameter-domain",
+  "validity_filter": "Exclude header; retain rows whose c0,c1,c2,w cells are finite numeric values",
+  "sources": {
+    "train": {
+      "filename": "train-4canshu.xlsx",
+      "sha256": "2EBC39E1D99EF0F117223BC7CF5EDB77232EA37E861045B08BC98E52EFB2E30D"
+    },
+    "test": {
+      "filename": "test-4canshu.xlsx",
+      "sha256": "D6A5917BED2D9301624D924C16BD430EE9ECDCC7D4A7076F3E904E685BEABB44"
+    },
+    "supporting_information": {
+      "filename": "smll202500634-sup-0001-suppmat.pdf",
+      "sha256": "6D3B81931AD16EDAEA157F6A32EEB07A6DC47E3DFC49F8002F0FBD050DC2CB7C",
+      "location": "page 3, equations S8-S9",
+      "published_profile": "gamma(z)=1.5+z/w",
+      "published_w_interval": "(2,8)"
+    }
+  },
+  "archive_si_discrepancy": "SI prose states c in 0.04-0.20; archived valid records contain 0.03-0.20. Compiler bounds follow archived records for Small reproduction.",
+  "methods": {
+    "M1": {
+      "sheet": "class1",
+      "row_counts": {"train": 5692, "test": 1423, "pooled": 7115},
+      "compiler_bounds": {
+        "c0": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true},
+        "c1": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true},
+        "c2": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true}
+      },
+      "fixed": {"w": 0}
+    },
+    "M2": {
+      "sheet": "class2",
+      "row_counts": {"train": 7640, "test": 1910, "pooled": 9550},
+      "compiler_bounds": {
+        "c_projected": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true},
+        "w": {"lower": 2.0, "upper": 8.0, "lower_inclusive": false, "upper_inclusive": false}
+      },
+      "observed": {
+        "c_projected": {"lower": 0.03, "upper": 0.20},
+        "w": {"lower": 2.0019789, "upper": 7.998}
+      }
+    },
+    "M3": {
+      "sheet": "class12",
+      "row_counts": {"train": 7112, "test": 1778, "pooled": 8890},
+      "compiler_bounds": {
+        "c0": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true},
+        "c1": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true},
+        "c2": {"lower": 0.03, "upper": 0.20, "lower_inclusive": true, "upper_inclusive": true},
+        "w": {"lower": 2.0, "upper": 8.0, "lower_inclusive": false, "upper_inclusive": false}
+      },
+      "observed": {
+        "c0": {"lower": 0.03, "upper": 0.20},
+        "c1": {"lower": 0.03, "upper": 0.20},
+        "c2": {"lower": 0.03, "upper": 0.20},
+        "w": {"lower": 2.0046, "upper": 7.995}
+      }
+    }
+  }
+}
