@@ -1,7 +1,7 @@
 # Qoder 科研实验全链路执行与复核 Skill 设计
 
 日期：2026-07-30
-状态：已获用户原则批准，待书面规格复核
+状态：用户已确认书面规格
 目标位置：`.qoder/skills/executing-research-experiments/`
 
 ## 1. 目标
