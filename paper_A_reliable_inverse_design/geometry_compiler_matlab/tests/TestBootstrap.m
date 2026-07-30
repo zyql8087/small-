@@ -138,7 +138,7 @@ classdef TestBootstrap < matlab.unittest.TestCase
                 return;
             end
 
-            essential_funcs = {'bwdist', 'bwconncomp', 'bwskel'};
+            essential_funcs = {'bwdist', 'bwconncomp', 'bwskel', 'padarray'};
             for i = 1:length(essential_funcs)
                 funcExists = exist(essential_funcs{i}, 'file');
                 testCase.assertTrue(funcExists ~= 0, ...
@@ -149,7 +149,7 @@ classdef TestBootstrap < matlab.unittest.TestCase
         %% ===== Negative tests: JSON and field presence =====
 
         function testInvalidJsonRejected(testCase)
-            % Verify malformed JSON throws MATLABGyroid:InvalidConfig
+            % Verify malformed JSON throws MATLABGyroid:InvalidConfig with message
             tempFile = [tempname '.json'];
             cleanupObj = onCleanup(@() TestBootstrap.deleteFile(tempFile));
 
@@ -162,6 +162,10 @@ classdef TestBootstrap < matlab.unittest.TestCase
                 testCase.fail('Expected error for invalid JSON');
             catch ME
                 testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
+                testCase.verifyTrue(contains(ME.message, 'JSON parsing'), ...
+                    'Error message should mention JSON parsing');
+                testCase.verifyEqual(numel(ME.cause), 1, ...
+                    'JSON parsing error must preserve its original cause');
             end
         end
 
@@ -300,7 +304,7 @@ classdef TestBootstrap < matlab.unittest.TestCase
 
         %% ===== Negative tests: descriptor definition consistency =====
 
-        function testDescriptorDefinitionOrderMismatchRejected(testCase)
+        function testDescriptorOrderMutationRejectedByFrozenHash(testCase)
             tempDir = tempname;
             mkdir(tempDir);
             cleanupDir = onCleanup(@() TestBootstrap.deleteDir(tempDir));
@@ -323,14 +327,15 @@ classdef TestBootstrap < matlab.unittest.TestCase
             TestBootstrap.writeJson(tempFile, data);
             try
                 load_compiler_config(tempFile);
-                testCase.fail('Expected error for descriptor definition order mismatch');
+                testCase.fail('Expected frozen-hash rejection for descriptor mutation');
             catch ME
                 testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'order'));
+                testCase.verifyTrue(contains(ME.message, ...
+                    'descriptor_definition_sha256 does not match frozen contract value'));
             end
         end
 
-        function testDescriptorDefinitionSchemaMismatchRejected(testCase)
+        function testDescriptorSchemaMutationRejectedByFrozenHash(testCase)
             tempDir = tempname;
             mkdir(tempDir);
             cleanupDir = onCleanup(@() TestBootstrap.deleteDir(tempDir));
@@ -349,10 +354,11 @@ classdef TestBootstrap < matlab.unittest.TestCase
             TestBootstrap.writeJson(tempFile, data);
             try
                 load_compiler_config(tempFile);
-                testCase.fail('Expected error for descriptor definition schema mismatch');
+                testCase.fail('Expected frozen-hash rejection for descriptor mutation');
             catch ME
                 testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
-                testCase.verifyTrue(contains(ME.message, 'schema_version'));
+                testCase.verifyTrue(contains(ME.message, ...
+                    'descriptor_definition_sha256 does not match frozen contract value'));
             end
         end
 
@@ -539,6 +545,8 @@ classdef TestBootstrap < matlab.unittest.TestCase
                 testCase.fail('Expected error for nonexistent file');
             catch ME
                 testCase.assertEqual(ME.identifier, testCase.ERROR_ID);
+                testCase.verifyTrue(contains(ME.message, 'not found'), ...
+                    'Error message should indicate file not found');
             end
         end
 

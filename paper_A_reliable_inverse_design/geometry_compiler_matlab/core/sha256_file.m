@@ -1,4 +1,4 @@
-function digestHex = sha256_file(filePath, errorId, label)
+function [digestHex, bytes] = sha256_file(filePath, errorId, label)
 %SHA256_FILE Returns the lowercase SHA-256 digest of the exact file bytes.
     if nargin ~= 3
         error('MATLABGyroid:ProgrammerError', ...

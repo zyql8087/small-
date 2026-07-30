@@ -31,21 +31,26 @@ function config = load_compiler_config(config_path)
     try
         raw_json = fileread(config_path);
     catch ME_read
-        throw(MException(ERROR_ID, ...
-            'Cannot read configuration file "%s": %s', config_path, ME_read.message));
+        wrapped = MException(ERROR_ID, ...
+            'Cannot read configuration file "%s": %s', config_path, ME_read.message);
+        wrapped = addCause(wrapped, ME_read);
+        throw(wrapped);
     end
 
     %% Parse JSON
     try
         data = jsondecode(raw_json);
     catch jqe
-        throw(MException(ERROR_ID, ...
-            'JSON parsing failed for configuration file: %s', jqe.message));
+        wrapped = MException(ERROR_ID, ...
+            'JSON parsing failed for configuration file: %s', jqe.message);
+        wrapped = addCause(wrapped, jqe);
+        throw(wrapped);
     end
 
-    if ~isstruct(data)
+    if ~isstruct(data) || ~isscalar(data)
         throw(MException(ERROR_ID, ...
-            'Configuration root must be a JSON object, got: %s', class(data)));
+            'Configuration root must be a scalar JSON object, got: %s', ...
+            class(data)));
     end
 
     %% Step 7: Validate required fields exist (including SHA-256 fields)
@@ -65,14 +70,16 @@ function config = load_compiler_config(config_path)
     end
 
     %% Validate schema_version (frozen at "1.0")
-    schema_ver = char(string(data.schema_version));
+    schema_ver = validate_text_scalar(data.schema_version, ...
+        'schema_version', ERROR_ID);
     if ~strcmp(schema_ver, '1.0')
         throw(MException(ERROR_ID, ...
             'Unsupported schema_version "%s". Frozen contract requires "1.0".', schema_ver));
     end
 
     %% Validate solid_convention (only 'sheet_band' allowed at bootstrap)
-    solid_conv = char(string(data.solid_convention));
+    solid_conv = validate_text_scalar(data.solid_convention, ...
+        'solid_convention', ERROR_ID);
     if ~strcmp(solid_conv, 'sheet_band')
         throw(MException(ERROR_ID, ...
             'Invalid solid_convention "%s". Must be "sheet_band" at bootstrap.', solid_conv));
@@ -105,53 +112,46 @@ function config = load_compiler_config(config_path)
     end
 
     %% Step 9: Resolve, read, hash, and parse both contract files
+    contract = compiler_contract();
     % --- Descriptor definition ---
-    desc_path_rel = char(string(data.descriptor_definition_path));
+    desc_path_rel = validate_text_scalar(data.descriptor_definition_path, ...
+        'descriptor_definition_path', ERROR_ID);
     validate_relative_path(desc_path_rel, 'descriptor_definition_path', ERROR_ID);
     desc_path = fullfile(config_dir, desc_path_rel);
     if exist(desc_path, 'file') ~= 2
         throw(MException(ERROR_ID, ...
             'Descriptor definition not found at resolved path: %s', desc_path));
     end
-    declared_desc_hash = lower(char(string(data.descriptor_definition_sha256)));
+    declared_desc_hash = validate_text_scalar(data.descriptor_definition_sha256, ...
+        'descriptor_definition_sha256', ERROR_ID);
     validate_hash_format(declared_desc_hash, 'descriptor_definition_sha256', ERROR_ID);
-    actual_desc_hash = sha256_file(desc_path, ERROR_ID, 'descriptor definition');
-    if ~strcmp(actual_desc_hash, declared_desc_hash)
-        throw(MException(ERROR_ID, ...
-            'descriptor_definition_sha256 mismatch: declared=%s actual=%s', ...
-            declared_desc_hash, actual_desc_hash));
-    end
+    [descriptorDefinition, actual_desc_hash] = read_hashed_json( ...
+        desc_path, declared_desc_hash, contract.descriptorDefinitionSha256, ...
+        'descriptor_definition_sha256', 'Descriptor definition', ERROR_ID);
 
     % --- Parameter domain manifest ---
-    manifest_path_rel = char(string(data.parameter_domain_manifest_path));
+    manifest_path_rel = validate_text_scalar(data.parameter_domain_manifest_path, ...
+        'parameter_domain_manifest_path', ERROR_ID);
     validate_relative_path(manifest_path_rel, 'parameter_domain_manifest_path', ERROR_ID);
     manifest_path = fullfile(config_dir, manifest_path_rel);
     if exist(manifest_path, 'file') ~= 2
         throw(MException(ERROR_ID, ...
             'Parameter-domain manifest not found at resolved path: %s', manifest_path));
     end
-    declared_manifest_hash = lower(char(string(data.parameter_domain_manifest_sha256)));
+    declared_manifest_hash = validate_text_scalar(data.parameter_domain_manifest_sha256, ...
+        'parameter_domain_manifest_sha256', ERROR_ID);
     validate_hash_format(declared_manifest_hash, 'parameter_domain_manifest_sha256', ERROR_ID);
-    actual_manifest_hash = sha256_file(manifest_path, ERROR_ID, 'parameter-domain manifest');
-    if ~strcmp(actual_manifest_hash, declared_manifest_hash)
-        throw(MException(ERROR_ID, ...
-            'parameter_domain_manifest_sha256 mismatch: declared=%s actual=%s', ...
-            declared_manifest_hash, actual_manifest_hash));
-    end
-
-    % Parse manifest for later use
-    try
-        manifest = jsondecode(fileread(manifest_path));
-    catch ME_mp
-        throw(MException(ERROR_ID, ...
-            'Parameter-domain manifest JSON parsing failed: %s', ME_mp.message));
-    end
+    [manifest, actual_manifest_hash] = read_hashed_json( ...
+        manifest_path, declared_manifest_hash, ...
+        contract.parameterDomainManifestSha256, ...
+        'parameter_domain_manifest_sha256', ...
+        'Parameter-domain manifest', ERROR_ID);
+    validate_parameter_domain_manifest(manifest, ERROR_ID);
 
     %% Validate method_bounds structure (generic shape checks)
     validate_method_bounds(data.method_bounds, ERROR_ID);
 
     %% Step 12: Exact method contract validation
-    contract = compiler_contract();
     validate_exact_method_contract(data.method_bounds, manifest, ...
         contract.requiredLevels, ERROR_ID);
 
@@ -168,15 +168,9 @@ function config = load_compiler_config(config_path)
     config.resolution = uint32(data.resolution);
     config.solid_convention = solid_conv;
 
-    %% Convert descriptor_names to row vector cell array of char
-    if iscell(data.descriptor_names)
-        config.descriptor_names = reshape(data.descriptor_names, 1, []);
-    elseif ischar(data.descriptor_names)
-        config.descriptor_names = cellstr(data.descriptor_names)';
-    else
-        config.descriptor_names = cellfun(@char, num2cell(data.descriptor_names), 'UniformOutput', false);
-        config.descriptor_names = reshape(config.descriptor_names, 1, []);
-    end
+    %% Convert descriptor_names to a validated row cell array of char
+    config.descriptor_names = normalize_text_sequence( ...
+        data.descriptor_names, 'descriptor_names', ERROR_ID);
 
     config.method_bounds = data.method_bounds;
     config.mesh_qc = data.mesh_qc;
@@ -184,9 +178,9 @@ function config = load_compiler_config(config_path)
 
     %% Resolve paths
     config.descriptor_definition_path = desc_path;
-    config.descriptor_definition_sha256 = declared_desc_hash;
+    config.descriptor_definition_sha256 = actual_desc_hash;
     config.parameter_domain_manifest_path = manifest_path;
-    config.parameter_domain_manifest_sha256 = declared_manifest_hash;
+    config.parameter_domain_manifest_sha256 = actual_manifest_hash;
     config.parameter_domain = manifest;
 
     %% Enforce fixed descriptor ordering (error, not warning)
@@ -199,7 +193,8 @@ function config = load_compiler_config(config_path)
     end
 
     %% Validate descriptor definition JSON (schema + order consistency)
-    validate_descriptor_definition(desc_path, config.descriptor_names, ERROR_ID);
+    validate_descriptor_definition( ...
+        descriptorDefinition, config.descriptor_names, ERROR_ID);
 
 end
 
@@ -220,7 +215,6 @@ function validate_relative_path(p, label, ERROR_ID)
         end
     end
 end
-
 function tf = isAbsolutePath(p)
     tf = false;
     if isempty(p), return; end
@@ -232,6 +226,34 @@ function validate_hash_format(h, label, ERROR_ID)
     if ~ischar(h) || length(h) ~= 64 || isempty(regexp(h, '^[0-9a-f]{64}$', 'once'))
         throw(MException(ERROR_ID, ...
             '%s must be exactly 64 lowercase hexadecimal characters, got: %s', label, h));
+    end
+end
+
+function values = normalize_text_sequence(value, label, ERROR_ID)
+%NORMALIZE_TEXT_SEQUENCE Return a row cell array of validated text scalars.
+    if ischar(value)
+        if ~isrow(value)
+            throw(MException(ERROR_ID, ...
+                '%s must be a string/cell array of text scalars', label));
+        end
+        rawValues = {value};
+    elseif isstring(value)
+        if ~isvector(value)
+            throw(MException(ERROR_ID, ...
+                '%s must be a string/cell array of text scalars', label));
+        end
+        rawValues = num2cell(value(:)');
+    elseif iscell(value)
+        rawValues = value(:)';
+    else
+        throw(MException(ERROR_ID, ...
+            '%s must be a string/cell array, got: %s', label, class(value)));
+    end
+
+    values = cell(1, numel(rawValues));
+    for valueIndex = 1:numel(rawValues)
+        values{valueIndex} = validate_text_scalar(rawValues{valueIndex}, ...
+            sprintf('%s{%d}', label, valueIndex), ERROR_ID);
     end
 end
 
@@ -270,23 +292,14 @@ function validate_method_bounds(mb, ERROR_ID)
         end
 
         % Validate active_variables contains only legal variable names
-        av = m.active_variables;
-        if isstring(av)
-            av_list = cellstr(av)';
-        elseif iscell(av)
-            av_list = av;
-        elseif ischar(av)
-            av_list = cellstr(av);
-        else
-            throw(MException(ERROR_ID, ...
-                'method_bounds.%s.active_variables must be a string/cell array', mname));
-        end
+        av_list = normalize_text_sequence(m.active_variables, ...
+            sprintf('method_bounds.%s.active_variables', mname), ERROR_ID);
         if isempty(av_list)
             throw(MException(ERROR_ID, ...
                 'method_bounds.%s.active_variables must not be empty', mname));
         end
         for j = 1:length(av_list)
-            vname = char(string(av_list{j}));
+            vname = av_list{j};
             if ~ismember(vname, legal_vars)
                 throw(MException(ERROR_ID, ...
                     'method_bounds.%s.active_variables contains illegal variable "%s". Legal: [%s]', ...
@@ -294,11 +307,12 @@ function validate_method_bounds(mb, ERROR_ID)
             end
         end
 
-        % Validate fixed_variables is present and is a struct
+        % Validate fixed_variables is present and is a scalar struct
         fv = m.fixed_variables;
-        if ~isstruct(fv)
+        if ~isstruct(fv) || ~isscalar(fv)
             throw(MException(ERROR_ID, ...
-                'method_bounds.%s.fixed_variables must be a struct, got: %s', mname, class(fv)));
+                'method_bounds.%s.fixed_variables must be a scalar struct, got: %s', ...
+                mname, class(fv)));
         end
         fv_names = fieldnames(fv);
         for j = 1:length(fv_names)
@@ -339,11 +353,9 @@ function validate_method_bounds(mb, ERROR_ID)
                     'method_bounds.%s.bounds.%s must be a struct with lower/upper, got: %s', ...
                     mname, vname, class(v)));
             end
-            if ~isfield(v, 'lower') || ~isfield(v, 'upper')
-                throw(MException(ERROR_ID, ...
-                    'method_bounds.%s.bounds.%s must have both lower and upper fields', ...
-                    mname, vname));
-            end
+            required_bound_fields = {'lower', 'upper', 'lower_inclusive', 'upper_inclusive'};
+            assert_field_set(v, required_bound_fields, ...
+                sprintf('method_bounds.%s.bounds.%s', mname, vname), ERROR_ID);
             lo = v.lower;
             hi = v.upper;
             if ~isnumeric(lo) || ~isscalar(lo) || ~isnumeric(hi) || ~isscalar(hi)
@@ -360,6 +372,21 @@ function validate_method_bounds(mb, ERROR_ID)
                 throw(MException(ERROR_ID, ...
                     'method_bounds.%s.bounds.%s lower (%g) must be <= upper (%g)', ...
                     mname, vname, lo, hi));
+            end
+            if ~islogical(v.lower_inclusive) || ~isscalar(v.lower_inclusive)
+                throw(MException(ERROR_ID, ...
+                    'method_bounds.%s.bounds.%s.lower_inclusive must be a logical scalar', ...
+                    mname, vname));
+            end
+            if ~islogical(v.upper_inclusive) || ~isscalar(v.upper_inclusive)
+                throw(MException(ERROR_ID, ...
+                    'method_bounds.%s.bounds.%s.upper_inclusive must be a logical scalar', ...
+                    mname, vname));
+            end
+            if lo == hi && ~(v.lower_inclusive && v.upper_inclusive)
+                throw(MException(ERROR_ID, ...
+                    'method_bounds.%s.bounds.%s equal bounds require both inclusive', ...
+                    mname, vname));
             end
         end
 
@@ -406,7 +433,6 @@ function validate_method_bounds(mb, ERROR_ID)
         end
     end
 end
-
 function validate_exact_method_contract(mb, manifest, requiredLevels, ERROR_ID)
 %VALIDATE_EXACT_METHOD_CONTRACT Step 12: exact method contract enforcement
 
@@ -440,7 +466,10 @@ function validate_exact_method_contract(mb, manifest, requiredLevels, ERROR_ID)
     names = {'M1','M2','M3'};
     for i = 1:numel(names)
         name = names{i};
-        if ~strcmp(char(string(mb.(name).bounds_manifest_method)), name)
+        manifestMethod = validate_text_scalar( ...
+            mb.(name).bounds_manifest_method, ...
+            sprintf('%s.bounds_manifest_method', name), ERROR_ID);
+        if ~strcmp(manifestMethod, name)
             throw(MException(ERROR_ID, ...
                 '%s.bounds_manifest_method must equal %s', name, name));
         end
@@ -454,25 +483,16 @@ function validate_exact_method_contract(mb, manifest, requiredLevels, ERROR_ID)
     end
 end
 
-function assert_cellstr_exact(actual, expected, label, ERROR_ID)
+function actualStrs = assert_cellstr_exact(actual, expected, label, ERROR_ID)
 %ASSERT_CELLSTR_EXACT Compare cell-string sequences exactly, reject duplicates.
-    if isstring(actual)
-        actual = cellstr(actual)';
-    elseif ischar(actual)
-        actual = {actual};
-    end
-    if ~iscell(actual)
-        throw(MException(ERROR_ID, '%s must be a cell/string array of strings', label));
-    end
-    actual = actual(:)';  % normalize to row vector
-    actual_strs = cellfun(@(x) char(string(x)), actual, 'UniformOutput', false);
-    if length(unique(actual_strs)) ~= length(actual_strs)
+    actualStrs = normalize_text_sequence(actual, label, ERROR_ID);
+    if length(unique(actualStrs)) ~= length(actualStrs)
         throw(MException(ERROR_ID, '%s contains duplicates', label));
     end
-    if ~isequal(actual_strs, expected)
+    if ~isequal(actualStrs, expected)
         throw(MException(ERROR_ID, ...
             '%s must be [%s], got [%s]', label, ...
-            strjoin(expected, ', '), strjoin(actual_strs, ', ')));
+            strjoin(expected, ', '), strjoin(actualStrs, ', ')));
     end
 end
 
@@ -506,31 +526,40 @@ function validate_m2_projection(proj, ERROR_ID)
     if ~isstruct(proj) || ~isscalar(proj)
         throw(MException(ERROR_ID, 'M2.projection must be a scalar struct'));
     end
-    if ~isfield(proj, 'type') || ~strcmp(char(string(proj.type)), ...
-            'orthogonal_l2_equal_subspace')
+    if ~isfield(proj, 'type')
+        throw(MException(ERROR_ID, 'M2.projection.type missing'));
+    end
+    projectionType = validate_text_scalar(proj.type, ...
+        'M2.projection.type', ERROR_ID);
+    if ~strcmp(projectionType, 'orthogonal_l2_equal_subspace')
         throw(MException(ERROR_ID, ...
             'M2.projection.type must be orthogonal_l2_equal_subspace'));
     end
     if ~isfield(proj, 'variables')
         throw(MException(ERROR_ID, 'M2.projection.variables missing'));
     end
-    vars = proj.variables;
-    if isstring(vars), vars = cellstr(vars)'; end
-    if ischar(vars), vars = {vars}; end
-    vars = vars(:)';  % normalize to row
-    var_strs = cellfun(@(x) char(string(x)), vars, 'UniformOutput', false);
+    var_strs = normalize_text_sequence(proj.variables, ...
+        'M2.projection.variables', ERROR_ID);
     if ~isequal(var_strs, {'c0','c1','c2'})
         throw(MException(ERROR_ID, ...
             'M2.projection.variables must be [c0, c1, c2]'));
     end
-    if ~isfield(proj, 'projected_name') || ...
-            ~strcmp(char(string(proj.projected_name)), 'c_projected')
+    if ~isfield(proj, 'projected_name')
+        throw(MException(ERROR_ID, 'M2.projection.projected_name missing'));
+    end
+    projectedName = validate_text_scalar(proj.projected_name, ...
+        'M2.projection.projected_name', ERROR_ID);
+    if ~strcmp(projectedName, 'c_projected')
         throw(MException(ERROR_ID, ...
             'M2.projection.projected_name must be c_projected'));
     end
     expected_formula = 'c_projected=mean([c0,c1,c2]); c0=c1=c2=c_projected';
-    if ~isfield(proj, 'formula') || ...
-            ~strcmp(char(string(proj.formula)), expected_formula)
+    if ~isfield(proj, 'formula')
+        throw(MException(ERROR_ID, 'M2.projection.formula missing'));
+    end
+    projectionFormula = validate_text_scalar(proj.formula, ...
+        'M2.projection.formula', ERROR_ID);
+    if ~strcmp(projectionFormula, expected_formula)
         throw(MException(ERROR_ID, ...
             'M2.projection.formula must be "%s"', expected_formula));
     end
@@ -543,7 +572,8 @@ function validate_bounds_match_manifest(bounds, manifest_bounds, mname, ERROR_ID
         vname = bound_names{idx};
         b = bounds.(vname);
         if ~isfield(manifest_bounds, vname)
-            continue; % manifest may not have all variables
+            throw(MException(ERROR_ID, ...
+                '%s.bounds.%s not found in manifest compiler_bounds', mname, vname));
         end
         mb = manifest_bounds.(vname);
         if b.lower ~= mb.lower || b.upper ~= mb.upper
@@ -551,21 +581,16 @@ function validate_bounds_match_manifest(bounds, manifest_bounds, mname, ERROR_ID
                 '%s.bounds.%s must match manifest [%g,%g], got [%g,%g]', ...
                 mname, vname, mb.lower, mb.upper, b.lower, b.upper));
         end
-        if isfield(b, 'lower_inclusive') && isfield(mb, 'lower_inclusive')
-            if logical(b.lower_inclusive) ~= logical(mb.lower_inclusive)
-                throw(MException(ERROR_ID, ...
-                    '%s.bounds.%s.lower_inclusive must match manifest', mname, vname));
-            end
+        if logical(b.lower_inclusive) ~= logical(mb.lower_inclusive)
+            throw(MException(ERROR_ID, ...
+                '%s.bounds.%s.lower_inclusive must match manifest', mname, vname));
         end
-        if isfield(b, 'upper_inclusive') && isfield(mb, 'upper_inclusive')
-            if logical(b.upper_inclusive) ~= logical(mb.upper_inclusive)
-                throw(MException(ERROR_ID, ...
-                    '%s.bounds.%s.upper_inclusive must match manifest', mname, vname));
-            end
+        if logical(b.upper_inclusive) ~= logical(mb.upper_inclusive)
+            throw(MException(ERROR_ID, ...
+                '%s.bounds.%s.upper_inclusive must match manifest', mname, vname));
         end
     end
 end
-
 function validate_geometry_parameters(gp, ERROR_ID)
 %VALIDATE_GEOMETRY_PARAMETERS Step 10: exact geometry parameter contract.
     if ~isstruct(gp) || ~isscalar(gp)
@@ -583,6 +608,11 @@ function validate_geometry_parameters(gp, ERROR_ID)
         end
     end
 
+    if ~isstruct(gp.domain_over_l) || ~isscalar(gp.domain_over_l)
+        throw(MException(ERROR_ID, ...
+            'geometry_parameters.domain_over_l must be a scalar struct'));
+    end
+
     % String equality checks
     assert_gp_string(gp, 'coordinate_units', 'normalized_by_reference_length', ERROR_ID);
     assert_gp_string(gp, 'output_units', 'mm', ERROR_ID);
@@ -590,16 +620,25 @@ function validate_geometry_parameters(gp, ERROR_ID)
     assert_gp_string(gp, 'cell_size_profile', 'gamma(z)=1.5+z/w', ERROR_ID);
     assert_gp_string(gp, 'validation_status', 'candidate_pending_gate0', ERROR_ID);
 
-    % Numeric equality checks
-    if gp.Lx_over_l ~= 1.0
-        throw(MException(ERROR_ID, 'geometry_parameters.Lx_over_l must equal 1.0'));
+    % Numeric equality checks (validate type/shape before value)
+    length_params = {'Lx_over_l', 'Ly_over_l', 'Lz0_over_l'};
+    length_expected = [1.0, 1.0, 1.5];
+    for i = 1:numel(length_params)
+        pname = length_params{i};
+        val = gp.(pname);
+        if ~isnumeric(val) || ~isscalar(val) || ~isfinite(val) || val <= 0
+            throw(MException(ERROR_ID, ...
+                'geometry_parameters.%s must be a finite positive numeric scalar', pname));
+        end
+        if val ~= length_expected(i)
+            throw(MException(ERROR_ID, ...
+                'geometry_parameters.%s must equal %g', pname, length_expected(i)));
+        end
     end
-    if gp.Ly_over_l ~= 1.0
-        throw(MException(ERROR_ID, 'geometry_parameters.Ly_over_l must equal 1.0'));
-    end
-    if gp.Lz0_over_l ~= 1.5
-        throw(MException(ERROR_ID, 'geometry_parameters.Lz0_over_l must equal 1.5'));
-    end
+
+    % Physical conversion contract (exact string match)
+    assert_gp_string(gp, 'physical_conversion', ...
+        'multiply normalized coordinates by reference_length_mm exactly once', ERROR_ID);
 
     % Domain vectors
     validate_domain_vector(gp.domain_over_l, 'x', [0, 1], ERROR_ID);
@@ -608,7 +647,8 @@ function validate_geometry_parameters(gp, ERROR_ID)
 end
 
 function assert_gp_string(gp, field, expected, ERROR_ID)
-    actual = char(string(gp.(field)));
+    actual = validate_text_scalar(gp.(field), ...
+        sprintf('geometry_parameters.%s', field), ERROR_ID);
     if ~strcmp(actual, expected)
         throw(MException(ERROR_ID, ...
             'geometry_parameters.%s must be "%s", got "%s"', field, expected, actual));
@@ -682,84 +722,6 @@ function validate_mesh_qc(mq, ERROR_ID)
         if ~islogical(val) || ~isscalar(val)
             throw(MException(ERROR_ID, ...
                 'mesh_qc.%s must be a logical scalar (true/false), got: %s', fname, class(val)));
-        end
-    end
-end
-
-function validate_descriptor_definition(desc_path, config_descriptor_names, ERROR_ID)
-%VALIDATE_DESCRIPTOR_DEFINITION Validates the descriptor definition JSON
-    raw = fileread(desc_path);
-    try
-        dd = jsondecode(raw);
-    catch jqe
-        throw(MException(ERROR_ID, ...
-            'Descriptor definition JSON parsing failed: %s', jqe.message));
-    end
-
-    if ~isstruct(dd)
-        throw(MException(ERROR_ID, ...
-            'Descriptor definition root must be a JSON object'));
-    end
-
-    if ~isfield(dd, 'schema_version')
-        throw(MException(ERROR_ID, ...
-            'Descriptor definition missing schema_version'));
-    end
-    dd_ver = char(string(dd.schema_version));
-    if ~strcmp(dd_ver, '1.0')
-        throw(MException(ERROR_ID, ...
-            'Descriptor definition schema_version "%s" does not match frozen "1.0"', dd_ver));
-    end
-
-    if ~isfield(dd, 'descriptors')
-        throw(MException(ERROR_ID, ...
-            'Descriptor definition missing descriptors array'));
-    end
-    descs = dd.descriptors;
-    if ~iscell(descs) && ~isstruct(descs)
-        throw(MException(ERROR_ID, ...
-            'Descriptor definition descriptors must be an array'));
-    end
-
-    if iscell(descs)
-        dd_names = cell(1, length(descs));
-        for i = 1:length(descs)
-            if ~isfield(descs{i}, 'name')
-                throw(MException(ERROR_ID, ...
-                    'Descriptor definition entry %d missing name field', i));
-            end
-            dd_names{i} = char(string(descs{i}.name));
-        end
-    else
-        dd_names = cell(1, length(descs));
-        for i = 1:length(descs)
-            if ~isfield(descs(i), 'name')
-                throw(MException(ERROR_ID, ...
-                    'Descriptor definition entry %d missing name field', i));
-            end
-            dd_names{i} = char(string(descs(i).name));
-        end
-    end
-
-    if ~isequal(dd_names, config_descriptor_names)
-        throw(MException(ERROR_ID, ...
-            'Descriptor definition order [%s] does not match config order [%s]', ...
-            strjoin(dd_names, ', '), strjoin(config_descriptor_names, ', ')));
-    end
-
-    required_desc_fields = {'name', 'formula', 'units', 'computation_method'};
-    for i = 1:length(descs)
-        if iscell(descs)
-            d = descs{i};
-        else
-            d = descs(i);
-        end
-        for j = 1:length(required_desc_fields)
-            fname = required_desc_fields{j};
-            if ~isfield(d, fname)
-                throw(MException(ERROR_ID, ...
-                    'Descriptor "%s" missing required field: %s', dd_names{i}, fname));
-            end
         end
     end
 end

@@ -243,6 +243,281 @@ classdef TestContractHardening < matlab.unittest.TestCase
             TestContractHardening.writeJson(path, manifest);
             TestContractHardening.verifyInvalid(testCase, fixture, 'parameter_domain_manifest_sha256');
         end
+
+        %% ===== v6 P1 regression: inclusivity required =====
+
+        function testMissingInclusivityFieldsRejected(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds.M2.bounds.w = struct('lower', 2.0, 'upper', 8.0); % missing inclusivity
+            TestContractHardening.verifyInvalid(testCase, fixture, ...
+                'method_bounds.M2.bounds.w must have fields')
+        end
+
+        function testNonLogicalInclusivityRejected(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            % Use a true vector (1x2) not scalar - [true] is still isscalar=true
+            fixture.data.method_bounds.M2.bounds.w.lower_inclusive = [true, false]; % true vector
+            fixture.data.method_bounds.M2.bounds.w.upper_inclusive = [true, false]; % true vector
+            TestContractHardening.verifyInvalid(testCase, fixture, '.lower_inclusive must be a logical scalar')
+        end
+
+        %% ===== v6 P1 regression: geometry parameters strict =====
+
+        function testNaNGeometryScaleRejected(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.geometry_parameters.Lx_over_l = NaN;
+            TestContractHardening.verifyInvalid(testCase, fixture, 'Lx_over_l must be a finite positive numeric scalar')
+        end
+
+        function testInfGeometryScaleRejected(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.geometry_parameters.Ly_over_l = Inf;
+            TestContractHardening.verifyInvalid(testCase, fixture, 'Ly_over_l must be a finite positive numeric scalar')
+        end
+
+        function testVectorGeometryScaleRejected(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.geometry_parameters.Lz0_over_l = [1.5, 1.5];
+            TestContractHardening.verifyInvalid(testCase, fixture, 'Lz0_over_l must be a finite positive numeric scalar')
+        end
+
+        function testStringGeometryScaleRejected(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.geometry_parameters.Lx_over_l = 'wrong';
+            TestContractHardening.verifyInvalid(testCase, fixture, 'Lx_over_l must be a finite positive numeric scalar')
+        end
+
+        function testWrongPhysicalConversionRejected(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.geometry_parameters.physical_conversion = 'apply scaling twice';
+            TestContractHardening.verifyInvalid(testCase, fixture, 'physical_conversion')
+        end
+
+        %% ===== v6 P1 regression: immutable contract + type safety =====
+
+        function testProjectionVariablesNumericRejected(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds.M2.projection.variables = 123; % numeric, not string/cell
+            TestContractHardening.verifyInvalid(testCase, fixture, '.variables must be a string/cell array')
+        end
+
+        function testCoordinatedTamperingRejectedByFrozenHash(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            % Modify descriptor AND update config hash simultaneously
+            path = fullfile(fixture.dir, 'descriptor_definition.json');
+            def = jsondecode(fileread(path));
+            if iscell(def.descriptors), def.descriptors{5}.formula = 'bogus'; else, def.descriptors(5).formula = 'bogus'; end
+            TestContractHardening.writeJson(path, def);
+            % Update config with NEW hash (computed from modified file)
+            fixture.data.descriptor_definition_sha256 = lower(char(string(...
+                sha256_file(fullfile(fixture.dir, 'descriptor_definition.json'), ...
+                testCase.ErrorId, 'test'))));
+            % But frozen contract value won't match!
+            TestContractHardening.verifyInvalid(testCase, fixture, 'does not match frozen contract value')
+        end
+
+        function testCoordinatedManifestTamperingRejectedByFrozenHash(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            path = fullfile(fixture.dir, 'parameter_domain_manifest.json');
+            manifest = jsondecode(fileread(path));
+            manifest.methods.M2.compiler_bounds.w.lower = 0;
+            TestContractHardening.writeJson(path, manifest);
+            fixture.data.method_bounds.M2.bounds.w.lower = 0;
+            fixture.data.parameter_domain_manifest_sha256 = sha256_file(path, ...
+                testCase.ErrorId, 'test manifest');
+            TestContractHardening.verifyInvalid(testCase, fixture, ...
+                'does not match frozen contract value');
+        end
+
+        %% ===== v7 regression: common error boundary =====
+
+        function testStructArrayConfigRootUsesCommonErrorId(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data = repmat(fixture.data, 1, 2);
+            TestContractHardening.verifyInvalid(testCase, fixture, ...
+                'Configuration root must be a scalar JSON object');
+        end
+
+        function testStructSchemaVersionUsesCommonErrorId(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.schema_version = struct('bad', true);
+            TestContractHardening.verifyInvalid(testCase, fixture, ...
+                'schema_version must be a character row vector or string scalar');
+        end
+
+        function testStructPhysicalConversionUsesCommonErrorId(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.geometry_parameters.physical_conversion = struct('bad', true);
+            TestContractHardening.verifyInvalid(testCase, fixture, ...
+                'geometry_parameters.physical_conversion must be a character row vector or string scalar');
+        end
+
+        function testStructBoundsManifestMethodUsesCommonErrorId(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds.M2.bounds_manifest_method = struct('bad', true);
+            TestContractHardening.verifyInvalid(testCase, fixture, ...
+                'M2.bounds_manifest_method must be a character row vector or string scalar');
+        end
+
+        function testStructDescriptorPathUsesCommonErrorId(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.descriptor_definition_path = struct('bad', true);
+            TestContractHardening.verifyInvalid(testCase, fixture, ...
+                'descriptor_definition_path must be a character row vector or string scalar');
+        end
+
+        function testStructArrayFixedVariablesUsesCommonErrorId(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds.M1.fixed_variables = repmat( ...
+                struct('w', 0), 1, 2);
+            TestContractHardening.verifyInvalid(testCase, fixture, ...
+                'method_bounds.M1.fixed_variables must be a scalar struct');
+        end
+
+        function testStructArrayDomainUsesCommonErrorId(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.geometry_parameters.domain_over_l = repmat( ...
+                fixture.data.geometry_parameters.domain_over_l, 1, 2);
+            TestContractHardening.verifyInvalid(testCase, fixture, ...
+                'geometry_parameters.domain_over_l must be a scalar struct');
+        end
+
+        function testExtraBoundFieldRejected(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.method_bounds.M2.bounds.w.interval_semantics = 'closed';
+            TestContractHardening.verifyInvalid(testCase, fixture, ...
+                'method_bounds.M2.bounds.w must have fields');
+        end
+
+        function testUppercaseDeclaredHashRejected(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            fixture.data.descriptor_definition_sha256 = upper(char(string( ...
+                fixture.data.descriptor_definition_sha256)));
+            TestContractHardening.verifyInvalid(testCase, fixture, ...
+                'descriptor_definition_sha256 must be exactly 64 lowercase hexadecimal characters');
+        end
+
+        %% ===== v7 regression: manifest schema and preserved causes =====
+
+        function testManifestMissingMethodsUsesCommonErrorId(testCase)
+            path = fullfile(testCase.BaseDir, 'configs', ...
+                'parameter_domain_manifest.json');
+            manifest = jsondecode(fileread(path));
+            manifest = rmfield(manifest, 'methods');
+            caughtException = [];
+            try
+                validate_parameter_domain_manifest(manifest, testCase.ErrorId);
+            catch caught
+                caughtException = caught;
+            end
+            testCase.assertNotEmpty(caughtException);
+            testCase.verifyEqual(caughtException.identifier, testCase.ErrorId);
+            testCase.verifyTrue(contains(caughtException.message, ...
+                'parameter_domain_manifest.methods'));
+        end
+
+        function testMalformedManifestPreservesCause(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            path = fullfile(fixture.dir, 'parameter_domain_manifest.json');
+            TestContractHardening.writeText(path, '{ malformed json ');
+            hash = sha256_file(path, ...
+                testCase.ErrorId, 'test manifest');
+            caughtException = [];
+            try
+                read_hashed_json(path, hash, hash, ...
+                    'parameter_domain_manifest_sha256', ...
+                    'Parameter-domain manifest', testCase.ErrorId);
+            catch caught
+                caughtException = caught;
+            end
+            testCase.assertNotEmpty(caughtException);
+            testCase.verifyEqual(caughtException.identifier, testCase.ErrorId);
+            testCase.verifyTrue(contains(caughtException.message, ...
+                'Parameter-domain manifest JSON parsing failed'));
+            testCase.verifyEqual(numel(caughtException.cause), 1, ...
+                'Manifest parse failure must preserve the original cause');
+        end
+
+        function testMalformedDescriptorPreservesCause(testCase)
+            fixture = TestContractHardening.createFixture(testCase.BaseDir);
+            path = fullfile(fixture.dir, 'descriptor_definition.json');
+            TestContractHardening.writeText(path, '{ malformed json ');
+            hash = sha256_file(path, ...
+                testCase.ErrorId, 'test descriptor');
+            caughtException = [];
+            try
+                read_hashed_json(path, hash, hash, ...
+                    'descriptor_definition_sha256', ...
+                    'Descriptor definition', testCase.ErrorId);
+            catch caught
+                caughtException = caught;
+            end
+            testCase.assertNotEmpty(caughtException);
+            testCase.verifyEqual(caughtException.identifier, testCase.ErrorId);
+            testCase.verifyTrue(contains(caughtException.message, ...
+                'Descriptor definition JSON parsing failed'));
+            testCase.verifyEqual(numel(caughtException.cause), 1, ...
+                'Descriptor parse failure must preserve the original cause');
+        end
+
+        %% ===== v7 regression: descriptor semantics =====
+
+        function testAreaMeanFormulaAndDependenciesAreCanonical(testCase)
+            path = fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json');
+            definition = jsondecode(fileread(path));
+            descriptor = TestContractHardening.getDescriptor(definition, 5);
+            expectedFormula = ['sliceIndices = round(linspace(1, Nz, 26)); areas = []; ' ...
+                'for i = 1:26, sl = ~solid(:,:,sliceIndices(i)); cc2 = bwconncomp(sl, 8); ' ...
+                'if cc2.NumObjects > 0, counts = cellfun(@numel, cc2.PixelIdxList); ' ...
+                'areas(end+1) = max(counts) * dx_mm * dy_mm; end; end; areaMean = mean(areas)'];
+            testCase.verifyEqual(char(string(descriptor.formula)), expectedFormula);
+            dependencies = cellfun(@(x) char(string(x)), descriptor.dependencies, ...
+                'UniformOutput', false);
+            testCase.verifyEqual(dependencies(:)', {'binary_volume', 'dx_mm', 'dy_mm'});
+            testCase.verifyEqual(char(string(descriptor.algorithm_params.area_normalization)), ...
+                'pixel_count * dx_mm * dy_mm');
+        end
+
+        function testDescriptorOrderValidatorIsReached(testCase)
+            path = fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json');
+            definition = jsondecode(fileread(path));
+            first = TestContractHardening.getDescriptor(definition, 1);
+            second = TestContractHardening.getDescriptor(definition, 2);
+            definition = TestContractHardening.setDescriptor(definition, 1, second);
+            definition = TestContractHardening.setDescriptor(definition, 2, first);
+            expectedNames = {'relativeVolume', 'relativeArea', 'thickness', ...
+                'poreDiameter', 'areaMean'};
+            caughtException = [];
+            try
+                validate_descriptor_definition( ...
+                    definition, expectedNames, testCase.ErrorId);
+            catch caught
+                caughtException = caught;
+            end
+            testCase.assertNotEmpty(caughtException);
+            testCase.verifyEqual(caughtException.identifier, testCase.ErrorId);
+            testCase.verifyTrue(contains(caughtException.message, ...
+                'Descriptor definition order'));
+        end
+
+        function testDescriptorSchemaValidatorIsReached(testCase)
+            path = fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json');
+            definition = jsondecode(fileread(path));
+            definition.schema_version = '2.0';
+            expectedNames = {'relativeVolume', 'relativeArea', 'thickness', ...
+                'poreDiameter', 'areaMean'};
+            caughtException = [];
+            try
+                validate_descriptor_definition( ...
+                    definition, expectedNames, testCase.ErrorId);
+            catch caught
+                caughtException = caught;
+            end
+            testCase.assertNotEmpty(caughtException);
+            testCase.verifyEqual(caughtException.identifier, testCase.ErrorId);
+            testCase.verifyTrue(contains(caughtException.message, ...
+                'Descriptor definition schema_version'));
+        end
     end
 
     methods (Static, Access = private)
@@ -264,6 +539,29 @@ classdef TestContractHardening < matlab.unittest.TestCase
             assert(fileId ~= -1, 'Cannot open temporary JSON file: %s', path);
             cleanup = onCleanup(@() fclose(fileId));
             fprintf(fileId, '%s', jsonencode(value));
+        end
+
+        function writeText(path, value)
+            fileId = fopen(path, 'w');
+            assert(fileId ~= -1, 'Cannot open temporary text file: %s', path);
+            cleanup = onCleanup(@() fclose(fileId));
+            fprintf(fileId, '%s', value);
+        end
+
+        function descriptor = getDescriptor(definition, index)
+            if iscell(definition.descriptors)
+                descriptor = definition.descriptors{index};
+            else
+                descriptor = definition.descriptors(index);
+            end
+        end
+
+        function definition = setDescriptor(definition, index, descriptor)
+            if iscell(definition.descriptors)
+                definition.descriptors{index} = descriptor;
+            else
+                definition.descriptors(index) = descriptor;
+            end
         end
 
         function verifyInvalid(testCase, fixture, expectedMessage)
