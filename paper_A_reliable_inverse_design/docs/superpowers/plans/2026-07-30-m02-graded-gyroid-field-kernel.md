@@ -47,6 +47,7 @@ Stable M02 error identifiers:
 ### Create
 
 - `paper_A_reliable_inverse_design/geometry_compiler_matlab/core/project_method_constraints.m` — canonicalize method controls and enforce frozen intervals.
+- `paper_A_reliable_inverse_design/geometry_compiler_matlab/core/validate_normalized_z.m` — share strict normalized z-vector validation across both profile evaluators.
 - `paper_A_reliable_inverse_design/geometry_compiler_matlab/core/evaluate_threshold_profile.m` — evaluate the M1/M2/M3 threshold profile on normalized z coordinates.
 - `paper_A_reliable_inverse_design/geometry_compiler_matlab/core/evaluate_cell_size_profile.m` — evaluate constant or denominator-form normalized z cell size.
 - `paper_A_reliable_inverse_design/geometry_compiler_matlab/core/build_graded_gyroid_field.m` — create endpoint-inclusive axes and sample `G` without retaining full coordinate grids.
@@ -149,6 +150,7 @@ git commit -m "feat(geometry): project graded Gyroid method controls"
 ### Task 2: Threshold and cell-size profiles
 
 **Files:**
+- Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/core/validate_normalized_z.m`
 - Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/core/evaluate_threshold_profile.m`
 - Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/core/evaluate_cell_size_profile.m`
 - Modify: `paper_A_reliable_inverse_design/geometry_compiler_matlab/tests/TestFieldKernel.m`
