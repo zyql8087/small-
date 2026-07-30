@@ -28,6 +28,7 @@ tmp/
 tmp_artifacts/
 start_process_probe.txt
 .workspace_cache/
+.worktrees/
 docs/superpowers/reports/*-workspace-reorganization-before.json
 
 # ── Third-party upstream clone ──
