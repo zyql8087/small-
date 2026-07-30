@@ -268,9 +268,109 @@ classdef TestFieldKernel < matlab.unittest.TestCase
                     'z_over_l must lie within [0, 2]');
             end
         end
+
+        function testFieldGridIncludesDomainEndpoints(testCase)
+            projected = TestFieldKernel.projectExample( ...
+                testCase, 'M1', [0.04, 0.10, 0.20, 0]);
+            field = build_graded_gyroid_field( ...
+                projected, testCase.Config, 8);
+
+            testCase.verifySize(field.G, [9, 9, 17]);
+            testCase.verifyEqual(field.x_over_l([1, end]), [0, 1], ...
+                'AbsTol', eps);
+            testCase.verifyEqual(field.y_over_l([1, end]), [0, 1], ...
+                'AbsTol', eps);
+            testCase.verifyEqual(field.z_over_l([1, end]), [0, 2], ...
+                'AbsTol', eps);
+            testCase.verifyEqual(field.spacing_over_l, 1 / 8, ...
+                'AbsTol', eps);
+            testCase.verifyEqual(field.spacing_mm, ...
+                testCase.Config.reference_length_mm / 8, 'AbsTol', eps);
+            testCase.verifyEqual(field.resolution, 8);
+            testCase.verifyEqual(field.method, 'M1');
+        end
+
+        function testKnownGyroidPointEqualsOne(testCase)
+            projected = TestFieldKernel.projectExample( ...
+                testCase, 'M1', [0.10, 0.10, 0.10, 0]);
+            field = build_graded_gyroid_field( ...
+                projected, testCase.Config, 8);
+
+            testCase.verifyEqual(field.G(3, 1, 1), 1, ...
+                'AbsTol', 100 * eps);
+        end
+
+        function testFieldProfilesMatchProfileEvaluators(testCase)
+            for method = {'M1', 'M2', 'M3'}
+                if strcmp(method{1}, 'M1')
+                    values = [0.04, 0.10, 0.16, 0];
+                else
+                    values = [0.04, 0.10, 0.16, 4];
+                end
+                projected = TestFieldKernel.projectExample( ...
+                    testCase, method{1}, values);
+                field = build_graded_gyroid_field( ...
+                    projected, testCase.Config, 8);
+
+                testCase.verifyEqual(field.threshold, ...
+                    evaluate_threshold_profile(field.z_over_l, projected));
+                testCase.verifyEqual(field.cell_size_over_l, ...
+                    evaluate_cell_size_profile( ...
+                    field.z_over_l, projected, testCase.Config));
+            end
+        end
+
+        function testFieldIsFiniteRealAndDeterministic(testCase)
+            projected = TestFieldKernel.projectExample( ...
+                testCase, 'M3', [0.04, 0.10, 0.16, 4]);
+            first = build_graded_gyroid_field( ...
+                projected, testCase.Config, 8);
+            second = build_graded_gyroid_field( ...
+                projected, testCase.Config, 8);
+
+            testCase.verifyTrue(isreal(first.G));
+            testCase.verifyTrue(all(isfinite(first.G(:))));
+            testCase.verifyEqual(first.G, second.G);
+            testCase.verifyEqual(first.threshold, second.threshold);
+            testCase.verifyEqual( ...
+                first.cell_size_over_l, second.cell_size_over_l);
+        end
+
+        function testInvalidFieldResolutionRejected(testCase)
+            projected = TestFieldKernel.projectExample( ...
+                testCase, 'M1', [0.04, 0.10, 0.16, 0]);
+            invalidValues = {0, -1, 8.5, NaN, Inf, 1i, [8, 8], 193};
+            for valueIndex = 1:numel(invalidValues)
+                TestFieldKernel.verifyFailure(testCase, ...
+                    @() build_graded_gyroid_field(projected, ...
+                    testCase.Config, invalidValues{valueIndex}), ...
+                    'MATLABGyroid:InvalidGeometry', ...
+                    'resolution must be a positive integer no greater than');
+            end
+        end
+
+        function testNonIntegralGridIntervalCountRejected(testCase)
+            projected = TestFieldKernel.projectExample( ...
+                testCase, 'M1', [0.04, 0.10, 0.16, 0]);
+            modifiedConfig = testCase.Config;
+            modifiedConfig.geometry_parameters.domain_over_l.x = [0, 1.1];
+
+            TestFieldKernel.verifyFailure(testCase, ...
+                @() build_graded_gyroid_field( ...
+                projected, modifiedConfig, 8), ...
+                'MATLABGyroid:InvalidGeometry', ...
+                'domain spans times resolution must be integers');
+        end
     end
 
     methods (Static, Access = private)
+        function projected = projectExample(testCase, method, values)
+            raw = struct('c0', values(1), 'c1', values(2), ...
+                'c2', values(3), 'w', values(4));
+            projected = project_method_constraints( ...
+                method, raw, testCase.Config);
+        end
+
         function verifyFailure(testCase, action, expectedId, messageFragment)
             caughtException = [];
             try
