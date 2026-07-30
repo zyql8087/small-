@@ -123,7 +123,7 @@ Expected: FAIL because `project_method_constraints` is undefined.
 3. require every value to be a finite real numeric scalar;
 4. apply the method rule stated in section 1;
 5. validate each active/projected value against `config.method_bounds.(method).bounds` using both inclusivity flags;
-6. return fields `method,c0,c1,c2,w,c_projected,projection_applied,projection_l2,raw_parameters` in that order of meaning; use `NaN` for non-M2 `c_projected`.
+6. return fields `method,c0,c1,c2,w,c_projected,projection_applied,projection_l2,raw_parameters` in that order of meaning; use `[]` for non-M2 `c_projected` so JSON provenance contains no non-finite sentinel.
 
 The interval predicate is exactly:
 

@@ -26,7 +26,8 @@ classdef TestFieldKernel < matlab.unittest.TestCase
                 [0.04, 0.10, 0.20, 0]);
             testCase.verifyFalse(projected.projection_applied);
             testCase.verifyEqual(projected.projection_l2, 0);
-            testCase.verifyTrue(isnan(projected.c_projected));
+            testCase.verifyEmpty(projected.c_projected);
+            testCase.verifyFalse(contains(jsonencode(projected), 'null'));
 
             raw.w = 4;
             TestFieldKernel.verifyFailure(testCase, ...
@@ -67,7 +68,8 @@ classdef TestFieldKernel < matlab.unittest.TestCase
                 [0.03, 0.10, 0.20, 4]);
             testCase.verifyFalse(projected.projection_applied);
             testCase.verifyEqual(projected.projection_l2, 0);
-            testCase.verifyTrue(isnan(projected.c_projected));
+            testCase.verifyEmpty(projected.c_projected);
+            testCase.verifyFalse(contains(jsonencode(projected), 'null'));
         end
 
         function testUnknownMethodRejected(testCase)
@@ -420,6 +422,12 @@ classdef TestFieldKernel < matlab.unittest.TestCase
                 @() build_solid_volume(nonFiniteField, testCase.Config), ...
                 'MATLABGyroid:InvalidGeometry', ...
                 'field.G must be a non-empty finite real numeric array');
+
+            flatField = struct('G', ones(2, 2), 'threshold', 0.1);
+            TestFieldKernel.verifyFailure(testCase, ...
+                @() build_solid_volume(flatField, testCase.Config), ...
+                'MATLABGyroid:InvalidGeometry', ...
+                'field.G must be a three-dimensional array');
 
             wrongThresholdLength = validField;
             wrongThresholdLength.threshold = 0.1;
