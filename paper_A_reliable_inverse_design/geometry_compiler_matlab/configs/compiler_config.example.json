@@ -4,9 +4,9 @@
     "resolution": 128,
     "descriptor_names": ["relativeVolume", "relativeArea", "thickness", "poreDiameter", "areaMean"],
     "descriptor_definition_path": "descriptor_definition.json",
-    "descriptor_definition_sha256": "3031842d0bfb661d134e087e9e200093b41ed2af724b361d530a17c8047ef94d",
+    "descriptor_definition_sha256": "2f59976c74cc88eac66c43a56e242f50f28aff0e71be8d752a481c05a4a2d9c9",
     "parameter_domain_manifest_path": "parameter_domain_manifest.json",
-    "parameter_domain_manifest_sha256": "d152142ea2ff5cc6aa55ee366a71483f621fdd618117b87467d69137049c2eb2",
+    "parameter_domain_manifest_sha256": "671e0c081f8d50e1060a1cfdb4e10d70b662319582f2922231400ba56dd7bd2a",
     "solid_convention": "sheet_band",
     "method_bounds": {
         "M1": {

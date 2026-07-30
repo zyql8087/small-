@@ -87,6 +87,19 @@ classdef TestContractHardening < matlab.unittest.TestCase
 
         function testDeclaredContractHashesMatchFiles(testCase)
             configDir = fullfile(testCase.BaseDir, 'configs');
+            protectedFiles = {'compiler_config.example.json', ...
+                'descriptor_definition.json', ...
+                'parameter_domain_manifest.json'};
+            for i = 1:numel(protectedFiles)
+                path = fullfile(configDir, protectedFiles{i});
+                fileId = fopen(path, 'rb');
+                testCase.assertNotEqual(fileId, -1, ...
+                    sprintf('Cannot open protected contract JSON: %s', path));
+                bytes = fread(fileId, Inf, '*uint8');
+                fclose(fileId);
+                testCase.verifyFalse(any(bytes == uint8(13)), ...
+                    sprintf('%s must use LF-only line endings.', protectedFiles{i}));
+            end
             config = jsondecode(fileread(fullfile(configDir, ...
                 'compiler_config.example.json')));
             manifestHash = sha256_file(fullfile(configDir, ...
