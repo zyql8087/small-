@@ -435,6 +435,17 @@ classdef TestFieldKernel < matlab.unittest.TestCase
                 'MATLABGyroid:InvalidGeometry', ...
                 'field.threshold must contain finite nonnegative values');
         end
+
+        function testKernelProvenanceLabelsAreFrozen(testCase)
+            contract = compiler_contract();
+            testCase.verifyEqual(contract.thresholdProfile, ...
+                'piecewise_linear_knots_z_over_l_0_1_2');
+            testCase.verifyEqual(contract.cellSizeProfile, ...
+                'gamma(z_over_l)=1.5+z_over_l/w');
+            testCase.verifyEqual(contract.gyroidFieldVersion, ...
+                'small-si-s6-s9-candidate-v1');
+            testCase.verifyEqual(contract.solidConvention, 'sheet_band');
+        end
     end
 
     methods (Static, Access = private)
