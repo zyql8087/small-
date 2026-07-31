@@ -1,0 +1,314 @@
+schema_version: "1.0"
+template_example: true
+task_id: "EXAMPLE-001"
+task_title: "Demonstrate the research-task contract"
+task_type: "example"
+milestone: "example"
+run_id: "EXAMPLE-001-RUN-001"
+status: "template_example"
+created_at: null
+executor: null
+source_commit: "0000000000000000000000000000000000000000"
+source_commit_role: "base_revision_for_snapshot_reconstruction"
+dirty_worktree: true
+dirty_snapshot_id: "SNAPSHOT-EXAMPLE-001"
+review_target:
+  mode: "dirty_snapshot"
+  target_identity: "SNAPSHOT-EXAMPLE-001"
+  definition: "full binary patches plus authorized untracked objects plus reconstruction manifest"
+  full_binary_patch_bundle: "delivery/snapshots/SNAPSHOT-EXAMPLE-001/full-binary.patch"
+  authorized_untracked_objects: "delivery/snapshots/SNAPSHOT-EXAMPLE-001/authorized-untracked-objects/"
+  reconstruction_manifest: "delivery/snapshots/SNAPSHOT-EXAMPLE-001/reconstruction-manifest.yaml"
+authorization:
+  git_actions: []
+  read_paths:
+    - "path/to/input"
+  modify_paths:
+    - "path/to/output"
+  generate_paths:
+    - "delivery/evidence-report.md"
+    - "delivery/review-ledger.md"
+    - "delivery/experiment-manifest.yaml"
+  protected_paths:
+    - "path/to/protected"
+authority:
+  conflict_owner: "example-owner"
+  conflicts: []
+  sources:
+    - priority: 1
+      authority_id: "AUTH-001"
+      path_or_identity: "recorded task message"
+      sha256: null
+      governs:
+        - "scope"
+        - "authorization"
+    - priority: 2
+      authority_id: "AUTH-002"
+      path_or_identity: "docs/specification.md"
+      sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+      governs:
+        - "behavior"
+        - "acceptance"
+    - priority: 3
+      authority_id: "AUTH-003"
+      path_or_identity: "configs/scientific-contract.yaml"
+      sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+      governs:
+        - "units"
+        - "parameter_domain"
+        - "tolerance"
+software:
+  primary: "example 1.0"
+  operating_system: "example OS 1.0"
+  git: "example"
+hardware:
+  device: "one CPU"
+  memory: "1 GB"
+  wall_time_limit: "10 minutes"
+environment:
+  lockfile_path: null
+  lockfile_sha256: null
+  variables: []
+scientific_contract:
+  path: "configs/scientific-contract.yaml"
+  sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  units: "dimensionless"
+  coordinate_system: "example Cartesian"
+  parameter_domain: "closed interval 0 to 1"
+  numerical_tolerance: "absolute error at most 1e-8"
+  invariants:
+    - "preserve schema"
+    - "preserve stable sample identity"
+    - "produce finite output"
+random_seeds: [0]
+randomness:
+  policy: "deterministic replay"
+  initial_state_artifact: null
+  final_state_artifact: null
+  replay_evidence: "EVD-DETERMINISM-001"
+data:
+  dataset_id: "example-dataset"
+  dataset_version: "1.0"
+  dataset_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  schema_version: "example-schema 1.0"
+  schema_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  split_manifest_path: "data/example-split.yaml"
+  split_manifest_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  split_strategy: "grouped by base structure before expansion"
+  causal_group_id: "example-base-structure"
+  final_test_status: "not accessed"
+  ood_axes: []
+inputs:
+  - input_id: "INPUT-001"
+    path: "path/to/input"
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    schema: "example-schema 1.0"
+    units: "dimensionless"
+outputs:
+  - output_id: "OUTPUT-001"
+    path: "path/to/output"
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    schema: "example-format 1.0"
+    units: "dimensionless"
+  - output_id: "OUTPUT-002"
+    path: "delivery/evidence-report.md"
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    schema: "evidence-report 1.0"
+    units: null
+  - output_id: "OUTPUT-003"
+    path: "delivery/review-ledger.md"
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    schema: "review-ledger 1.0"
+    units: null
+    role: "post-review evidence-bundle artifact outside the implementation snapshot"
+  - output_id: "OUTPUT-004"
+    path: "delivery/experiment-manifest.yaml"
+    sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+    schema: "experiment-manifest 1.0"
+    units: null
+provenance:
+  generator_commit: "0000000000000000000000000000000000000000"
+  resolved_config_path: "configs/example.yaml"
+  resolved_config_sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+  parent_artifacts:
+    - "INPUT-001"
+  failed_attempt_ids:
+    - "BASELINE-001"
+  access_ledger_path: null
+  processing_history:
+    - operation: "example transformation"
+      code_identity: "0000000000000000000000000000000000000000"
+      input_ids:
+        - "INPUT-001"
+      output_ids:
+        - "OUTPUT-001"
+metrics:
+  - metric_id: "METRIC-001"
+    name: "absolute error"
+    formula: "absolute value of observed minus expected"
+    units: "dimensionless"
+    independent_unit: "example sample"
+    aggregation: "per independent sample"
+    improvement_direction: "lower"
+    decision_threshold: "at most 1e-8"
+baseline:
+  baseline_id: "BASELINE-001"
+  kind: "behavioral-change RED baseline"
+  command: "command --example"
+  working_directory: "repository root"
+  exit_code: 1
+  expected_failure: "missing example behavior"
+  observed_failure: "example behavior unavailable"
+  stdout_path: "evidence/raw/baseline.stdout.log"
+  stderr_path: "evidence/raw/baseline.stderr.log"
+commands:
+  - evidence_id: "EVD-TEST-001"
+    validation_class: "normal"
+    command: "command --example"
+    working_directory: "repository root"
+    exit_code: 0
+    passed: 1
+    failed: 0
+    skipped: 0
+    raw_log: "evidence/raw/normal.log"
+  - evidence_id: "EVD-BOUNDARY-001"
+    validation_class: "boundary"
+    command: "command --example-boundary"
+    working_directory: "repository root"
+    exit_code: 0
+    passed: 2
+    failed: 0
+    skipped: 0
+    raw_log: "evidence/raw/boundary.log"
+  - evidence_id: "EVD-INVALID-001"
+    validation_class: "invalid"
+    command: "command --example-invalid"
+    working_directory: "repository root"
+    exit_code: 0
+    passed: 2
+    failed: 0
+    skipped: 0
+    raw_log: "evidence/raw/invalid.log"
+  - evidence_id: "EVD-DETERMINISM-001"
+    validation_class: "determinism"
+    command: "command --example-replay --seed 0"
+    working_directory: "repository root"
+    exit_code: 0
+    passed: 1
+    failed: 0
+    skipped: 0
+    raw_log: "evidence/raw/determinism.log"
+  - evidence_id: "EVD-REGRESSION-001"
+    validation_class: "regression"
+    command: "command --example-regression"
+    working_directory: "repository root"
+    exit_code: 0
+    passed: 1
+    failed: 0
+    skipped: 0
+    raw_log: "evidence/raw/regression.log"
+  - evidence_id: "EVD-ANCHOR-001"
+    validation_class: "scientific_numerical"
+    command: "command --example-anchor"
+    working_directory: "repository root"
+    exit_code: 0
+    passed: 1
+    failed: 0
+    skipped: 0
+    raw_log: "evidence/raw/anchor.log"
+  - evidence_id: "EVD-GIT-001"
+    validation_class: "tool_quality"
+    command: "git diff --check"
+    working_directory: "repository root"
+    exit_code: 0
+    passed: 1
+    failed: 0
+    skipped: 0
+    raw_log: "evidence/raw/git-diff-check.log"
+  - evidence_id: "EVD-GIT-002"
+    validation_class: "tool_quality"
+    command: "git status --short --untracked-files=all"
+    working_directory: "repository root"
+    exit_code: 0
+    passed: 1
+    failed: 0
+    skipped: 0
+    raw_log: "evidence/raw/git-status.log"
+validation:
+  total: 10
+  passed: 10
+  failed: 0
+  skipped: 0
+  classes:
+    normal:
+      passed: 1
+      failed: 0
+      skipped: 0
+    boundary:
+      passed: 2
+      failed: 0
+      skipped: 0
+    invalid:
+      passed: 2
+      failed: 0
+      skipped: 0
+    determinism:
+      passed: 1
+      failed: 0
+      skipped: 0
+    regression:
+      passed: 1
+      failed: 0
+      skipped: 0
+    scientific_numerical:
+      passed: 1
+      failed: 0
+      skipped: 0
+    tool_quality:
+      passed: 2
+      failed: 0
+      skipped: 0
+scientific_anchors:
+  - evidence_id: "EVD-ANCHOR-001"
+    name: "asymmetric example anchor"
+    expected: 0.5
+    observed: 0.5
+    units: "dimensionless"
+    tolerance: "1e-8 absolute"
+    difference: 0.0
+    decision: "pass"
+failures_and_exclusions:
+  - record_id: "EVENT-001"
+    classification: "expected baseline failure"
+    status: "closed"
+    evidence: "evidence/raw/baseline.stderr.log"
+    disposition: "closed by verified implementation"
+unresolved:
+  - item_id: "UNRESOLVED-001"
+    description: "Production-scale performance was not assessed."
+    affected_claim: "production performance"
+    owner: "example-owner"
+    next_action: "run a separately authorized production benchmark"
+git:
+  status_command: "git status --short --untracked-files=all"
+  status_evidence_path: "evidence/raw/git-status.log"
+  diff_check_command: "git diff --check"
+  diff_check_exit_code: 0
+  staged_paths: []
+  unrelated_paths:
+    - "path/to/protected"
+review_record:
+  path: "delivery/review-ledger.md"
+  role: "post-review evidence-bundle artifact outside the implementation snapshot"
+  sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+review:
+  target_type: "dirty_snapshot"
+  target_identity: "SNAPSHOT-EXAMPLE-001"
+  reviewer: null
+  specification: "not_reviewed"
+  quality: "not_reviewed"
+  decision: "not_issued"
+  open_critical: null
+  open_important: null
+  open_minor: null
+  ledger_path: "delivery/review-ledger.md"
