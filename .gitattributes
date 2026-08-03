@@ -1,3 +1,4 @@
 .gitattributes text eol=lf
 paper_A_reliable_inverse_design/geometry_compiler_matlab/configs/*.json text eol=lf
 .qoder/skills/executing-research-experiments/** text eol=lf
+docs/superpowers/reports/qoder-research-skill/** text eol=lf
