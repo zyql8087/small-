@@ -83,17 +83,23 @@ Unit tests must prove `t(0)=c0`, `t(l)=c1`, and `t(2l)=c2`, including floating-p
 
 ### 3.3 Method 2: axial cell-size profile
 
-For `M2`, `t(z)` is uniform after the method projection and the z-direction cell-size profile follows S8. The compiler implements the published affine form
+For `M2`, `t(z)` is uniform after an orthogonal projection onto
+`c0=c1=c2`, and the z-direction unit-cell-size profile follows Supporting
+Information Equation S8:
 
 \[
-L_z(z)=L_{z,0}+w\frac{z}{l},
+\gamma(z)=1.5+\frac{z}{w},\qquad w\in(2,8).
 \]
 
-where the dimensionless base convention reported in the supplement is `Lz,0=1.5`. The archived data and Gate 0 benchmark determine the physical scale and allowed `w` interval. The code stores these values in configuration and records them in every manifest.
+The Small workbooks store the published `sigma` parameter in the column named
+`w`; no reciprocal or affine reparameterization is applied at the dataset
+boundary. Coordinates and `gamma` use the published normalized convention.
+Physical millimetres are introduced once through `reference_length_mm` at the
+compiler boundary.
 
 ### 3.4 Method 3: combined profile
 
-For `M3`, apply both the Method 1 threshold profile and Method 2 cell-size profile to the same field.
+For `M3`, apply the Method 1 threshold profile and the same denominator-form cell-size profile `gamma(z)=1.5+z/w` to the same field.
 
 ### 3.5 Solid convention
 
@@ -234,3 +240,10 @@ The dispatch Agent returns the commands, MATLAB release/toolbox inventory, test 
 ## 10. Approval record
 
 The user approved the implicit-field, sheet-TPMS, descriptor-recomputation route on 2026-07-28. This specification is the source for the subsequent MATLAB dispatch task and review checklist.
+
+### 2026-07-29 parameterization correction
+
+Visual verification of Small Supporting Information page 3, Equations S8-S9,
+showed that the archived `w` is the denominator parameter `sigma` in
+`gamma(z)=1.5+z/w`, with `w in (2,8)`. The earlier multiplier transcription
+was incorrect and must not be used by the compiler or its tests.

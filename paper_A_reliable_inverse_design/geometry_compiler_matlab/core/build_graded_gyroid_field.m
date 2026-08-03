@@ -1,0 +1,157 @@
+function field = build_graded_gyroid_field(projected, config, resolution)
+%BUILD_GRADED_GYROID_FIELD Sample the normalized graded-Gyroid field.
+%   The implementation uses implicit expansion of one-dimensional phase
+%   vectors so full X/Y/Z coordinate volumes are never retained.
+
+    INVALID_REQUEST = 'MATLABGyroid:InvalidRequest';
+    INVALID_GEOMETRY = 'MATLABGyroid:InvalidGeometry';
+
+    if nargin ~= 3
+        throw(MException(INVALID_REQUEST, ...
+            ['build_graded_gyroid_field requires projected parameters, ' ...
+            'config, and resolution']));
+    end
+    method = get_method(projected, INVALID_REQUEST);
+    [geometry, maximumResolution] = get_geometry_contract( ...
+        config, method, INVALID_REQUEST);
+    validate_resolution(resolution, maximumResolution, INVALID_GEOMETRY);
+    resolution = double(resolution);
+
+    domains = {geometry.domain_over_l.x, geometry.domain_over_l.y, ...
+        geometry.domain_over_l.z};
+    axisNames = {'x', 'y', 'z'};
+    axes = cell(1, 3);
+    for axisIndex = 1:3
+        domain = validate_domain(domains{axisIndex}, axisNames{axisIndex}, ...
+            INVALID_GEOMETRY);
+        rawIntervalCount = diff(domain) * resolution;
+        intervalCount = round(rawIntervalCount);
+        tolerance = 16 * eps(max(1, abs(rawIntervalCount)));
+        if abs(rawIntervalCount - intervalCount) > tolerance
+            throw(MException(INVALID_GEOMETRY, ...
+                ['domain spans times resolution must be integers; ' ...
+                '%s span=%g resolution=%g gives %g intervals'], ...
+                axisNames{axisIndex}, diff(domain), resolution, ...
+                rawIntervalCount));
+        end
+        axes{axisIndex} = linspace(domain(1), domain(2), intervalCount + 1);
+    end
+
+    field = struct();
+    field.method = method;
+    field.resolution = resolution;
+    field.x_over_l = axes{1};
+    field.y_over_l = axes{2};
+    field.z_over_l = axes{3};
+    field.spacing_over_l = 1 / resolution;
+    field.spacing_mm = config.reference_length_mm / resolution;
+    field.threshold = evaluate_threshold_profile( ...
+        field.z_over_l, projected);
+    field.cell_size_over_l = evaluate_cell_size_profile( ...
+        field.z_over_l, projected, config);
+
+    xPhase = 2 * pi * field.x_over_l / geometry.Lx_over_l;
+    yPhase = 2 * pi * field.y_over_l / geometry.Ly_over_l;
+    zPhase = 2 * pi * field.z_over_l ./ field.cell_size_over_l;
+
+    sinX = reshape(sin(xPhase), [], 1, 1);
+    cosX = reshape(cos(xPhase), [], 1, 1);
+    sinY = reshape(sin(yPhase), 1, [], 1);
+    cosY = reshape(cos(yPhase), 1, [], 1);
+    sinZ = reshape(sin(zPhase), 1, 1, []);
+    cosZ = reshape(cos(zPhase), 1, 1, []);
+    field.G = sinX .* cosY + sinY .* cosZ + sinZ .* cosX;
+
+    if ~isreal(field.G) || any(~isfinite(field.G(:)))
+        throw(MException(INVALID_GEOMETRY, ...
+            'graded-Gyroid field must contain finite real values'));
+    end
+end
+
+function method = get_method(projected, errorId)
+    if ~isstruct(projected) || ~isscalar(projected) || ...
+            ~isfield(projected, 'method')
+        throw(MException(errorId, ...
+            'projected parameters must be a scalar struct with method'));
+    end
+    method = validate_text_scalar(projected.method, 'projected.method', errorId);
+    if ~ismember(method, {'M1', 'M2', 'M3'})
+        throw(MException(errorId, ...
+            'projected.method must be one of {M1, M2, M3}'));
+    end
+end
+
+function [geometry, maximumResolution] = get_geometry_contract( ...
+        config, method, errorId)
+    if ~isstruct(config) || ~isscalar(config) || ...
+            ~isfield(config, 'geometry_parameters') || ...
+            ~isstruct(config.geometry_parameters) || ...
+            ~isscalar(config.geometry_parameters) || ...
+            ~isfield(config, 'method_bounds') || ...
+            ~isfield(config.method_bounds, method) || ...
+            ~isfield(config.method_bounds.(method), 'levels') || ...
+            ~isfield(config, 'reference_length_mm')
+        throw(MException(errorId, ...
+            'config does not contain the validated %s geometry contract', ...
+            method));
+    end
+    geometry = config.geometry_parameters;
+    requiredFields = {'domain_over_l', 'Lx_over_l', 'Ly_over_l'};
+    for fieldIndex = 1:numel(requiredFields)
+        if ~isfield(geometry, requiredFields{fieldIndex})
+            throw(MException(errorId, ...
+                'config.geometry_parameters missing %s', ...
+                requiredFields{fieldIndex}));
+        end
+    end
+    scalarFields = {'Lx_over_l', 'Ly_over_l'};
+    for fieldIndex = 1:numel(scalarFields)
+        value = geometry.(scalarFields{fieldIndex});
+        if ~isnumeric(value) || ~isscalar(value) || ~isreal(value) || ...
+                ~isfinite(value) || value <= 0
+            throw(MException(errorId, ...
+                'config.geometry_parameters.%s must be finite and positive', ...
+                scalarFields{fieldIndex}));
+        end
+    end
+    if ~isnumeric(config.reference_length_mm) || ...
+            ~isscalar(config.reference_length_mm) || ...
+            ~isreal(config.reference_length_mm) || ...
+            ~isfinite(config.reference_length_mm) || ...
+            config.reference_length_mm <= 0
+        throw(MException(errorId, ...
+            'config.reference_length_mm must be finite and positive'));
+    end
+    levels = config.method_bounds.(method).levels;
+    if ~isnumeric(levels) || isempty(levels) || any(~isfinite(levels(:)))
+        throw(MException(errorId, ...
+            'config.method_bounds.%s.levels must be finite numeric values', ...
+            method));
+    end
+    maximumResolution = max(double(levels(:)));
+end
+
+function validate_resolution(resolution, maximumResolution, errorId)
+    if ~isnumeric(resolution) || ~isscalar(resolution) || ...
+            ~isreal(resolution) || ~isfinite(resolution) || ...
+            resolution <= 0 || mod(resolution, 1) ~= 0 || ...
+            resolution > maximumResolution
+        throw(MException(errorId, ...
+            'resolution must be a positive integer no greater than %g', ...
+            maximumResolution));
+    end
+end
+
+function domain = validate_domain(value, axisName, errorId)
+    if ~isnumeric(value) || ~isvector(value) || numel(value) ~= 2 || ...
+            ~isreal(value) || any(~isfinite(value(:)))
+        throw(MException(errorId, ...
+            'domain_over_l.%s must be a finite real two-element vector', ...
+            axisName));
+    end
+    domain = double(value(:)');
+    if domain(1) >= domain(2)
+        throw(MException(errorId, ...
+            'domain_over_l.%s must be strictly increasing', axisName));
+    end
+end
