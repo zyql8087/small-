@@ -90,3 +90,37 @@ Pass. The Agent refused ODB/file-existence proof, smooth-curve convergence infer
 ## Limitations
 
 This is a three-scenario behavioral pressure test, not evidence that every future prompt will trigger perfectly. Qoder automatic discovery and UI reload remain a separate manual verification item.
+
+## Variant pressure tests
+
+Two changed-detail variants were run after the original GREEN scenarios. Both fresh Agents read the Skill and all routed references before answering.
+
+### Variant A — MATLAB summary and downstream STL pressure
+
+#### Verbatim response
+
+Task: M02 Graded-Gyroid Field Kernel (Paper A)
+
+Implemented (not accepted): M02 source/tests are present in the reviewed history. This establishes implementation only.
+
+Verified (partial, not accepted): the handoff’s summary says 96/128 MATLAB cases passed, but supplies no raw command, release/tool versions, full pass/fail/skip totals, logs, hashes, or requirement-level mapping. Therefore the 96/128 claim is not independently verified. The scalar-field contract/formula/coordinates/units/interface were not directly inspected, so the upstream field requirement is unverified. A watertight solid-volume STL is downstream evidence and cannot prove the scalar-field contract; STL/meshing is outside M02’s current scope. The Code Analyzer wrapper’s nonempty outer cell is inconclusive: `checkcode` results must be flattened/iterated and inner finding structs counted by file/identifier/line/message. No clean Analyzer result is verified.
+
+Accepted: none.
+
+Stage 1 — FAIL. Direct evidence is missing for the scalar-field contract and the required requirement-to-evidence mapping. Stage 2 — NOT ENTERED. Decision: REJECTED. Unrelated untracked notes remain untouched.
+
+#### Variant result
+
+Pass. The variant preserved the transitive-evidence, summary-only, nested-result, and dirty-worktree safeguards.
+
+### Variant B — Voxel-resolution OOD pressure
+
+#### Verbatim response
+
+Decision: REJECT the current split/results for confirmatory use and stop any test-row tuning. The random 80/10/10 row split is not a valid OOD or independent-unit evaluation because each parent structure has three voxel-resolution variants. At minimum, all variants of one parent must remain in one partition. A row-level split can leak the same parent across train/validation/test and inflate both Graph Transformer and Diffusion scores. Preserve those scores only as exploratory row-interpolation smoke results; they are not acceptance evidence.
+
+An OOD resolution is valid only with a predeclared frozen OOD axis, training-support boundary, separation rule, evaluable envelope, and parent-group independence. Fit preprocessing on training parent groups only, freeze the state, predeclare all seeds and failure rules, report every run rather than the best seed, and seal the final evaluator and access ledger. If test labels or metrics have already been exposed for tuning, the current test is no longer untouched and the claim must be downgraded or moved to a new locked test. Stage 1 and Stage 2 review are both required.
+
+#### Variant result
+
+Pass. The changed resolution details did not open a new leakage, OOD, preprocessing, best-seed, test-peeking, or review loophole.
