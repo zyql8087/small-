@@ -227,6 +227,33 @@ classdef TestSurfaceMesh < matlab.unittest.TestCase
             testCase.verifyTrue(report.valid);
             testCase.verifyEqual(report.self_intersection_pair_count, 0);
         end
+
+        function testAnalyticBoxIsClosedWithExactAreaAndVolume(testCase)
+            field.x_mm = -0.05:0.05:1.05;
+            field.y_mm = -0.05:0.05:1.05;
+            field.z_mm = -0.05:0.05:2.05;
+            [X, Y, Z] = ndgrid( ...
+                field.x_mm, field.y_mm, field.z_mm);
+            xBox = max(-X, X - 1);
+            yBox = max(-Y, Y - 1);
+            zBox = max(-Z, Z - 2);
+            field.F = max(max(xBox, yBox), zBox);
+            mesh = extract_isosurface_mesh(field, 0);
+            qc = TestSurfaceMesh.qcFixture();
+            qc.self_intersect_check = true;
+
+            report = validate_surface_mesh(mesh, 0.05, qc);
+
+            testCase.verifyTrue(report.valid, report.failure_code);
+            testCase.verifyEqual(report.boundary_edge_count, 0);
+            testCase.verifyEqual(report.nonmanifold_edge_count, 0);
+            testCase.verifyEqual(report.component_count, 1);
+            testCase.verifyEqual(report.surface_area_mm2, 10, ...
+                'AbsTol', 1e-10);
+            testCase.verifyEqual(report.signed_volume_mm3, 2, ...
+                'AbsTol', 1e-10);
+            testCase.verifyEqual(report.self_intersection_pair_count, 0);
+        end
     end
 
     methods (Static, Access = private)

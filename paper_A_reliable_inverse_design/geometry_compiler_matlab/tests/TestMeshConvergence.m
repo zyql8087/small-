@@ -73,6 +73,21 @@ classdef TestMeshConvergence < matlab.unittest.TestCase
             testCase.verifyTrue(metrics.topology_stable);
         end
 
+        function testClosedAndOpenMeshesAreNotTopologyStable(testCase)
+            closed = TestMeshConvergence.tetrahedronFixture();
+            open = closed;
+            open.faces(end, :) = [];
+
+            metrics = compare_mesh_convergence(closed, open);
+
+            testCase.verifyFalse(metrics.topology_stable);
+            testCase.verifyEqual(metrics.boundary_edge_count_a, 0);
+            testCase.verifyGreaterThan(metrics.boundary_edge_count_b, 0);
+            testCase.verifyNotEqual( ...
+                metrics.euler_characteristic_a, ...
+                metrics.euler_characteristic_b);
+        end
+
         function testAllMethodsProduceDeterministicSmokeEvidence(testCase)
             cases = { ...
                 'M1', [0.0700794, 0.1246504, 0.0693255, 0]; ...

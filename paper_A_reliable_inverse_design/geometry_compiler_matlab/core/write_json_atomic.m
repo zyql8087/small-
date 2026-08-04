@@ -3,9 +3,9 @@ function write_json_atomic(value, finalPath)
 
     errorId = 'MATLABGyroid:JSONWriteError';
     finalPath = validate_text_scalar(finalPath, 'json_path', errorId);
-    if exist(finalPath, 'file') == 2
+    if path_exists(finalPath)
         throw(MException('MATLABGyroid:OutputConflict', ...
-            'refusing to overwrite existing JSON: %s', finalPath));
+            'refusing to overwrite existing JSON leaf: %s', finalPath));
     end
     outputDirectory = fileparts(finalPath);
     if isempty(outputDirectory)
@@ -17,6 +17,8 @@ function write_json_atomic(value, finalPath)
     end
     temporaryPath = [tempname(outputDirectory), '.json'];
     temporaryCleanup = onCleanup(@() delete_if_exists(temporaryPath));
+    publishedFinal = false;
+    movedNestedPath = '';
     fileId = fopen(temporaryPath, 'w', 'n', 'UTF-8');
     if fileId == -1
         throw(MException(errorId, ...
@@ -30,14 +32,35 @@ function write_json_atomic(value, finalPath)
             throw(MException(errorId, 'cannot close temporary JSON'));
         end
         jsondecode(fileread(temporaryPath));
+        if path_exists(finalPath)
+            throw(MException('MATLABGyroid:OutputConflict', ...
+                'JSON target appeared before publication: %s', finalPath));
+        end
         [moved, message] = movefile(temporaryPath, finalPath);
         if ~moved
             throw(MException(errorId, ...
                 'cannot publish JSON: %s', message));
         end
+        [~, temporaryName, temporaryExtension] = fileparts(temporaryPath);
+        if exist(finalPath, 'file') == 2 && ~isfolder(finalPath)
+            publishedFinal = true;
+        elseif isfolder(finalPath)
+            movedNestedPath = fullfile(finalPath, ...
+                [temporaryName, temporaryExtension]);
+            throw(MException('MATLABGyroid:OutputConflict', ...
+                'JSON target became a directory during publication'));
+        else
+            throw(MException(errorId, ...
+                'JSON publication did not create the exact final file'));
+        end
+        jsondecode(fileread(finalPath));
     catch cause
         close_if_open(fileId);
         delete_if_exists(temporaryPath);
+        delete_if_exists(movedNestedPath);
+        if publishedFinal
+            delete_if_exists(finalPath);
+        end
         if startsWith(cause.identifier, 'MATLABGyroid:')
             rethrow(cause);
         end
@@ -47,6 +70,10 @@ function write_json_atomic(value, finalPath)
         throw(wrapped);
     end
     clear fileCleanup temporaryCleanup;
+end
+
+function tf = path_exists(path)
+    tf = exist(path, 'file') ~= 0 || exist(path, 'dir') ~= 0;
 end
 
 function close_if_open(fileId)

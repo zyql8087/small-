@@ -25,9 +25,11 @@ production integration fixture.
 }
 ```
 
-`output_dir` is resolved beneath the directory containing the request JSON.
-It cannot escape that directory. Existing response, manifest, or STL paths
-are never overwritten.
+A relative `output_dir` is resolved from the directory containing the request
+JSON. Absolute paths are accepted, and canonicalization resolves `.` and `..`;
+the compiler does not impose a directory sandbox. Existing response, manifest,
+or STL path leaves (including directories with those names) are never
+overwritten.
 
 From PowerShell, replace the two example JSON paths with absolute paths:
 
@@ -62,11 +64,20 @@ temporary paths. Two isolated executions of the same semantic geometry must
 therefore have identical geometry identities and byte-identical STL SHA-256
 values, even when their request IDs differ.
 
-The manifest records the half-step grid, physical spacing, 26-connected
-sampled-solid component count, surface topology metrics, float32-degenerate
-facet count, self-intersection result, STL byte length, triangle count, and
-artifact SHA-256. Binary STL vertices are float32; a face that collapses only
-after float32 conversion fails before publication as `DEGENERATE_MESH`.
+The manifest records normalized and physical bounds, reference length, the
+half-step grid, physical spacing, interior solid/void counts and fraction,
+26-connected solid and void component counts, surface topology metrics,
+float32-degenerate facet count, self-intersection result, STL byte length,
+triangle count, and artifact SHA-256. The response repeats field diagnostics
+and solid/void connectivity evidence. Binary STL vertices are float32; a face
+that collapses only after float32 conversion fails before publication as
+`DEGENERATE_MESH`.
+
+Binary STL verification checks the fixed 80-byte header, exact file length,
+facet attributes, finite payload, and the exact float32 normal/vertex payload
+against the validated mesh. JSON and STL publication use temporary files and
+remove only artifacts owned by the current request if final verification
+fails.
 
 ## Fail-closed behavior
 
@@ -106,12 +117,16 @@ directories are not recursively cleaned.
 
 `compare_mesh_convergence` reports deterministic bidirectional maximum/RMS
 sampled-vertex distance proxies, relative surface-area and volume changes,
-and face-component stability. It does not embed a universal publication
-tolerance.
+and a topology signature containing component count, boundary-edge count,
+non-manifold-edge count, Euler characteristic, and closed-two-manifold state.
+It does not embed a universal publication tolerance.
 
-The unit suite uses internal levels 12 and 16 only as inexpensive M1/M2/M3
-smoke tests. These are not publication convergence evidence. Production
-resolution studies must use the configured levels:
+The unit suite uses internal levels 12 and 16 as inexpensive M1/M2/M3 field
+and convergence smoke tests. It also compiles screened M1, M2, and M3 records
+at production resolution 96 through the complete publication path and checks
+an analytic 1 x 1 x 2 mm box against exact area and volume. These checks are
+release evidence, not a substitute for publication convergence studies, which
+must use the configured levels:
 
 - M1: 96, 128, 160;
 - M2: 96, 128, 160;

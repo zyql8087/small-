@@ -10,7 +10,7 @@ function version = compiler_version()
 %
 %   Example:
 %       v = compiler_version();
-%       % Returns: v = 'matlab-gyroid-0.1.0'
+%       % Returns: v = 'matlab-gyroid-0.2.0'
 %
 %   See also: load_compiler_config
 

@@ -134,6 +134,34 @@ classdef TestCompilerPipeline < matlab.unittest.TestCase
                 fixture.dir, '**', '*.manifest.json')));
         end
 
+        function testJsonDirectoryTargetRejectedWithoutNestedArtifact(testCase)
+            fixture = TestCompilerPipeline.tempFixture();
+            target = fullfile(fixture.dir, 'target.json');
+            mkdir(target);
+
+            testCase.verifyError(@() write_json_atomic( ...
+                struct('valid', false), target), ...
+                'MATLABGyroid:OutputConflict');
+
+            listing = dir(target);
+            testCase.verifyEmpty(listing(~[listing.isdir]));
+        end
+
+        function testResponseDirectoryRejectedBeforeCompilation(testCase)
+            fixture = TestCompilerPipeline.tempFixture();
+            requestPath = fullfile(fixture.dir, 'malformed.json');
+            responsePath = fullfile(fixture.dir, 'response.json');
+            TestCompilerPipeline.writeText(requestPath, '{ malformed ');
+            mkdir(responsePath);
+
+            testCase.verifyError(@() run_geometry_compiler( ...
+                requestPath, responsePath), ...
+                'MATLABGyroid:OutputConflict');
+
+            listing = dir(responsePath);
+            testCase.verifyEmpty(listing(~[listing.isdir]));
+        end
+
         function testMethodFailureWritesResponseWithoutArtifacts(testCase)
             fixture = TestCompilerPipeline.tempFixture();
             request = TestCompilerPipeline.validRequest();
@@ -187,8 +215,93 @@ classdef TestCompilerPipeline < matlab.unittest.TestCase
                 firstResponse.mesh_qc.solid_connectivity, 26);
             testCase.verifyEqual( ...
                 firstResponse.mesh_qc.solid_component_count, 1);
+            testCase.verifyEqual( ...
+                firstResponse.mesh_qc.void_connectivity, 26);
+            testCase.verifyGreaterThanOrEqual( ...
+                firstResponse.mesh_qc.void_component_count, 1);
+            testCase.verifyTrue(isstruct(firstResponse.diagnostics));
+            testCase.verifyEqual( ...
+                firstResponse.diagnostics.interior_cell_count, ...
+                firstResponse.diagnostics.interior_solid_count + ...
+                firstResponse.diagnostics.interior_void_count);
+
+            manifest = jsondecode(fileread( ...
+                firstResponse.artifacts.manifest_path));
+            testCase.verifyEqual( ...
+                manifest.discretization.reference_length_mm, 1);
+            testCase.verifyEqual( ...
+                manifest.discretization.physical_bounds_mm.x(:)', [0, 1]);
+            testCase.verifyEqual( ...
+                manifest.discretization.physical_bounds_mm.y(:)', [0, 1]);
+            testCase.verifyEqual( ...
+                manifest.discretization.physical_bounds_mm.z(:)', [0, 2]);
+            testCase.verifyEqual( ...
+                manifest.discretization.interior_cell_count, ...
+                manifest.discretization.interior_solid_count + ...
+                manifest.discretization.interior_void_count);
+            testCase.verifyEqual( ...
+                manifest.discretization.void_connectivity, 26);
+            testCase.verifyEqual( ...
+                manifest.discretization.void_component_count, ...
+                firstResponse.mesh_qc.void_component_count);
             testCase.verifyEqual(firstResponse.descriptors, 'not_computed');
             testCase.verifyEqual(firstResponse.abaqus_gate0, 'not_computed');
+        end
+
+        function testProductionM2CompilerPassesM03Gate(testCase)
+            fixture = TestCompilerPipeline.tempFixture();
+            request = TestCompilerPipeline.validRequest();
+            request.request_id = 'm03-m2-production-001';
+            request.method = 'M2';
+            request.c0 = 0.066666;
+            request.c1 = 0.066666;
+            request.c2 = 0.066666;
+            request.w = 3.54258;
+            requestPath = fullfile(fixture.dir, 'request.json');
+            responsePath = fullfile(fixture.dir, 'response.json');
+            TestCompilerPipeline.writeJson(requestPath, request);
+
+            response = run_geometry_compiler(requestPath, responsePath);
+
+            testCase.assertTrue(response.valid, ...
+                sprintf('M2 compile failed [%s]: %s', ...
+                response.failure_code, response.failure_message));
+            testCase.verifyEqual(response.mesh_qc.component_count, 1);
+            testCase.verifyEqual(response.mesh_qc.solid_component_count, 1);
+            testCase.verifyEqual( ...
+                response.mesh_qc.float32_degenerate_face_count, 0);
+            testCase.verifyEqual( ...
+                response.mesh_qc.self_intersection_pair_count, 0);
+            testCase.verifyTrue(isfile(response.artifacts.stl_path));
+            testCase.verifyTrue(isfile(response.artifacts.manifest_path));
+        end
+
+        function testProductionM3CompilerPassesM03Gate(testCase)
+            fixture = TestCompilerPipeline.tempFixture();
+            request = TestCompilerPipeline.validRequest();
+            request.request_id = 'm03-m3-production-001';
+            request.method = 'M3';
+            request.c0 = 0.057717;
+            request.c1 = 0.118714;
+            request.c2 = 0.188234;
+            request.w = 6.71552;
+            requestPath = fullfile(fixture.dir, 'request.json');
+            responsePath = fullfile(fixture.dir, 'response.json');
+            TestCompilerPipeline.writeJson(requestPath, request);
+
+            response = run_geometry_compiler(requestPath, responsePath);
+
+            testCase.assertTrue(response.valid, ...
+                sprintf('M3 compile failed [%s]: %s', ...
+                response.failure_code, response.failure_message));
+            testCase.verifyEqual(response.mesh_qc.component_count, 1);
+            testCase.verifyEqual(response.mesh_qc.solid_component_count, 1);
+            testCase.verifyEqual( ...
+                response.mesh_qc.float32_degenerate_face_count, 0);
+            testCase.verifyEqual( ...
+                response.mesh_qc.self_intersection_pair_count, 0);
+            testCase.verifyTrue(isfile(response.artifacts.stl_path));
+            testCase.verifyTrue(isfile(response.artifacts.manifest_path));
         end
     end
 

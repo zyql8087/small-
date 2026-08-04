@@ -65,6 +65,71 @@ classdef TestBinarySTL < matlab.unittest.TestCase
             testCase.verifyEmpty(warningMessage);
             testCase.verifyEmpty(warningId);
         end
+
+        function testDirectoryFinalPathRejectedWithoutNestedArtifact(testCase)
+            fixture = TestBinarySTL.tempFixture();
+            finalPath = fullfile(fixture.dir, 'mesh.stl');
+            mkdir(finalPath);
+
+            testCase.verifyError(@() export_binary_stl( ...
+                TestBinarySTL.tetrahedronFixture(), finalPath), ...
+                'MATLABGyroid:OutputConflict');
+
+            listing = dir(finalPath);
+            testCase.verifyEmpty(listing(~[listing.isdir]));
+        end
+
+        function testCorruptHeaderRejected(testCase)
+            fixture = TestBinarySTL.tempFixture();
+            path = fullfile(fixture.dir, 'mesh.stl');
+            mesh = TestBinarySTL.tetrahedronFixture();
+            export_binary_stl(mesh, path);
+            TestBinarySTL.writeSingleByte(path, 0, uint8('X'));
+
+            testCase.verifyError(@() verify_binary_stl(path), ...
+                'MATLABGyroid:STLVerificationError');
+        end
+
+        function testFinitePayloadMismatchRejectedAgainstMesh(testCase)
+            fixture = TestBinarySTL.tempFixture();
+            path = fullfile(fixture.dir, 'mesh.stl');
+            mesh = TestBinarySTL.tetrahedronFixture();
+            export_binary_stl(mesh, path);
+            TestBinarySTL.writeSingleValue(path, 96, single(0.25));
+
+            testCase.verifyError(@() verify_binary_stl(path, mesh), ...
+                'MATLABGyroid:STLVerificationError');
+        end
+
+        function testFinalVerificationFailureRemovesOwnedArtifact(testCase)
+            fixture = TestBinarySTL.tempFixture();
+            shadowDirectory = fullfile(fixture.dir, 'shadow');
+            mkdir(shadowDirectory);
+            TestBinarySTL.writeTextFile(fullfile( ...
+                shadowDirectory, 'verify_binary_stl.m'), sprintf([ ...
+                'function summary = verify_binary_stl(path, varargin)\n' ...
+                'persistent callCount; if isempty(callCount), callCount=0; end\n' ...
+                'callCount=callCount+1;\n' ...
+                'if callCount==1\n' ...
+                'info=dir(path); summary=struct(''byte_length'',info.bytes,' ...
+                '''triangle_count'',4,''all_finite'',true,' ...
+                '''sha256'',repmat(''0'',1,64));\n' ...
+                'else\n' ...
+                'error(''MATLABGyroid:STLVerificationError'',' ...
+                '''forced final verification failure'');\n' ...
+                'end\nend\n']));
+            addpath(shadowDirectory, '-begin');
+            clear verify_binary_stl;
+            pathCleanup = onCleanup(@() ...
+                TestBinarySTL.removeShadow(shadowDirectory));
+            finalPath = fullfile(fixture.dir, 'owned.stl');
+
+            testCase.verifyError(@() export_binary_stl( ...
+                TestBinarySTL.tetrahedronFixture(), finalPath), ...
+                'MATLABGyroid:STLVerificationError');
+            testCase.verifyFalse(isfile(finalPath));
+            clear pathCleanup;
+        end
     end
 
     methods (Static, Access = private)
@@ -91,6 +156,34 @@ classdef TestBinarySTL < matlab.unittest.TestCase
             assert(fileId ~= -1);
             cleanup = onCleanup(@() fclose(fileId));
             fwrite(fileId, bytes, 'uint8');
+        end
+
+        function writeSingleByte(path, offset, value)
+            fileId = fopen(path, 'r+b', 'ieee-le');
+            assert(fileId ~= -1);
+            cleanup = onCleanup(@() fclose(fileId));
+            assert(fseek(fileId, offset, 'bof') == 0);
+            fwrite(fileId, value, 'uint8');
+        end
+
+        function writeSingleValue(path, offset, value)
+            fileId = fopen(path, 'r+b', 'ieee-le');
+            assert(fileId ~= -1);
+            cleanup = onCleanup(@() fclose(fileId));
+            assert(fseek(fileId, offset, 'bof') == 0);
+            fwrite(fileId, value, 'single');
+        end
+
+        function writeTextFile(path, value)
+            fileId = fopen(path, 'w');
+            assert(fileId ~= -1);
+            cleanup = onCleanup(@() fclose(fileId));
+            fprintf(fileId, '%s', value);
+        end
+
+        function removeShadow(path)
+            rmpath(path);
+            clear verify_binary_stl;
         end
     end
 end

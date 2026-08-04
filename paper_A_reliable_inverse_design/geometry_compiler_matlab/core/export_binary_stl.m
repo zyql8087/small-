@@ -3,9 +3,9 @@ function summary = export_binary_stl(mesh, finalPath)
 
     errorId = 'MATLABGyroid:STLSerializationError';
     finalPath = validate_text_scalar(finalPath, 'final_path', errorId);
-    if exist(finalPath, 'file') == 2
+    if path_exists(finalPath)
         throw(MException('MATLABGyroid:OutputConflict', ...
-            'refusing to overwrite existing STL: %s', finalPath));
+            'refusing to overwrite existing STL leaf: %s', finalPath));
     end
     outputDirectory = fileparts(finalPath);
     if isempty(outputDirectory)
@@ -18,6 +18,8 @@ function summary = export_binary_stl(mesh, finalPath)
     [vertices, faces] = validate_mesh(mesh, errorId);
     temporaryPath = [tempname(outputDirectory), '.stl'];
     temporaryCleanup = onCleanup(@() delete_if_exists(temporaryPath));
+    publishedFinal = false;
+    movedNestedPath = '';
     fileId = fopen(temporaryPath, 'wb', 'ieee-le');
     if fileId == -1
         throw(MException(errorId, ...
@@ -25,21 +27,12 @@ function summary = export_binary_stl(mesh, finalPath)
     end
     fileCleanup = onCleanup(@() close_if_open(fileId));
     try
-        header = zeros(1, 80, 'uint8');
-        label = uint8('MATLABGyroid continuous CSG STL');
-        header(1:numel(label)) = label;
+        header = binary_stl_header();
         fwrite(fileId, header, 'uint8');
         fwrite(fileId, uint32(size(faces, 1)), 'uint32');
         for faceIndex = 1:size(faces, 1)
-            triangle = single(vertices(faces(faceIndex, :), :));
-            normal = cross(double(triangle(2, :) - triangle(1, :)), ...
-                double(triangle(3, :) - triangle(1, :)));
-            normalNorm = norm(normal);
-            if ~isfinite(normalNorm) || normalNorm == 0
-                throw(MException(errorId, ...
-                    'cannot serialize a degenerate STL triangle'));
-            end
-            normal = single(normal ./ normalNorm);
+            [normal, triangle] = binary_stl_facet( ...
+                vertices, faces(faceIndex, :), errorId);
             fwrite(fileId, normal, 'single');
             fwrite(fileId, triangle', 'single');
             fwrite(fileId, uint16(0), 'uint16');
@@ -48,16 +41,38 @@ function summary = export_binary_stl(mesh, finalPath)
             throw(MException(errorId, ...
                 'cannot close temporary binary STL'));
         end
-        verify_binary_stl(temporaryPath);
+        expectedMesh = struct('vertices', vertices, 'faces', faces);
+        verify_binary_stl(temporaryPath, expectedMesh);
+        if path_exists(finalPath)
+            throw(MException('MATLABGyroid:OutputConflict', ...
+                'STL target appeared before publication: %s', finalPath));
+        end
         [moved, message] = movefile(temporaryPath, finalPath);
         if ~moved
             throw(MException(errorId, ...
                 'cannot publish binary STL: %s', message));
         end
-        summary = verify_binary_stl(finalPath);
+        [~, temporaryName, temporaryExtension] = ...
+            fileparts(temporaryPath);
+        if exist(finalPath, 'file') == 2 && ~isfolder(finalPath)
+            publishedFinal = true;
+        elseif isfolder(finalPath)
+            movedNestedPath = fullfile(finalPath, ...
+                [temporaryName, temporaryExtension]);
+            throw(MException('MATLABGyroid:OutputConflict', ...
+                'STL target became a directory during publication'));
+        else
+            throw(MException(errorId, ...
+                'STL publication did not create the exact final file'));
+        end
+        summary = verify_binary_stl(finalPath, expectedMesh);
     catch cause
         close_if_open(fileId);
         delete_if_exists(temporaryPath);
+        delete_if_exists(movedNestedPath);
+        if publishedFinal
+            delete_if_exists(finalPath);
+        end
         if startsWith(cause.identifier, 'MATLABGyroid:')
             rethrow(cause);
         end
@@ -67,6 +82,10 @@ function summary = export_binary_stl(mesh, finalPath)
         throw(wrapped);
     end
     clear fileCleanup temporaryCleanup;
+end
+
+function tf = path_exists(path)
+    tf = exist(path, 'file') ~= 0 || exist(path, 'dir') ~= 0;
 end
 
 function [vertices, faces] = validate_mesh(mesh, errorId)
