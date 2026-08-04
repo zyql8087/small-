@@ -1,7 +1,0 @@
-curve_id,load_case,deployment,response_axis
-0,bending,0.3,z
-1,bending,0.6,z
-2,bending,0.9,z
-3,axial,0.3,x
-4,axial,0.6,x
-5,axial,0.9,x

@@ -1,44 +1,40 @@
-# ───────────── small++ (Origami / Miura) workspace .gitignore ─────────────
-# Goal: track code, configs, docs and result summaries; ignore large binaries
-# and regenerable artifacts so the repo stays lean.
+# TPMS workspace: keep source, configs, docs, and compact result summaries;
+# ignore large or regenerable artifacts.
 
-# ── Python ──
+# Python
 __pycache__/
 *.py[cod]
 *.egg-info/
 .ipynb_checkpoints/
 
-# ── Trained model weights (the main bulk: ~1.3 GB of checkpoints) ──
+# Trained model weights
 *.pth
 *.pt
 *.ckpt
 
-# ── Packed datasets / scalers (regenerable from external + prepare_*.py) ──
+# Packed datasets and scalers
 *.npz
+*.joblib
+*.pkl
 
-# ── Raw SWOMPS simulation outputs (force-displacement CSV batches get huge) ──
+# Simulation outputs and logs
 **/raw_curves/
 **/raw_curves_*/
-
-# ── Logs & scratch ──
 *.log
 *.err.log
 **/logs/
+
+# Scratch and generated workspace state
 tmp/
 tmp_artifacts/
-start_process_probe.txt
 .workspace_cache/
 .worktrees/
-docs/superpowers/reports/*-workspace-reorganization-before.json
+start_process_probe.txt
 
-# ── Third-party upstream clone ──
-# external/ holds the SWOMPS simulator + GenerateOrigamiDataSet, which is itself
-# a git clone (nested .git) with its own provenance and is large/re-cloneable.
-# Ignored to avoid embedded-repo gitlinks and bloat. Remove this line (and the
-# nested .git) if you want to vendor it into this repo.
+# External third-party material
 external/
 
-# ── IDE / OS ──
+# IDE / OS
 .idea/
 .vscode/
 .cursor/

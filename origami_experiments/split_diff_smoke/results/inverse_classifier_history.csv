@@ -1,2 +1,0 @@
-epoch,train_total,train_pattern_acc,train_m_acc,train_n_acc,val_total,val_pattern_acc,val_m_acc,val_n_acc
-1,0.845456337928772,0.7703125,0.380859375,0.51875,0.699690580368042,0.903125,0.4171875,0.640625
