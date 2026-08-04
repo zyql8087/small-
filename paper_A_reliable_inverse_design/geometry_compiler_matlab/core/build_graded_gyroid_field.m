@@ -45,22 +45,11 @@ function field = build_graded_gyroid_field(projected, config, resolution)
     field.z_over_l = axes{3};
     field.spacing_over_l = 1 / resolution;
     field.spacing_mm = config.reference_length_mm / resolution;
-    field.threshold = evaluate_threshold_profile( ...
-        field.z_over_l, projected);
-    field.cell_size_over_l = evaluate_cell_size_profile( ...
-        field.z_over_l, projected, config);
-
-    xPhase = 2 * pi * field.x_over_l / geometry.Lx_over_l;
-    yPhase = 2 * pi * field.y_over_l / geometry.Ly_over_l;
-    zPhase = 2 * pi * field.z_over_l ./ field.cell_size_over_l;
-
-    sinX = reshape(sin(xPhase), [], 1, 1);
-    cosX = reshape(cos(xPhase), [], 1, 1);
-    sinY = reshape(sin(yPhase), 1, [], 1);
-    cosY = reshape(cos(yPhase), 1, [], 1);
-    sinZ = reshape(sin(zPhase), 1, 1, []);
-    cosZ = reshape(cos(zPhase), 1, 1, []);
-    field.G = sinX .* cosY + sinY .* cosZ + sinZ .* cosX;
+    sample = evaluate_continuous_graded_gyroid(projected, config, ...
+        field.x_over_l, field.y_over_l, field.z_over_l);
+    field.threshold = sample.threshold;
+    field.cell_size_over_l = sample.cell_size_over_l;
+    field.G = sample.G;
 
     if ~isreal(field.G) || any(~isfinite(field.G(:)))
         throw(MException(INVALID_GEOMETRY, ...
