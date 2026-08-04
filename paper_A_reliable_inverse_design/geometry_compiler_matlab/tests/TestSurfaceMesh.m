@@ -71,5 +71,105 @@ classdef TestSurfaceMesh < matlab.unittest.TestCase
             testCase.verifyError(@() extract_isosurface_mesh(field, 0), ...
                 'MATLABGyroid:EmptyMesh');
         end
+
+        function testClosedTetrahedronPassesTopologyGate(testCase)
+            mesh = TestSurfaceMesh.tetrahedronFixture();
+            report = validate_surface_mesh( ...
+                mesh, 0.1, TestSurfaceMesh.qcFixture());
+
+            testCase.verifyTrue(report.valid);
+            testCase.verifyEqual(report.failure_code, '');
+            testCase.verifyEqual(report.boundary_edge_count, 0);
+            testCase.verifyEqual(report.nonmanifold_edge_count, 0);
+            testCase.verifyEqual(report.component_count, 1);
+            testCase.verifyEqual(report.signed_volume_mm3, 1 / 6, ...
+                'AbsTol', 100 * eps);
+        end
+
+        function testOpenMeshRejected(testCase)
+            mesh = TestSurfaceMesh.tetrahedronFixture();
+            mesh.faces(end, :) = [];
+            report = validate_surface_mesh( ...
+                mesh, 0.1, TestSurfaceMesh.qcFixture());
+
+            testCase.verifyFalse(report.valid);
+            testCase.verifyEqual(report.failure_code, 'OPEN_MESH');
+            testCase.verifyGreaterThan(report.boundary_edge_count, 0);
+        end
+
+        function testDegenerateFaceRejected(testCase)
+            mesh = TestSurfaceMesh.tetrahedronFixture();
+            mesh.faces(1, :) = [1, 1, 2];
+            report = validate_surface_mesh( ...
+                mesh, 0.1, TestSurfaceMesh.qcFixture());
+
+            testCase.verifyFalse(report.valid);
+            testCase.verifyEqual(report.failure_code, 'DEGENERATE_MESH');
+        end
+
+        function testDuplicateFaceRejected(testCase)
+            mesh = TestSurfaceMesh.tetrahedronFixture();
+            mesh.faces(end + 1, :) = mesh.faces(1, :);
+            report = validate_surface_mesh( ...
+                mesh, 0.1, TestSurfaceMesh.qcFixture());
+
+            testCase.verifyFalse(report.valid);
+            testCase.verifyEqual(report.failure_code, 'DUPLICATE_FACE');
+            testCase.verifyEqual(report.duplicate_face_count, 1);
+        end
+
+        function testNonmanifoldSharedEdgeRejected(testCase)
+            first = TestSurfaceMesh.tetrahedronFixture();
+            secondVertices = [0 0 0;1 0 0;0 -1 0;0 0 -1];
+            secondFaces = [1 3 2;1 2 4;2 3 4;3 1 4];
+            mesh.vertices = [first.vertices; secondVertices(3:4, :)];
+            mesh.faces = [first.faces; remap_second(secondFaces)];
+            report = validate_surface_mesh( ...
+                mesh, 0.1, TestSurfaceMesh.qcFixture());
+
+            testCase.verifyFalse(report.valid);
+            testCase.verifyEqual(report.failure_code, 'NONMANIFOLD_MESH');
+            testCase.verifyGreaterThan(report.nonmanifold_edge_count, 0);
+        end
+
+        function testDisconnectedClosedComponentsRejected(testCase)
+            first = TestSurfaceMesh.tetrahedronFixture();
+            mesh.vertices = [first.vertices; first.vertices + 3];
+            mesh.faces = [first.faces; first.faces + 4];
+            report = validate_surface_mesh( ...
+                mesh, 0.1, TestSurfaceMesh.qcFixture());
+
+            testCase.verifyFalse(report.valid);
+            testCase.verifyEqual(report.failure_code, 'DISCONNECTED_SOLID');
+            testCase.verifyEqual(report.component_count, 2);
+        end
+
+        function testLocallyInconsistentOrientationRejected(testCase)
+            mesh = TestSurfaceMesh.tetrahedronFixture();
+            mesh.faces(1, :) = mesh.faces(1, [1, 3, 2]);
+            report = validate_surface_mesh( ...
+                mesh, 0.1, TestSurfaceMesh.qcFixture());
+
+            testCase.verifyFalse(report.valid);
+            testCase.verifyEqual(report.failure_code, ...
+                'INCONSISTENT_ORIENTATION');
+        end
     end
+
+    methods (Static, Access = private)
+        function mesh = tetrahedronFixture()
+            mesh.vertices = [0 0 0;1 0 0;0 1 0;0 0 1];
+            mesh.faces = [1 3 2;1 2 4;2 3 4;3 1 4];
+        end
+
+        function qc = qcFixture()
+            qc = struct('min_edge_length_ratio', 0.01, ...
+                'self_intersect_check', false);
+        end
+    end
+end
+
+function faces = remap_second(faces)
+    faces(faces == 3) = 5;
+    faces(faces == 4) = 6;
 end
