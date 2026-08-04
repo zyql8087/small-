@@ -1,0 +1,115 @@
+function metrics = compare_mesh_convergence(meshA, meshB)
+%COMPARE_MESH_CONVERGENCE Measure deterministic two-mesh convergence proxies.
+
+    [verticesA, facesA] = validate_mesh(meshA, 'mesh_a');
+    [verticesB, facesB] = validate_mesh(meshB, 'mesh_b');
+    sampleA = deterministic_vertex_sample(verticesA, 5000);
+    sampleB = deterministic_vertex_sample(verticesB, 5000);
+    [aToBMax, aToBRms, aToBSumSquares, aToBCount] = ...
+        directed_vertex_distance(sampleA, sampleB, 250);
+    [bToAMax, bToARms, bToASumSquares, bToACount] = ...
+        directed_vertex_distance(sampleB, sampleA, 250);
+    [areaA, volumeA] = area_and_volume(verticesA, facesA);
+    [areaB, volumeB] = area_and_volume(verticesB, facesB);
+    componentCountA = face_component_count(facesA);
+    componentCountB = face_component_count(facesB);
+
+    metrics = struct( ...
+        'directed_a_to_b_max_mm', aToBMax, ...
+        'directed_a_to_b_rms_mm', aToBRms, ...
+        'directed_b_to_a_max_mm', bToAMax, ...
+        'directed_b_to_a_rms_mm', bToARms, ...
+        'bidirectional_max_mm', max(aToBMax, bToAMax), ...
+        'bidirectional_rms_mm', sqrt( ...
+        (aToBSumSquares + bToASumSquares) ./ ...
+        (aToBCount + bToACount)), ...
+        'area_a_mm2', areaA, 'area_b_mm2', areaB, ...
+        'relative_area_change', relative_change(areaA, areaB), ...
+        'volume_a_mm3', volumeA, 'volume_b_mm3', volumeB, ...
+        'relative_volume_change', relative_change(volumeA, volumeB), ...
+        'component_count_a', componentCountA, ...
+        'component_count_b', componentCountB, ...
+        'topology_stable', componentCountA == componentCountB, ...
+        'sample_count_a', size(sampleA, 1), ...
+        'sample_count_b', size(sampleB, 1));
+end
+
+function [vertices, faces] = validate_mesh(mesh, label)
+    errorId = 'MATLABGyroid:InvalidMesh';
+    if ~isstruct(mesh) || ~isscalar(mesh) || ...
+            ~isfield(mesh, 'vertices') || ~isfield(mesh, 'faces')
+        throw(MException(errorId, '%s must contain vertices and faces', label));
+    end
+    vertices = mesh.vertices;
+    faces = mesh.faces;
+    if ~isnumeric(vertices) || ~isreal(vertices) || ...
+            size(vertices, 2) ~= 3 || isempty(vertices) || ...
+            any(~isfinite(vertices(:))) || ~isnumeric(faces) || ...
+            ~isreal(faces) || size(faces, 2) ~= 3 || isempty(faces) || ...
+            any(~isfinite(faces(:))) || any(faces(:) ~= round(faces(:))) || ...
+            any(faces(:) < 1) || any(faces(:) > size(vertices, 1))
+        throw(MException(errorId, '%s is not a finite indexed mesh', label));
+    end
+    vertices = double(vertices);
+    faces = double(faces);
+end
+
+function sample = deterministic_vertex_sample(vertices, maximumCount)
+    count = size(vertices, 1);
+    if count <= maximumCount
+        sample = vertices;
+        return;
+    end
+    indices = unique(round(linspace(1, count, maximumCount)), 'stable');
+    sample = vertices(indices, :);
+end
+
+function [maximumDistance, rmsDistance, sumSquares, count] = ...
+        directed_vertex_distance(query, reference, chunkSize)
+    count = size(query, 1);
+    minimumDistances = zeros(count, 1);
+    for firstIndex = 1:chunkSize:count
+        lastIndex = min(firstIndex + chunkSize - 1, count);
+        chunk = query(firstIndex:lastIndex, :);
+        delta = reshape(chunk, [], 1, 3) - reshape(reference, 1, [], 3);
+        squaredDistances = sum(delta .^ 2, 3);
+        minimumDistances(firstIndex:lastIndex) = ...
+            sqrt(min(squaredDistances, [], 2));
+    end
+    maximumDistance = max(minimumDistances);
+    sumSquares = sum(minimumDistances .^ 2);
+    rmsDistance = sqrt(sumSquares ./ count);
+end
+
+function [area, volume] = area_and_volume(vertices, faces)
+    p1 = vertices(faces(:, 1), :);
+    p2 = vertices(faces(:, 2), :);
+    p3 = vertices(faces(:, 3), :);
+    area = 0.5 .* sum(vecnorm(cross(p2 - p1, p3 - p1, 2), 2, 2));
+    volume = abs(sum(dot(p1, cross(p2, p3, 2), 2)) ./ 6);
+end
+
+function value = relative_change(reference, comparison)
+    value = abs(comparison - reference) ./ max(abs(reference), realmin);
+end
+
+function count = face_component_count(faces)
+    faceOwners = repmat((1:size(faces, 1))', 3, 1);
+    edges = sort([faces(:, [1, 2]); faces(:, [2, 3]); ...
+        faces(:, [3, 1])], 2);
+    [~, ~, edgeGroup] = unique(edges, 'rows');
+    groupedOwners = sortrows([edgeGroup, faceOwners], [1, 2]);
+    consecutiveSameEdge = groupedOwners(1:end - 1, 1) == ...
+        groupedOwners(2:end, 1);
+    firstOwners = groupedOwners(1:end - 1, 2);
+    nextOwners = groupedOwners(2:end, 2);
+    adjacency = [firstOwners(consecutiveSameEdge), ...
+        nextOwners(consecutiveSameEdge)];
+    if isempty(adjacency)
+        count = size(faces, 1);
+        return;
+    end
+    labels = conncomp(graph( ...
+        adjacency(:, 1), adjacency(:, 2), [], size(faces, 1)));
+    count = max(labels);
+end
