@@ -82,6 +82,11 @@ classdef TestContinuousCSG < matlab.unittest.TestCase
                 testCase.verifyTrue(all(isfinite(first.F(:))));
                 testCase.verifyGreaterThan(first.interior_solid_count, 0);
                 testCase.verifyGreaterThan(first.interior_void_count, 0);
+                testCase.verifyEqual(first.solid_connectivity, 26);
+                testCase.verifyGreaterThanOrEqual( ...
+                    first.solid_component_count, 1);
+                testCase.verifyEqual(first.solid_component_count, ...
+                    second.solid_component_count);
                 testCase.verifyEqual(first.F, second.F);
                 testCase.verifyEqual(first.method, cases{caseIndex, 1});
                 testCase.verifyEqual(first.geometry_definition, ...

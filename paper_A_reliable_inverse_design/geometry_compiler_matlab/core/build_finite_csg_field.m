@@ -54,6 +54,7 @@ function field = build_finite_csg_field( ...
         throw(MException('MATLABGyroid:FullSolid', ...
             'finite CSG field contains no interior void cells'));
     end
+    solidComponents = bwconncomp(interiorSolid, 26);
     if ~outer_planes_are_positive(F)
         throw(MException(errorId, ...
             'finite CSG exterior sampling planes must be strictly positive'));
@@ -77,6 +78,8 @@ function field = build_finite_csg_field( ...
     field.interior_void_count = voidCount;
     field.interior_cell_count = numel(interiorSolid);
     field.interior_solid_fraction = solidCount ./ numel(interiorSolid);
+    field.solid_connectivity = 26;
+    field.solid_component_count = solidComponents.NumObjects;
     field.geometry_definition = contract.geometryDefinition;
     field.grid_convention = contract.gridConvention;
     field.beta_box = contract.betaBox;

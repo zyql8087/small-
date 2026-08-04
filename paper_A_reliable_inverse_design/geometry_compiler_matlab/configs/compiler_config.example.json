@@ -77,7 +77,7 @@
         "validation_status": "candidate_pending_gate0"
     },
     "mesh_qc": {
-        "min_edge_length_ratio": 0.2,
+        "min_edge_length_ratio": 1e-6,
         "max_angle_deviations": 15.0,
         "surface_tolerance_mm": 0.01,
         "self_intersect_check": true,

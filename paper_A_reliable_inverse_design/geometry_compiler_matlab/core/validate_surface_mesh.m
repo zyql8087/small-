@@ -54,6 +54,14 @@ function [report, validatedMesh] = validate_surface_mesh( ...
     areaTolerance = max(spacingMm ^ 2 * 1e-12, realmin('double'));
     degenerate = repeatedIndex | doubleAreas <= 2 * areaTolerance;
     report.degenerate_face_count = nnz(degenerate);
+    verticesFloat32 = single(V);
+    floatP1 = verticesFloat32(F(:, 1), :);
+    floatP2 = verticesFloat32(F(:, 2), :);
+    floatP3 = verticesFloat32(F(:, 3), :);
+    floatCross = cross(double(floatP2 - floatP1), ...
+        double(floatP3 - floatP1), 2);
+    report.float32_degenerate_face_count = nnz( ...
+        sqrt(sum(floatCross .^ 2, 2)) == 0);
     report.surface_area_mm2 = 0.5 * sum(doubleAreas);
     edgeLengths = [sqrt(sum(e12 .^ 2, 2)); ...
         sqrt(sum(e23 .^ 2, 2)); sqrt(sum(e31 .^ 2, 2))];
@@ -81,6 +89,10 @@ function [report, validatedMesh] = validate_surface_mesh( ...
         edgeGroup, incidence, faceOwners, size(F, 1));
 
     if any(degenerate)
+        report.failure_code = 'DEGENERATE_MESH';
+        return;
+    end
+    if report.float32_degenerate_face_count > 0
         report.failure_code = 'DEGENERATE_MESH';
         return;
     end
@@ -158,6 +170,7 @@ function report = initial_report(mesh)
         'nonmanifold_edge_count', NaN, 'inconsistent_edge_count', NaN, ...
         'component_count', NaN, 'duplicate_face_count', NaN, ...
         'degenerate_face_count', NaN, 'minimum_edge_mm', NaN, ...
+        'float32_degenerate_face_count', NaN, ...
         'surface_area_mm2', NaN, 'signed_volume_mm3', NaN, ...
         'global_orientation_flip', false, ...
         'self_intersection_pair_count', NaN, ...
@@ -165,12 +178,10 @@ function report = initial_report(mesh)
 end
 
 function count = face_component_count(edgeGroup, incidence, owners, nFaces)
-    twoUseGroups = find(incidence == 2);
-    adjacency = zeros(numel(twoUseGroups), 2);
-    for groupIndex = 1:numel(twoUseGroups)
-        adjacentFaces = owners(edgeGroup == twoUseGroups(groupIndex));
-        adjacency(groupIndex, :) = adjacentFaces(:)';
-    end
+    twoUseMask = incidence(edgeGroup) == 2;
+    groupedOwners = sortrows( ...
+        [edgeGroup(twoUseMask), owners(twoUseMask)], [1, 2]);
+    adjacency = reshape(groupedOwners(:, 2), 2, [])';
     if isempty(adjacency)
         count = nFaces;
         return;

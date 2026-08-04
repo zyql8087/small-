@@ -10,6 +10,7 @@ classdef TestCompilerPipeline < matlab.unittest.TestCase
         function setupClass(testCase)
             testFile = mfilename('fullpath');
             testCase.BaseDir = fileparts(fileparts(testFile));
+            addpath(testCase.BaseDir);
             addpath(fullfile(testCase.BaseDir, 'core'));
             testCase.Config = load_compiler_config(fullfile( ...
                 testCase.BaseDir, 'configs', ...
@@ -114,6 +115,81 @@ classdef TestCompilerPipeline < matlab.unittest.TestCase
             testCase.verifyNotEqual(first, different);
             testCase.verifyEqual(numel(first), 64);
         end
+
+        function testMalformedRequestWritesFailureResponseWithoutArtifacts(testCase)
+            fixture = TestCompilerPipeline.tempFixture();
+            requestPath = fullfile(fixture.dir, 'malformed.json');
+            responsePath = fullfile(fixture.dir, 'response.json');
+            TestCompilerPipeline.writeText(requestPath, '{ malformed ');
+
+            response = run_geometry_compiler(requestPath, responsePath);
+
+            testCase.verifyFalse(response.valid);
+            testCase.verifyEqual(response.failure_code, 'INVALID_REQUEST');
+            testCase.verifyEqual(response.validation_stage, ...
+                'M03_GEOMETRY_MESH');
+            testCase.verifyEqual(jsondecode(fileread(responsePath)), response);
+            testCase.verifyEmpty(dir(fullfile(fixture.dir, '**', '*.stl')));
+            testCase.verifyEmpty(dir(fullfile( ...
+                fixture.dir, '**', '*.manifest.json')));
+        end
+
+        function testMethodFailureWritesResponseWithoutArtifacts(testCase)
+            fixture = TestCompilerPipeline.tempFixture();
+            request = TestCompilerPipeline.validRequest();
+            request.w = 4;
+            requestPath = fullfile(fixture.dir, 'invalid-method.json');
+            responsePath = fullfile(fixture.dir, 'response.json');
+            TestCompilerPipeline.writeJson(requestPath, request);
+
+            response = run_geometry_compiler(requestPath, responsePath);
+
+            testCase.verifyFalse(response.valid);
+            testCase.verifyEqual(response.failure_code, 'METHOD_CONSTRAINT');
+            testCase.verifyEmpty(dir(fullfile(fixture.dir, '**', '*.stl')));
+            testCase.verifyEmpty(dir(fullfile( ...
+                fixture.dir, '**', '*.manifest.json')));
+        end
+
+        function testProductionM1CompilerIsByteDeterministic(testCase)
+            firstFixture = TestCompilerPipeline.tempFixture();
+            secondFixture = TestCompilerPipeline.tempFixture();
+            firstRequest = TestCompilerPipeline.validRequest();
+            secondRequest = firstRequest;
+            secondRequest.request_id = 'm03-m1-002';
+            firstRequestPath = fullfile(firstFixture.dir, 'request.json');
+            secondRequestPath = fullfile(secondFixture.dir, 'request.json');
+            firstResponsePath = fullfile(firstFixture.dir, 'response.json');
+            secondResponsePath = fullfile(secondFixture.dir, 'response.json');
+            TestCompilerPipeline.writeJson(firstRequestPath, firstRequest);
+            TestCompilerPipeline.writeJson(secondRequestPath, secondRequest);
+
+            firstResponse = run_geometry_compiler( ...
+                firstRequestPath, firstResponsePath);
+            secondResponse = run_geometry_compiler( ...
+                secondRequestPath, secondResponsePath);
+
+            testCase.assertTrue(firstResponse.valid, ...
+                sprintf('first compile failed [%s]: %s', ...
+                firstResponse.failure_code, firstResponse.failure_message));
+            testCase.assertTrue(secondResponse.valid, ...
+                sprintf('second compile failed [%s]: %s', ...
+                secondResponse.failure_code, secondResponse.failure_message));
+            testCase.verifyEqual(firstResponse.geometry_identity_sha256, ...
+                secondResponse.geometry_identity_sha256);
+            testCase.verifyEqual(firstResponse.artifacts.stl_sha256, ...
+                secondResponse.artifacts.stl_sha256);
+            testCase.verifyEqual(firstResponse.mesh_qc.boundary_edge_count, 0);
+            testCase.verifyEqual(firstResponse.mesh_qc.nonmanifold_edge_count, 0);
+            testCase.verifyEqual(firstResponse.mesh_qc. ...
+                self_intersection_pair_count, 0);
+            testCase.verifyEqual( ...
+                firstResponse.mesh_qc.solid_connectivity, 26);
+            testCase.verifyEqual( ...
+                firstResponse.mesh_qc.solid_component_count, 1);
+            testCase.verifyEqual(firstResponse.descriptors, 'not_computed');
+            testCase.verifyEqual(firstResponse.abaqus_gate0, 'not_computed');
+        end
     end
 
     methods (Static, Access = private)
@@ -126,7 +202,8 @@ classdef TestCompilerPipeline < matlab.unittest.TestCase
         function request = validRequest()
             request = struct('schema_version', '1.0', ...
                 'request_id', 'm03-m1-001', 'method', 'M1', ...
-                'c0', 0.10, 'c1', 0.10, 'c2', 0.10, 'w', 0, ...
+                'c0', 0.0700794, 'c1', 0.1246504, ...
+                'c2', 0.0693255, 'w', 0, ...
                 'resolution', 96, 'output_dir', 'outputs');
         end
 
@@ -135,6 +212,13 @@ classdef TestCompilerPipeline < matlab.unittest.TestCase
             assert(fileId ~= -1);
             cleanup = onCleanup(@() fclose(fileId));
             fprintf(fileId, '%s', jsonencode(value));
+        end
+
+        function writeText(path, value)
+            fileId = fopen(path, 'w');
+            assert(fileId ~= -1);
+            cleanup = onCleanup(@() fclose(fileId));
+            fprintf(fileId, '%s', value);
         end
     end
 end

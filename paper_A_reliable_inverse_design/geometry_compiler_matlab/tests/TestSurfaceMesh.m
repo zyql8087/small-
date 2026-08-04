@@ -107,6 +107,20 @@ classdef TestSurfaceMesh < matlab.unittest.TestCase
             testCase.verifyEqual(report.failure_code, 'DEGENERATE_MESH');
         end
 
+        function testFloat32CollapsedFaceRejectedBeforeStl(testCase)
+            mesh.vertices = [1 0 0;1 + 1e-8 0 0;1 1 0;1 0 1];
+            mesh.faces = [1 3 2;1 2 4;2 3 4;3 1 4];
+            qc = TestSurfaceMesh.qcFixture();
+            qc.min_edge_length_ratio = 1e-12;
+
+            report = validate_surface_mesh(mesh, 0.1, qc);
+
+            testCase.verifyFalse(report.valid);
+            testCase.verifyEqual(report.failure_code, 'DEGENERATE_MESH');
+            testCase.verifyGreaterThan( ...
+                report.float32_degenerate_face_count, 0);
+        end
+
         function testDuplicateFaceRejected(testCase)
             mesh = TestSurfaceMesh.tetrahedronFixture();
             mesh.faces(end + 1, :) = mesh.faces(1, :);
