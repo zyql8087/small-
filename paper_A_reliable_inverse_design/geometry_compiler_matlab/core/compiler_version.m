@@ -14,5 +14,5 @@ function version = compiler_version()
 %
 %   See also: load_compiler_config
 
-    version = 'matlab-gyroid-0.1.0';
+    version = 'matlab-gyroid-0.2.0';
 end

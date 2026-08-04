@@ -52,9 +52,21 @@ classdef TestBootstrap < matlab.unittest.TestCase
 
         function testCompilerVersion(testCase)
             % Verify exact version identifier
-            expectedVersion = 'matlab-gyroid-0.1.0';
+            expectedVersion = 'matlab-gyroid-0.2.0';
             actualVersion = compiler_version();
             testCase.assertEqual(actualVersion, expectedVersion);
+        end
+
+        function testM03ContinuousCsgContract(testCase)
+            contract = compiler_contract();
+            testCase.verifyEqual(contract.geometryDefinition, ...
+                'continuous_sheet_gyroid_intersect_hard_box');
+            testCase.verifyEqual(contract.validationStage, ...
+                'M03_GEOMETRY_MESH');
+            testCase.verifyEqual(contract.betaBox, 1.0);
+            testCase.verifyEqual(contract.isosurfaceLevel, 0.0);
+            testCase.verifyEqual(contract.gridConvention, ...
+                'cell_centered_half_step_exterior');
         end
 
         function testDescriptorOrdering(testCase)

@@ -16,4 +16,13 @@ function contract = compiler_contract()
     contract.gyroidFieldVersion = ...
         'small-si-s6-s9-candidate-v1';
     contract.solidConvention = 'sheet_band';
+    contract.geometryDefinition = ...
+        'continuous_sheet_gyroid_intersect_hard_box';
+    contract.validationStage = 'M03_GEOMETRY_MESH';
+    contract.betaBox = 1.0;
+    contract.isosurfaceLevel = 0.0;
+    contract.gridConvention = 'cell_centered_half_step_exterior';
+    contract.requestSchemaVersion = '1.0';
+    contract.requestFields = {'schema_version', 'request_id', 'method', ...
+        'c0', 'c1', 'c2', 'w', 'resolution', 'output_dir'};
 end
