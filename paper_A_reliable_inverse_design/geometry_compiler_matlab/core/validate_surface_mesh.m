@@ -105,11 +105,6 @@ function [report, validatedMesh] = validate_surface_mesh( ...
         report.failure_code = 'INCONSISTENT_ORIENTATION';
         return;
     end
-    if report.component_count ~= 1
-        report.failure_code = 'DISCONNECTED_SOLID';
-        return;
-    end
-
     signedVolume = signed_volume(V, F);
     if signedVolume < 0
         F = F(:, [1, 3, 2]);
@@ -119,11 +114,29 @@ function [report, validatedMesh] = validate_surface_mesh( ...
     end
     report.signed_volume_mm3 = signedVolume;
     if meshQc.self_intersect_check
-        report.failure_code = 'SELF_INTERSECTION_CHECK_UNAVAILABLE';
+        try
+            tolerance = max(spacingMm * 1e-9, 64 * eps);
+            intersectionPairs = detect_mesh_self_intersections( ...
+                validatedMesh, tolerance);
+        catch
+            report.failure_code = 'SELF_INTERSECTION_CHECK_UNAVAILABLE';
+            return;
+        end
+        report.self_intersection_pair_count = size(intersectionPairs, 1);
+        report.self_intersection_pairs = intersectionPairs( ...
+            1:min(20, size(intersectionPairs, 1)), :);
+        if ~isempty(intersectionPairs)
+            report.failure_code = 'SELF_INTERSECTION';
+            return;
+        end
+    else
+        report.self_intersection_pair_count = 0;
+        report.self_intersection_pairs = zeros(0, 2);
+    end
+    if report.component_count ~= 1
+        report.failure_code = 'DISCONNECTED_SOLID';
         return;
     end
-    report.self_intersection_pair_count = 0;
-    report.self_intersection_pairs = zeros(0, 2);
     report.valid = true;
     report.failure_code = '';
 end

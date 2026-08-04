@@ -154,6 +154,65 @@ classdef TestSurfaceMesh < matlab.unittest.TestCase
             testCase.verifyEqual(report.failure_code, ...
                 'INCONSISTENT_ORIENTATION');
         end
+
+        function testCrossingTrianglesDetected(testCase)
+            first = [0 0 0;1 0 0;0 1 0];
+            second = [0.25 0.25 -1;0.25 0.25 1;0.75 0.25 0];
+            testCase.verifyTrue(triangles_intersect_3d( ...
+                first, second, 1e-12));
+        end
+
+        function testSeparatedTrianglesNotDetected(testCase)
+            first = [0 0 0;1 0 0;0 1 0];
+            second = [2 2 1;3 2 1;2 3 1];
+            testCase.verifyFalse(triangles_intersect_3d( ...
+                first, second, 1e-12));
+        end
+
+        function testCoplanarOverlapDetected(testCase)
+            first = [0 0 0;1 0 0;0 1 0];
+            second = [0.25 0.25 0;1.25 0.25 0;0.25 1.25 0];
+            testCase.verifyTrue(triangles_intersect_3d( ...
+                first, second, 1e-12));
+        end
+
+        function testCoplanarSeparatedTrianglesNotDetected(testCase)
+            first = [0 0 0;1 0 0;0 1 0];
+            second = [2 2 0;3 2 0;2 3 0];
+            testCase.verifyFalse(triangles_intersect_3d( ...
+                first, second, 1e-12));
+        end
+
+        function testAdjacentTetrahedronFacesAreIgnored(testCase)
+            mesh = TestSurfaceMesh.tetrahedronFixture();
+            pairs = detect_mesh_self_intersections(mesh, 1e-12);
+            testCase.verifyEqual(pairs, zeros(0, 2));
+        end
+
+        function testPenetratingClosedComponentsRejectedAsSelfIntersection(testCase)
+            first = TestSurfaceMesh.tetrahedronFixture();
+            secondVertices = first.vertices + 0.2;
+            mesh.vertices = [first.vertices; secondVertices];
+            mesh.faces = [first.faces; first.faces + 4];
+            qc = TestSurfaceMesh.qcFixture();
+            qc.self_intersect_check = true;
+            report = validate_surface_mesh(mesh, 0.1, qc);
+
+            testCase.verifyFalse(report.valid);
+            testCase.verifyEqual(report.failure_code, 'SELF_INTERSECTION');
+            testCase.verifyGreaterThan( ...
+                report.self_intersection_pair_count, 0);
+        end
+
+        function testClosedTetrahedronPassesSelfIntersectionCheck(testCase)
+            mesh = TestSurfaceMesh.tetrahedronFixture();
+            qc = TestSurfaceMesh.qcFixture();
+            qc.self_intersect_check = true;
+            report = validate_surface_mesh(mesh, 0.1, qc);
+
+            testCase.verifyTrue(report.valid);
+            testCase.verifyEqual(report.self_intersection_pair_count, 0);
+        end
     end
 
     methods (Static, Access = private)
