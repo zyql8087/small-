@@ -417,7 +417,7 @@ git commit -m "feat(descriptors): add finite physical M04 metrics"
 - Modify: `paper_A_reliable_inverse_design/geometry_compiler_matlab/tests/TestCompilerPipeline.m`
 - Modify: `paper_A_reliable_inverse_design/geometry_compiler_matlab/run_tests.m`
 
-- [ ] **Step 1: Write failing provenance and publication tests**
+- [x] **Step 1: Write failing provenance and publication tests**
 
 Create a valid M03 artifact in `TestMethodSetup`, then test success, request mutation, response mutation, manifest mutation, STL mutation, wrong units/bounds/resolution/compiler version, response-file conflict, response-directory conflict, and M03 preservation after M04 failure. The success assertion is:
 
@@ -430,7 +430,7 @@ testCase.verifyFalse(isfield(r,'relativeVolume'));
 testCase.verifyTrue(isfile(r.artifacts.manifest_path));
 ```
 
-- [ ] **Step 2: Run the test and verify RED**
+- [x] **Step 2: Run the test and verify RED**
 
 ```powershell
 & 'F:\MATLAB\R2023b\bin\matlab.exe' -batch "cd('F:\small++\.worktrees\m03-continuous-csg-impl\paper_A_reliable_inverse_design\geometry_compiler_matlab'); r=runtests('tests/TestDescriptorCompiler.m'); assertSuccess(r)"
@@ -438,7 +438,7 @@ testCase.verifyTrue(isfile(r.artifacts.manifest_path));
 
 Expected: undefined `run_descriptor_compiler`.
 
-- [ ] **Step 3: Implement dependency authentication**
+- [x] **Step 3: Implement dependency authentication**
 
 First extend M03 publication so `response.artifacts.manifest_sha256` is computed from the final manifest file after atomic publication. Add a regression assertion that it equals a fresh `sha256_file` result. This changes M03 provenance only; it must not change meshing behavior or make M03 depend on M04.
 
@@ -456,7 +456,7 @@ requiredEqual = {
 
 Also recompute the request hash, require the fresh manifest-file digest to equal `m03.artifacts.manifest_sha256`, validate physical bounds against configuration times reference length, and reject embedded paths that resolve outside the request output directory. Require filenames equal to `sprintf('geometry_%s.stl',m03.geometry_identity_sha256)` and `sprintf('geometry_%s.manifest.json',m03.geometry_identity_sha256)`. Return only authenticated values; never trust a second read of an embedded path.
 
-- [ ] **Step 4: Implement orchestration and atomic output**
+- [x] **Step 4: Implement orchestration and atomic output**
 
 Use this public signature and stable mapping:
 
@@ -511,11 +511,11 @@ function profiles = compute_descriptor_profiles(projected,config, ...
 end
 ```
 
-- [ ] **Step 5: Run compiler tests twice and compare canonical hashes**
+- [x] **Step 5: Run compiler tests twice and compare canonical hashes**
 
 Run the focused suite and `run_tests`. Expected: both executions produce equal canonical descriptor hashes even though output directories differ.
 
-- [ ] **Step 6: Commit Checkpoint D**
+- [x] **Step 6: Commit Checkpoint D**
 
 ```powershell
 git add paper_A_reliable_inverse_design/geometry_compiler_matlab/core/read_and_verify_m03_artifacts.m paper_A_reliable_inverse_design/geometry_compiler_matlab/core/compute_descriptor_profiles.m paper_A_reliable_inverse_design/geometry_compiler_matlab/core/canonical_descriptor_text.m paper_A_reliable_inverse_design/geometry_compiler_matlab/run_descriptor_compiler.m paper_A_reliable_inverse_design/geometry_compiler_matlab/run_geometry_compiler.m paper_A_reliable_inverse_design/geometry_compiler_matlab/tests/TestDescriptorCompiler.m paper_A_reliable_inverse_design/geometry_compiler_matlab/tests/TestCompilerPipeline.m paper_A_reliable_inverse_design/geometry_compiler_matlab/run_tests.m
