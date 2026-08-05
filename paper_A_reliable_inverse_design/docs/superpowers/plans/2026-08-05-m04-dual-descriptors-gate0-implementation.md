@@ -180,7 +180,7 @@ git commit -m "feat(descriptors): version dual-profile M04 contract"
 - Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/core/validate_descriptor_result.m`
 - Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/tests/TestLegacyDescriptors.m`
 
-- [ ] **Step 1: Write failing synthetic parity tests**
+- [x] **Step 1: Write failing synthetic parity tests**
 
 Test endpoint counts, final-plane exclusion, bounding-box surface normalization, periodic extrema across all three axes, and mean solid slice area. The central fixture must use exact arrays, not generated TPMS data:
 
@@ -210,7 +210,7 @@ end
 
 Add one fixture where the maximum solid distance crosses x, one across y, and one across z. Calculate the expected maximum from a manually circularly tiled mask, then assert exact equality with the implementation.
 
-- [ ] **Step 2: Run the test and verify RED**
+- [x] **Step 2: Run the test and verify RED**
 
 ```powershell
 & 'F:\MATLAB\R2023b\bin\matlab.exe' -batch "cd('F:\small++\.worktrees\m03-continuous-csg-impl\paper_A_reliable_inverse_design\geometry_compiler_matlab'); r=runtests('tests/TestLegacyDescriptors.m'); assertSuccess(r)"
@@ -218,7 +218,7 @@ Add one fixture where the maximum solid distance crosses x, one across y, and on
 
 Expected: undefined-function failures for the two new core functions.
 
-- [ ] **Step 3: Implement the endpoint sampler**
+- [x] **Step 3: Implement the endpoint sampler**
 
 Use one explicit contract: `samplesPerReferenceLength` is intervals per normalized reference length and `referenceLengthMm` supplies physical scale.
 
@@ -255,7 +255,7 @@ Before returning, extract the legacy endpoint-grid isosurface at level zero and 
 
 The field passed to `isosurface` is `abs(sampled.G)-reshape(sampled.threshold,1,1,[])`; the coordinate axes are multiplied by `referenceLengthMm` exactly once. Reject an empty surface or any nonfinite vertex/facet area.
 
-- [ ] **Step 4: Implement the five source-parity metrics**
+- [x] **Step 4: Implement the five source-parity metrics**
 
 The production body must implement these exact operations and store the global scale in `sampling.reference_length_mm`; it must not use archived target values:
 
@@ -305,7 +305,7 @@ function result = validate_descriptor_result(result, expectedProfile, expectedHa
 end
 ```
 
-- [ ] **Step 5: Run legacy tests, analyzer, and regressions**
+- [x] **Step 5: Run legacy tests, analyzer, and regressions**
 
 Run:
 
@@ -315,7 +315,7 @@ Run:
 
 Expected: legacy suite and all regressions pass; analyzer returns no issues.
 
-- [ ] **Step 6: Commit the legacy profile**
+- [x] **Step 6: Commit the legacy profile**
 
 ```powershell
 git add paper_A_reliable_inverse_design/geometry_compiler_matlab/core/build_legacy_descriptor_field.m paper_A_reliable_inverse_design/geometry_compiler_matlab/core/compute_legacy_small_descriptors.m paper_A_reliable_inverse_design/geometry_compiler_matlab/core/validate_descriptor_result.m paper_A_reliable_inverse_design/geometry_compiler_matlab/configs/descriptor_definition.v2.json paper_A_reliable_inverse_design/geometry_compiler_matlab/tests/TestLegacyDescriptors.m
