@@ -152,6 +152,7 @@ classdef TestDescriptorCompiler < matlab.unittest.TestCase
                 testCase.RequestPath, testCase.M03ResponsePath, ...
                 testCase.M04ResponsePath), 'MATLABGyroid:OutputConflict');
         end
+
     end
 
     methods (Access = private)

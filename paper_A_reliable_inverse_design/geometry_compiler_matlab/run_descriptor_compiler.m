@@ -76,7 +76,7 @@ function response = run_descriptor_compiler(requestPath, m03ResponsePath, m04Res
     catch cause
         delete_owned_file(createdManifest);
         response.valid = false;
-        response.failure_code = map_failure_code(cause.identifier);
+        response.failure_code = map_m04_failure_code(cause.identifier);
         response.failure_message = cause.message;
         if ~isempty(request)
             response.request_id = request.request_id;
@@ -130,26 +130,6 @@ function path = descriptor_manifest_path(responsePath, geometryHash)
     responseDigest = sha256_text(responseCanonical);
     path = fullfile(outputDirectory, sprintf( ...
         'descriptor_%s_%s.manifest.json', geometryHash, responseDigest(1:16)));
-end
-
-function code = map_failure_code(identifier)
-    if strcmp(identifier, 'MATLABGyroid:M03ArtifactMismatch') || ...
-            strcmp(identifier, 'MATLABGyroid:STLVerificationError')
-        code = 'M03_ARTIFACT_MISMATCH';
-    elseif strcmp(identifier, 'MATLABGyroid:DescriptorNonfinite')
-        code = 'DESCRIPTOR_NONFINITE';
-    elseif strcmp(identifier, 'MATLABGyroid:DescriptorProfileInvalid') || ...
-            strcmp(identifier, 'MATLABGyroid:DescriptorContractMismatch')
-        code = 'DESCRIPTOR_PROFILE_INVALID';
-    elseif strcmp(identifier, 'MATLABGyroid:OutputConflict')
-        code = 'OUTPUT_CONFLICT';
-    elseif startsWith(identifier, 'MATLABGyroid:Invalid') || ...
-            strcmp(identifier, 'MATLABGyroid:MethodConstraint') || ...
-            strcmp(identifier, 'MATLABGyroid:OutOfBounds')
-        code = 'DESCRIPTOR_CONTRACT_MISMATCH';
-    else
-        code = 'INTERNAL_ERROR';
-    end
 end
 
 function tf = path_exists(path)

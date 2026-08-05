@@ -57,6 +57,29 @@ classdef TestDescriptorGate0 < matlab.unittest.TestCase
                 'MATLABGyroid:Gate0SelectionInvalid');
         end
 
+        function testSelectionIdentityBindsParametersAndArchivedTargets(testCase)
+            workbookHash = repmat('a', 1, 64);
+            baselineSheets = TestDescriptorGate0.syntheticSheets();
+            baseline = select_small_gate0_rows(baselineSheets, ...
+                workbookHash, testCase.Config);
+
+            parameterSheets = baselineSheets;
+            parameterSheets(1).raw{2, 1} = ...
+                parameterSheets(1).raw{2, 1} + 0.0001;
+            parameterChanged = select_small_gate0_rows(parameterSheets, ...
+                workbookHash, testCase.Config);
+
+            targetSheets = baselineSheets;
+            targetSheets(1).raw{2, 9} = targetSheets(1).raw{2, 9} + 0.0001;
+            targetChanged = select_small_gate0_rows(targetSheets, ...
+                workbookHash, testCase.Config);
+
+            testCase.verifyNotEqual(parameterChanged.selection_sha256, ...
+                baseline.selection_sha256);
+            testCase.verifyNotEqual(targetChanged.selection_sha256, ...
+                baseline.selection_sha256);
+        end
+
         function testPublicSelectorRejectsUnauthenticatedWorkbook(testCase)
             fixture = tempname;
             fileId = fopen([fixture, '.xlsx'], 'w');
