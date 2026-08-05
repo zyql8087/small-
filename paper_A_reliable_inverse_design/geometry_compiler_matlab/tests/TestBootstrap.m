@@ -52,7 +52,7 @@ classdef TestBootstrap < matlab.unittest.TestCase
 
         function testCompilerVersion(testCase)
             % Verify exact version identifier
-            expectedVersion = 'matlab-gyroid-0.2.0';
+            expectedVersion = 'matlab-gyroid-0.3.0';
             actualVersion = compiler_version();
             testCase.assertEqual(actualVersion, expectedVersion);
         end
@@ -63,10 +63,53 @@ classdef TestBootstrap < matlab.unittest.TestCase
                 'continuous_sheet_gyroid_intersect_hard_box');
             testCase.verifyEqual(contract.validationStage, ...
                 'M03_GEOMETRY_MESH');
+            testCase.verifyEqual(contract.descriptorValidationStage, ...
+                'M04_DUAL_DESCRIPTORS');
             testCase.verifyEqual(contract.betaBox, 1.0);
             testCase.verifyEqual(contract.isosurfaceLevel, 0.0);
             testCase.verifyEqual(contract.gridConvention, ...
                 'cell_centered_half_step_exterior');
+        end
+
+        function testV1CandidateDescriptorDefinitionIsBytePreserved(testCase)
+            path = fullfile(testCase.BaseDir, 'configs', ...
+                'descriptor_definition.v1_candidate.json');
+            testCase.verifyEqual(sha256_file(path, testCase.ERROR_ID, ...
+                'v1 candidate descriptor definition'), ...
+                '2f59976c74cc88eac66c43a56e242f50f28aff0e71be8d752a481c05a4a2d9c9');
+        end
+
+        function testV2DescriptorDefinitionHasSeparatedProfiles(testCase)
+            path = fullfile(testCase.BaseDir, 'configs', ...
+                'descriptor_definition.v2.json');
+            definition = jsondecode(fileread(path));
+            testCase.verifyEqual(string({definition.profiles.name}), ...
+                ["legacy_small", "physical_m04"]);
+            testCase.verifyEqual(string(definition.descriptor_order(:)), ...
+                ["relativeVolume"; "relativeArea"; "thickness"; ...
+                 "poreDiameter"; "areaMean"]);
+            testCase.verifyEqual(definition.profiles(1).units.relativeArea, ...
+                'dimensionless');
+            testCase.verifyEqual(definition.profiles(2).units.relativeArea, ...
+                'mm^-1');
+        end
+
+        function testConfigLoadsVersionedDualProfileContract(testCase)
+            config = load_compiler_config(fullfile(testCase.BaseDir, ...
+                'configs', 'compiler_config.example.json'));
+            testCase.verifyEqual(config.descriptor_definition_path, ...
+                fullfile(testCase.BaseDir, 'configs', ...
+                'descriptor_definition.v2.json'));
+            testCase.verifyEqual(string({config.descriptor_profiles.name}), ...
+                ["legacy_small", "physical_m04"]);
+            testCase.verifyTrue(isfield(config, 'descriptor_profile_sha256'));
+            testCase.verifyTrue(isfield(config.descriptor_profile_sha256, ...
+                'legacy_small'));
+            testCase.verifyTrue(isfield(config.descriptor_profile_sha256, ...
+                'physical_m04'));
+            testCase.verifyNotEqual( ...
+                config.descriptor_profile_sha256.legacy_small, ...
+                config.descriptor_profile_sha256.physical_m04);
         end
 
         function testDescriptorOrdering(testCase)
@@ -329,10 +372,10 @@ classdef TestBootstrap < matlab.unittest.TestCase
                 '{"name":"poreDiameter","formula":"x","units":"mm","computation_method":"x"},' ...
                 '{"name":"areaMean","formula":"x","units":"mm","computation_method":"x"}' ...
                 ']}'];
-            badDescPath = fullfile(tempDir, 'descriptor_definition.json');
+            badDescPath = fullfile(tempDir, 'descriptor_definition.v2.json');
             fid = fopen(badDescPath, 'w'); fprintf(fid, '%s', badDescJson); fclose(fid);
             data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.descriptor_definition_path = 'descriptor_definition.json';
+            data.descriptor_definition_path = 'descriptor_definition.v2.json';
             data.descriptor_definition_sha256 = lower(char(string( ...
                 sha256_file(badDescPath, testCase.ERROR_ID, 'test'))));
             tempFile = fullfile(tempDir, 'config.json');
@@ -353,13 +396,13 @@ classdef TestBootstrap < matlab.unittest.TestCase
             cleanupDir = onCleanup(@() TestBootstrap.deleteDir(tempDir));
             copyfile(fullfile(testCase.BaseDir, 'configs', 'parameter_domain_manifest.json'), ...
                 fullfile(tempDir, 'parameter_domain_manifest.json'));
-            srcDesc = fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json');
+            srcDesc = fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.v2.json');
             raw = fileread(srcDesc);
-            raw = strrep(raw, '"schema_version": "1.0"', '"schema_version": "2.0"');
-            badDescPath = fullfile(tempDir, 'descriptor_definition.json');
+            raw = strrep(raw, '"schema_version": "2.0"', '"schema_version": "3.0"');
+            badDescPath = fullfile(tempDir, 'descriptor_definition.v2.json');
             fid = fopen(badDescPath, 'w'); fprintf(fid, '%s', raw); fclose(fid);
             data = TestBootstrap.loadExampleConfig(testCase.BaseDir);
-            data.descriptor_definition_path = 'descriptor_definition.json';
+            data.descriptor_definition_path = 'descriptor_definition.v2.json';
             data.descriptor_definition_sha256 = lower(char(string( ...
                 sha256_file(badDescPath, testCase.ERROR_ID, 'test'))));
             tempFile = fullfile(tempDir, 'config.json');
@@ -485,8 +528,8 @@ classdef TestBootstrap < matlab.unittest.TestCase
             tempDir = tempname;
             mkdir(tempDir);
             cleanupDir = onCleanup(@() TestBootstrap.deleteDir(tempDir));
-            copyfile(fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json'), ...
-                fullfile(tempDir, 'descriptor_definition.json'));
+            copyfile(fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.v2.json'), ...
+                fullfile(tempDir, 'descriptor_definition.v2.json'));
             copyfile(fullfile(testCase.BaseDir, 'configs', 'parameter_domain_manifest.json'), ...
                 fullfile(tempDir, 'parameter_domain_manifest.json'));
             srcCfg = fullfile(testCase.BaseDir, 'configs', 'compiler_config.example.json');
@@ -515,8 +558,8 @@ classdef TestBootstrap < matlab.unittest.TestCase
             tempDir = tempname;
             mkdir(tempDir);
             cleanupDir = onCleanup(@() TestBootstrap.deleteDir(tempDir));
-            copyfile(fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json'), ...
-                fullfile(tempDir, 'descriptor_definition.json'));
+            copyfile(fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.v2.json'), ...
+                fullfile(tempDir, 'descriptor_definition.v2.json'));
             copyfile(fullfile(testCase.BaseDir, 'configs', 'parameter_domain_manifest.json'), ...
                 fullfile(tempDir, 'parameter_domain_manifest.json'));
             srcCfg = fullfile(testCase.BaseDir, 'configs', 'compiler_config.example.json');
@@ -596,7 +639,7 @@ classdef TestBootstrap < matlab.unittest.TestCase
 
         function testMissingDescriptorFileRejected(testCase)
             fixture = TestBootstrap.createFixture(testCase.BaseDir);
-            delete(fullfile(fixture.dir, 'descriptor_definition.json'));
+            delete(fullfile(fixture.dir, 'descriptor_definition.v2.json'));
             TestBootstrap.expectConfigError(testCase, fixture, 'Descriptor definition not found');
         end
 
@@ -657,8 +700,8 @@ classdef TestBootstrap < matlab.unittest.TestCase
             fixture.dir = tempname;
             mkdir(fixture.dir);
             fixture.cleanup = onCleanup(@() TestBootstrap.deleteDir(fixture.dir));
-            copyfile(fullfile(baseDir, 'configs', 'descriptor_definition.json'), ...
-                fullfile(fixture.dir, 'descriptor_definition.json'));
+            copyfile(fullfile(baseDir, 'configs', 'descriptor_definition.v2.json'), ...
+                fullfile(fixture.dir, 'descriptor_definition.v2.json'));
             copyfile(fullfile(baseDir, 'configs', 'parameter_domain_manifest.json'), ...
                 fullfile(fixture.dir, 'parameter_domain_manifest.json'));
             fixture.data = TestBootstrap.loadExampleConfig(baseDir);

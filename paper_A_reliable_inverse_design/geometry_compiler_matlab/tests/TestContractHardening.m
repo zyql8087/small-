@@ -74,8 +74,9 @@ classdef TestContractHardening < matlab.unittest.TestCase
             end
         end
 
-        function testDescriptorDefinitionIsExplicitlyCandidate(testCase)
-            path = fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json');
+        function testV1CandidateDescriptorDefinitionRemainsAuditable(testCase)
+            path = fullfile(testCase.BaseDir, 'configs', ...
+                'descriptor_definition.v1_candidate.json');
             definition = jsondecode(fileread(path));
             testCase.verifyEqual(char(string(definition.validation_status)), ...
                 'candidate_pending_gate0');
@@ -132,7 +133,7 @@ classdef TestContractHardening < matlab.unittest.TestCase
                 'parameter_domain_manifest.json'), testCase.ErrorId, ...
                 'parameter-domain manifest');
             descriptorHash = sha256_file(fullfile(configDir, ...
-                'descriptor_definition.json'), testCase.ErrorId, ...
+                'descriptor_definition.v2.json'), testCase.ErrorId, ...
                 'descriptor definition');
             testCase.verifyEqual(manifestHash, ...
                 lower(char(string(config.parameter_domain_manifest_sha256))));
@@ -263,13 +264,10 @@ classdef TestContractHardening < matlab.unittest.TestCase
 
         function testDescriptorSemanticMutationRejectedByHash(testCase)
             fixture = TestContractHardening.createFixture(testCase.BaseDir);
-            path = fullfile(fixture.dir, 'descriptor_definition.json');
+            path = fullfile(fixture.dir, 'descriptor_definition.v2.json');
             definition = jsondecode(fileread(path));
-            if iscell(definition.descriptors)
-                definition.descriptors{5}.algorithm_params.slice_count = 25;
-            else
-                definition.descriptors(5).algorithm_params.slice_count = 25;
-            end
+            definition.profiles(2).algorithms.areaMean = ...
+                'unexpected_area_algorithm';
             TestContractHardening.writeJson(path, definition);
             TestContractHardening.verifyInvalid(testCase, fixture, 'descriptor_definition_sha256');
         end
@@ -343,13 +341,13 @@ classdef TestContractHardening < matlab.unittest.TestCase
         function testCoordinatedTamperingRejectedByFrozenHash(testCase)
             fixture = TestContractHardening.createFixture(testCase.BaseDir);
             % Modify descriptor AND update config hash simultaneously
-            path = fullfile(fixture.dir, 'descriptor_definition.json');
+            path = fullfile(fixture.dir, 'descriptor_definition.v2.json');
             def = jsondecode(fileread(path));
-            if iscell(def.descriptors), def.descriptors{5}.formula = 'bogus'; else, def.descriptors(5).formula = 'bogus'; end
+            def.profiles(1).algorithms.areaMean = 'bogus';
             TestContractHardening.writeJson(path, def);
             % Update config with NEW hash (computed from modified file)
             fixture.data.descriptor_definition_sha256 = lower(char(string(...
-                sha256_file(fullfile(fixture.dir, 'descriptor_definition.json'), ...
+                sha256_file(fullfile(fixture.dir, 'descriptor_definition.v2.json'), ...
                 testCase.ErrorId, 'test'))));
             % But frozen contract value won't match!
             TestContractHardening.verifyInvalid(testCase, fixture, 'does not match frozen contract value')
@@ -479,7 +477,7 @@ classdef TestContractHardening < matlab.unittest.TestCase
 
         function testMalformedDescriptorPreservesCause(testCase)
             fixture = TestContractHardening.createFixture(testCase.BaseDir);
-            path = fullfile(fixture.dir, 'descriptor_definition.json');
+            path = fullfile(fixture.dir, 'descriptor_definition.v2.json');
             TestContractHardening.writeText(path, '{ malformed json ');
             hash = sha256_file(path, ...
                 testCase.ErrorId, 'test descriptor');
@@ -501,29 +499,22 @@ classdef TestContractHardening < matlab.unittest.TestCase
 
         %% ===== v7 regression: descriptor semantics =====
 
-        function testAreaMeanFormulaAndDependenciesAreCanonical(testCase)
-            path = fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json');
+        function testV2ProfilesDeclareDistinctAreaMeanAlgorithms(testCase)
+            path = fullfile(testCase.BaseDir, 'configs', ...
+                'descriptor_definition.v2.json');
             definition = jsondecode(fileread(path));
-            descriptor = TestContractHardening.getDescriptor(definition, 5);
-            expectedFormula = ['sliceIndices = round(linspace(1, Nz, 26)); areas = []; ' ...
-                'for i = 1:26, sl = ~solid(:,:,sliceIndices(i)); cc2 = bwconncomp(sl, 8); ' ...
-                'if cc2.NumObjects > 0, counts = cellfun(@numel, cc2.PixelIdxList); ' ...
-                'areas(end+1) = max(counts) * dx_mm * dy_mm; end; end; areaMean = mean(areas)'];
-            testCase.verifyEqual(char(string(descriptor.formula)), expectedFormula);
-            dependencies = cellfun(@(x) char(string(x)), descriptor.dependencies, ...
-                'UniformOutput', false);
-            testCase.verifyEqual(dependencies(:)', {'binary_volume', 'dx_mm', 'dy_mm'});
-            testCase.verifyEqual(char(string(descriptor.algorithm_params.area_normalization)), ...
-                'pixel_count * dx_mm * dy_mm');
+            testCase.verifyEqual(definition.profiles(1).algorithms.areaMean, ...
+                'mean_solid_z_slice_area');
+            testCase.verifyEqual(definition.profiles(2).algorithms.areaMean, ...
+                'mean_largest_void_region_over_26_z_slices');
         end
 
         function testDescriptorOrderValidatorIsReached(testCase)
-            path = fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json');
+            path = fullfile(testCase.BaseDir, 'configs', ...
+                'descriptor_definition.v2.json');
             definition = jsondecode(fileread(path));
-            first = TestContractHardening.getDescriptor(definition, 1);
-            second = TestContractHardening.getDescriptor(definition, 2);
-            definition = TestContractHardening.setDescriptor(definition, 1, second);
-            definition = TestContractHardening.setDescriptor(definition, 2, first);
+            definition.descriptor_order([1, 2]) = ...
+                definition.descriptor_order([2, 1]);
             expectedNames = {'relativeVolume', 'relativeArea', 'thickness', ...
                 'poreDiameter', 'areaMean'};
             caughtException = [];
@@ -540,9 +531,10 @@ classdef TestContractHardening < matlab.unittest.TestCase
         end
 
         function testDescriptorSchemaValidatorIsReached(testCase)
-            path = fullfile(testCase.BaseDir, 'configs', 'descriptor_definition.json');
+            path = fullfile(testCase.BaseDir, 'configs', ...
+                'descriptor_definition.v2.json');
             definition = jsondecode(fileread(path));
-            definition.schema_version = '2.0';
+            definition.schema_version = '3.0';
             expectedNames = {'relativeVolume', 'relativeArea', 'thickness', ...
                 'poreDiameter', 'areaMean'};
             caughtException = [];
@@ -564,8 +556,8 @@ classdef TestContractHardening < matlab.unittest.TestCase
             fixture.dir = tempname;
             mkdir(fixture.dir);
             fixture.cleanup = onCleanup(@() rmdir(fixture.dir, 's'));
-            copyfile(fullfile(baseDir, 'configs', 'descriptor_definition.json'), ...
-                fullfile(fixture.dir, 'descriptor_definition.json'));
+            copyfile(fullfile(baseDir, 'configs', 'descriptor_definition.v2.json'), ...
+                fullfile(fixture.dir, 'descriptor_definition.v2.json'));
             copyfile(fullfile(baseDir, 'configs', 'parameter_domain_manifest.json'), ...
                 fullfile(fixture.dir, 'parameter_domain_manifest.json'));
             configPath = fullfile(baseDir, 'configs', 'compiler_config.example.json');

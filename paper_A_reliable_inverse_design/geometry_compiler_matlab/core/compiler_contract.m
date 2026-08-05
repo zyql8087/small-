@@ -6,6 +6,8 @@ function contract = compiler_contract()
         'thickness', 'poreDiameter', 'areaMean'};
     contract.requiredLevels = [96, 128, 160];
     contract.descriptorDefinitionSha256 = ...
+        '9e31513211e50a5251a91cecd303947939db023c1713ea3900c5920dbf98003d';
+    contract.legacyCandidateDescriptorDefinitionSha256 = ...
         '2f59976c74cc88eac66c43a56e242f50f28aff0e71be8d752a481c05a4a2d9c9';
     contract.parameterDomainManifestSha256 = ...
         '671e0c081f8d50e1060a1cfdb4e10d70b662319582f2922231400ba56dd7bd2a';
@@ -19,6 +21,7 @@ function contract = compiler_contract()
     contract.geometryDefinition = ...
         'continuous_sheet_gyroid_intersect_hard_box';
     contract.validationStage = 'M03_GEOMETRY_MESH';
+    contract.descriptorValidationStage = 'M04_DUAL_DESCRIPTORS';
     contract.betaBox = 1.0;
     contract.isosurfaceLevel = 0.0;
     contract.gridConvention = 'cell_centered_half_step_exterior';

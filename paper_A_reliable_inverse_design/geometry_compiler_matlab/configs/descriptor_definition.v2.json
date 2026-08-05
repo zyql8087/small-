@@ -1,0 +1,54 @@
+{
+  "schema_version": "2.0",
+  "descriptor_contract": "m04-dual-profile",
+  "validation_status": "active_m04_contract",
+  "descriptor_order": [
+    "relativeVolume",
+    "relativeArea",
+    "thickness",
+    "poreDiameter",
+    "areaMean"
+  ],
+  "source_of_record": {
+    "repository": "https://github.com/Alistairj43/TPMS-Designer",
+    "commit": "a5f7d59b59f5c00e0f50c0bc3675f38f553454eb"
+  },
+  "profiles": [
+    {
+      "name": "legacy_small",
+      "grid_convention": "endpoint_grid",
+      "units": {
+        "relativeVolume": "dimensionless",
+        "relativeArea": "dimensionless",
+        "thickness": "mm",
+        "poreDiameter": "mm",
+        "areaMean": "mm2"
+      },
+      "algorithms": {
+        "relativeVolume": "drop_final_plane_occupancy",
+        "relativeArea": "surface_area_over_bbox_surface_area",
+        "thickness": "periodic_maximum_solid_inscribed_diameter",
+        "poreDiameter": "periodic_maximum_void_inscribed_diameter",
+        "areaMean": "mean_solid_z_slice_area"
+      }
+    },
+    {
+      "name": "physical_m04",
+      "grid_convention": "m03_cell_centered_interior",
+      "units": {
+        "relativeVolume": "dimensionless",
+        "relativeArea": "mm^-1",
+        "thickness": "mm",
+        "poreDiameter": "mm",
+        "areaMean": "mm2"
+      },
+      "algorithms": {
+        "relativeVolume": "interior_solid_fraction",
+        "relativeArea": "closed_surface_area_over_bbox_volume",
+        "thickness": "median_skeleton_local_thickness",
+        "poreDiameter": "largest_finite_void_component_inscribed_diameter",
+        "areaMean": "mean_largest_void_region_over_26_z_slices"
+      }
+    }
+  ]
+}

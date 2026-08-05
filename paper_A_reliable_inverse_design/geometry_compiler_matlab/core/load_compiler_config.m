@@ -193,8 +193,9 @@ function config = load_compiler_config(config_path)
     end
 
     %% Validate descriptor definition JSON (schema + order consistency)
-    validate_descriptor_definition( ...
-        descriptorDefinition, config.descriptor_names, ERROR_ID);
+    [config.descriptor_profiles, config.descriptor_profile_sha256] = ...
+        validate_descriptor_definition(descriptorDefinition, ...
+        config.descriptor_names, ERROR_ID);
 
 end
 
