@@ -530,7 +530,7 @@ git commit -m "feat(m04): integrate authenticated dual descriptor compiler"
 - Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/tests/TestDescriptorGate0.m`
 - Modify: `paper_A_reliable_inverse_design/geometry_compiler_matlab/run_tests.m`
 
-- [ ] **Step 1: Write failing selection tests using a compact synthetic workbook**
+- [x] **Step 1: Write failing selection tests using a compact synthetic workbook**
 
 Construct three temporary sheets named `class1`, `class2`, `class12`, with headers exactly:
 
@@ -549,7 +549,7 @@ testCase.verifyEqual(selection.rows(i).selection_digest,expected);
 
 Add rejection tests for wrong workbook hash, sheet count, header order, missing/nonfinite cell, invalid method constraints, and out-of-domain parameters.
 
-- [ ] **Step 2: Run Gate-0 tests and verify RED**
+- [x] **Step 2: Run Gate-0 tests and verify RED**
 
 ```powershell
 & 'F:\MATLAB\R2023b\bin\matlab.exe' -batch "cd('F:\small++\.worktrees\m03-continuous-csg-impl\paper_A_reliable_inverse_design\geometry_compiler_matlab'); r=runtests('tests/TestDescriptorGate0.m'); assertSuccess(r)"
@@ -557,7 +557,7 @@ Add rejection tests for wrong workbook hash, sheet count, header order, missing/
 
 Expected: undefined `prepare_small_gate0_selection`.
 
-- [ ] **Step 3: Implement authenticated selection**
+- [x] **Step 3: Implement authenticated selection**
 
 Use `readcell` only after verifying the workbook SHA-256 equals:
 
@@ -593,7 +593,7 @@ for s = 1:3
 end
 ```
 
-- [ ] **Step 4: Audit the real workbook and create the committed compact fixture**
+- [x] **Step 4: Audit the real workbook and create the committed compact fixture**
 
 Run:
 
@@ -603,7 +603,7 @@ Run:
 
 Expected: exactly 36 rows, 12 per method, with six tagged `discovery` and 30 tagged `confirmation`; the source workbook remains unchanged and outside Git.
 
-- [ ] **Step 5: Re-run tests and commit selection provenance**
+- [x] **Step 5: Re-run tests and commit selection provenance**
 
 ```powershell
 git add paper_A_reliable_inverse_design/geometry_compiler_matlab/gate0/prepare_small_gate0_selection.m paper_A_reliable_inverse_design/geometry_compiler_matlab/tests/fixtures/small_gate0_rows.json paper_A_reliable_inverse_design/geometry_compiler_matlab/tests/TestDescriptorGate0.m paper_A_reliable_inverse_design/geometry_compiler_matlab/run_tests.m

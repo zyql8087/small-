@@ -1,0 +1,1341 @@
+{
+  "schema_version": "1.0",
+  "selection_protocol": "M04-v2-selection",
+  "workbook_sha256": "b4544b09c2688af8bc7aeeca5140a5d4c1cfc1c5b262709c9618c030d90fa561",
+  "rows": [
+    {
+      "sheet": "class1",
+      "method": "M1",
+      "excel_row": 1424,
+      "row_id": "class1:1424",
+      "raw_parameters": {
+        "c0": 0.08936,
+        "c1": 0.04653,
+        "c2": 0.04423,
+        "w": 0
+      },
+      "effective_parameters": {
+        "method": "M1",
+        "c0": 0.08936,
+        "c1": 0.04653,
+        "c2": 0.04423,
+        "w": 0,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.08936,
+          "c1": 0.04653,
+          "c2": 0.04423,
+          "w": 0
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.056,
+        "relativeArea": 1.994,
+        "thickness": 3.464,
+        "poreDiameter": 16.062,
+        "areaMean": 90.222
+      },
+      "selection_digest": "000af300e38946ba60a9e35b436244661c4e6a9878e90ff65ce662bffd2080d0",
+      "role": "discovery"
+    },
+    {
+      "sheet": "class1",
+      "method": "M1",
+      "excel_row": 669,
+      "row_id": "class1:669",
+      "raw_parameters": {
+        "c0": 0.071,
+        "c1": 0.141,
+        "c2": 0.043,
+        "w": 0
+      },
+      "effective_parameters": {
+        "method": "M1",
+        "c0": 0.071,
+        "c1": 0.141,
+        "c2": 0.043,
+        "w": 0,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.071,
+          "c1": 0.141,
+          "c2": 0.043,
+          "w": 0
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.1,
+        "relativeArea": 2.566,
+        "thickness": 4.123,
+        "poreDiameter": 15,
+        "areaMean": 160.975
+      },
+      "selection_digest": "001def8fc9b4fbe7f6e731cfcef18c627c9c42d096df8f7ff18ee5b56a383817",
+      "role": "discovery"
+    },
+    {
+      "sheet": "class1",
+      "method": "M1",
+      "excel_row": 944,
+      "row_id": "class1:944",
+      "raw_parameters": {
+        "c0": 0.08976,
+        "c1": 0.16425,
+        "c2": 0.06877,
+        "w": 0
+      },
+      "effective_parameters": {
+        "method": "M1",
+        "c0": 0.08976,
+        "c1": 0.16425,
+        "c2": 0.06877,
+        "w": 0,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.08976,
+          "c1": 0.16425,
+          "c2": 0.06877,
+          "w": 0
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.123,
+        "relativeArea": 2.805,
+        "thickness": 4.69,
+        "poreDiameter": 14.697,
+        "areaMean": 199.42
+      },
+      "selection_digest": "0090eda1c7713905bdc052af84959c06c3cd6bd284d82a811cb20cdf2cc9bf6e",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class1",
+      "method": "M1",
+      "excel_row": 447,
+      "row_id": "class1:447",
+      "raw_parameters": {
+        "c0": 0.05,
+        "c1": 0.1136,
+        "c2": 0.0731,
+        "w": 0
+      },
+      "effective_parameters": {
+        "method": "M1",
+        "c0": 0.05,
+        "c1": 0.1136,
+        "c2": 0.0731,
+        "w": 0,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.05,
+          "c1": 0.1136,
+          "c2": 0.0731,
+          "w": 0
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.088,
+        "relativeArea": 2.45,
+        "thickness": 4.123,
+        "poreDiameter": 15.166,
+        "areaMean": 142.784
+      },
+      "selection_digest": "009d80cf67c2b9c4216440ae13446959562c18c3320b6c663c212ea643eac574",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class1",
+      "method": "M1",
+      "excel_row": 283,
+      "row_id": "class1:283",
+      "raw_parameters": {
+        "c0": 0.0515,
+        "c1": 0.0671,
+        "c2": 0.054,
+        "w": 0
+      },
+      "effective_parameters": {
+        "method": "M1",
+        "c0": 0.0515,
+        "c1": 0.0671,
+        "c2": 0.054,
+        "w": 0,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.0515,
+          "c1": 0.0671,
+          "c2": 0.054,
+          "w": 0
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.059,
+        "relativeArea": 2.07,
+        "thickness": 3.317,
+        "poreDiameter": 15.621,
+        "areaMean": 95.877
+      },
+      "selection_digest": "00e5494d38728054bc7b2a83e0965f7ccdba3297ad4306669c5ae6b31a0bde1c",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class1",
+      "method": "M1",
+      "excel_row": 466,
+      "row_id": "class1:466",
+      "raw_parameters": {
+        "c0": 0.0856019,
+        "c1": 0.0811577,
+        "c2": 0.0744752,
+        "w": 0
+      },
+      "effective_parameters": {
+        "method": "M1",
+        "c0": 0.0856019,
+        "c1": 0.0811577,
+        "c2": 0.0744752,
+        "w": 0,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.0856019,
+          "c1": 0.0811577,
+          "c2": 0.0744752,
+          "w": 0
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.082,
+        "relativeArea": 2.374,
+        "thickness": 3.464,
+        "poreDiameter": 15.264,
+        "areaMean": 132.272
+      },
+      "selection_digest": "01698a86db60e6df4b0ed1e3c0633a687048d9a3852f7ea1117dbe87f3052f90",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class1",
+      "method": "M1",
+      "excel_row": 904,
+      "row_id": "class1:904",
+      "raw_parameters": {
+        "c0": 0.07935,
+        "c1": 0.08624,
+        "c2": 0.143938,
+        "w": 0
+      },
+      "effective_parameters": {
+        "method": "M1",
+        "c0": 0.07935,
+        "c1": 0.08624,
+        "c2": 0.143938,
+        "w": 0,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.07935,
+          "c1": 0.08624,
+          "c2": 0.143938,
+          "w": 0
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.099,
+        "relativeArea": 2.576,
+        "thickness": 4.359,
+        "poreDiameter": 15.133,
+        "areaMean": 162.84
+      },
+      "selection_digest": "022fdabdaa2ffb911038f975049548fbe2ad7eb35467e18621f961ff2977517b",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class1",
+      "method": "M1",
+      "excel_row": 1128,
+      "row_id": "class1:1128",
+      "raw_parameters": {
+        "c0": 0.157174,
+        "c1": 0.146091,
+        "c2": 0.117194,
+        "w": 0
+      },
+      "effective_parameters": {
+        "method": "M1",
+        "c0": 0.157174,
+        "c1": 0.146091,
+        "c2": 0.117194,
+        "w": 0,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.157174,
+          "c1": 0.146091,
+          "c2": 0.117194,
+          "w": 0
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.143,
+        "relativeArea": 2.99,
+        "thickness": 4.69,
+        "poreDiameter": 14.353,
+        "areaMean": 232.333
+      },
+      "selection_digest": "02bc62e1492aa7391503911b77275d9ad9e5cb4edcdd6d240b314292955120a5",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class1",
+      "method": "M1",
+      "excel_row": 1145,
+      "row_id": "class1:1145",
+      "raw_parameters": {
+        "c0": 0.1795016,
+        "c1": 0.1429177,
+        "c2": 0.1090768,
+        "w": 0
+      },
+      "effective_parameters": {
+        "method": "M1",
+        "c0": 0.1795016,
+        "c1": 0.1429177,
+        "c2": 0.1090768,
+        "w": 0,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.1795016,
+          "c1": 0.1429177,
+          "c2": 0.1090768,
+          "w": 0
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.145,
+        "relativeArea": 3.001,
+        "thickness": 4.899,
+        "poreDiameter": 14.353,
+        "areaMean": 236.198
+      },
+      "selection_digest": "02f65e1325c4f492772ce896cb8fdace1b611ab91768bcbc75262526b63a36b3",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class1",
+      "method": "M1",
+      "excel_row": 138,
+      "row_id": "class1:138",
+      "raw_parameters": {
+        "c0": 0.127,
+        "c1": 0.085,
+        "c2": 0.195,
+        "w": 0
+      },
+      "effective_parameters": {
+        "method": "M1",
+        "c0": 0.127,
+        "c1": 0.085,
+        "c2": 0.195,
+        "w": 0,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.127,
+          "c1": 0.085,
+          "c2": 0.195,
+          "w": 0
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.123,
+        "relativeArea": 2.812,
+        "thickness": 5,
+        "poreDiameter": 15.067,
+        "areaMean": 203.272
+      },
+      "selection_digest": "02fb7cb7a1ae101d7abbfcafc739dac5fdfad395a7832cdcadde317837cf0cf7",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class1",
+      "method": "M1",
+      "excel_row": 763,
+      "row_id": "class1:763",
+      "raw_parameters": {
+        "c0": 0.12137,
+        "c1": 0.071207,
+        "c2": 0.156614,
+        "w": 0
+      },
+      "effective_parameters": {
+        "method": "M1",
+        "c0": 0.12137,
+        "c1": 0.071207,
+        "c2": 0.156614,
+        "w": 0,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.12137,
+          "c1": 0.071207,
+          "c2": 0.156614,
+          "w": 0
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.106,
+        "relativeArea": 2.642,
+        "thickness": 4.583,
+        "poreDiameter": 15.264,
+        "areaMean": 173.265
+      },
+      "selection_digest": "033a330a82c8cfac6cdadbe5ebacfd7124efaf9b3acda0d761a5c8e6d0d3fd9e",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class1",
+      "method": "M1",
+      "excel_row": 1310,
+      "row_id": "class1:1310",
+      "raw_parameters": {
+        "c0": 0.1244,
+        "c1": 0.111,
+        "c2": 0.0526,
+        "w": 0
+      },
+      "effective_parameters": {
+        "method": "M1",
+        "c0": 0.1244,
+        "c1": 0.111,
+        "c2": 0.0526,
+        "w": 0,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.1244,
+          "c1": 0.111,
+          "c2": 0.0526,
+          "w": 0
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.101,
+        "relativeArea": 2.58,
+        "thickness": 4.123,
+        "poreDiameter": 15.166,
+        "areaMean": 163.481
+      },
+      "selection_digest": "034c0cdd31f86db8cd8cc2efbe9e564ba59938c0d8276f04e2923b951507b27a",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class2",
+      "method": "M2",
+      "excel_row": 45,
+      "row_id": "class2:45",
+      "raw_parameters": {
+        "c0": 0.1738,
+        "c1": 0.1738,
+        "c2": 0.1738,
+        "w": 3.05179
+      },
+      "effective_parameters": {
+        "method": "M2",
+        "c0": 0.1738,
+        "c1": 0.1738,
+        "c2": 0.1738,
+        "w": 3.05179,
+        "c_projected": 0.1738,
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.1738,
+          "c1": 0.1738,
+          "c2": 0.1738,
+          "w": 3.05179
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.179,
+        "relativeArea": 2.321,
+        "thickness": 9,
+        "poreDiameter": 22.672,
+        "areaMean": 292.772
+      },
+      "selection_digest": "000e216b67af8ade64d007c9c8c67b5e54c97449668f08f2dc089a2c35a8baf4",
+      "role": "discovery"
+    },
+    {
+      "sheet": "class2",
+      "method": "M2",
+      "excel_row": 833,
+      "row_id": "class2:833",
+      "raw_parameters": {
+        "c0": 0.11412,
+        "c1": 0.11412,
+        "c2": 0.11412,
+        "w": 3.25608
+      },
+      "effective_parameters": {
+        "method": "M2",
+        "c0": 0.11412,
+        "c1": 0.11412,
+        "c2": 0.11412,
+        "w": 3.25608,
+        "c_projected": 0.11412,
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.11412,
+          "c1": 0.11412,
+          "c2": 0.11412,
+          "w": 3.25608
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.116,
+        "relativeArea": 1.951,
+        "thickness": 7.348,
+        "poreDiameter": 23.791,
+        "areaMean": 189.821
+      },
+      "selection_digest": "002a2844c66b5c137385765f7cf10328679b4fc6fcffd6e446ed9146b8b074f4",
+      "role": "discovery"
+    },
+    {
+      "sheet": "class2",
+      "method": "M2",
+      "excel_row": 1383,
+      "row_id": "class2:1383",
+      "raw_parameters": {
+        "c0": 0.0668939,
+        "c1": 0.0668939,
+        "c2": 0.0668939,
+        "w": 5.2192807
+      },
+      "effective_parameters": {
+        "method": "M2",
+        "c0": 0.0668939,
+        "c1": 0.0668939,
+        "c2": 0.0668939,
+        "w": 5.2192807,
+        "c_projected": 0.0668939,
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.0668939,
+          "c1": 0.0668939,
+          "c2": 0.0668939,
+          "w": 5.2192807
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.068,
+        "relativeArea": 1.496,
+        "thickness": 5.196,
+        "poreDiameter": 24.372,
+        "areaMean": 111.13
+      },
+      "selection_digest": "002b6d5de161a0a01e19fceba4979f08790750dd7ccb19bb9cd300b03be1f89f",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class2",
+      "method": "M2",
+      "excel_row": 16,
+      "row_id": "class2:16",
+      "raw_parameters": {
+        "c0": 0.168926,
+        "c1": 0.168926,
+        "c2": 0.168926,
+        "w": 2.790648
+      },
+      "effective_parameters": {
+        "method": "M2",
+        "c0": 0.168926,
+        "c1": 0.168926,
+        "c2": 0.168926,
+        "w": 2.790648,
+        "c_projected": 0.168926,
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.168926,
+          "c1": 0.168926,
+          "c2": 0.168926,
+          "w": 2.790648
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.174,
+        "relativeArea": 2.305,
+        "thickness": 9.055,
+        "poreDiameter": 22.847,
+        "areaMean": 283.725
+      },
+      "selection_digest": "002d686103eb15fba03fc66bfebd5f50f32b9a4ab4f7d6ebea2cf1dfa5e95999",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class2",
+      "method": "M2",
+      "excel_row": 1666,
+      "row_id": "class2:1666",
+      "raw_parameters": {
+        "c0": 0.1451,
+        "c1": 0.1451,
+        "c2": 0.1451,
+        "w": 6.84532
+      },
+      "effective_parameters": {
+        "method": "M2",
+        "c0": 0.1451,
+        "c1": 0.1451,
+        "c2": 0.1451,
+        "w": 6.84532,
+        "c_projected": 0.1451,
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.1451,
+          "c1": 0.1451,
+          "c2": 0.1451,
+          "w": 6.84532
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.149,
+        "relativeArea": 2.016,
+        "thickness": 7.348,
+        "poreDiameter": 22.293,
+        "areaMean": 243.198
+      },
+      "selection_digest": "00dcdb89ef75eea9e74a661e2fc30cd05a3fcadb6ed18b8b578d2355b1077426",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class2",
+      "method": "M2",
+      "excel_row": 1489,
+      "row_id": "class2:1489",
+      "raw_parameters": {
+        "c0": 0.0314,
+        "c1": 0.0314,
+        "c2": 0.0314,
+        "w": 3.454
+      },
+      "effective_parameters": {
+        "method": "M2",
+        "c0": 0.0314,
+        "c1": 0.0314,
+        "c2": 0.0314,
+        "w": 3.454,
+        "c_projected": 0.0314,
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.0314,
+          "c1": 0.0314,
+          "c2": 0.0314,
+          "w": 3.454
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.027,
+        "relativeArea": 0.978,
+        "thickness": 4.123,
+        "poreDiameter": 25.865,
+        "areaMean": 45.071
+      },
+      "selection_digest": "00de5d5208eab7f7ca17eb32260753be6daddb19d9be5fe2012f70fa57c554a6",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class2",
+      "method": "M2",
+      "excel_row": 1145,
+      "row_id": "class2:1145",
+      "raw_parameters": {
+        "c0": 0.1021,
+        "c1": 0.1021,
+        "c2": 0.1021,
+        "w": 2.5573
+      },
+      "effective_parameters": {
+        "method": "M2",
+        "c0": 0.1021,
+        "c1": 0.1021,
+        "c2": 0.1021,
+        "w": 2.5573,
+        "c_projected": 0.1021,
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.1021,
+          "c1": 0.1021,
+          "c2": 0.1021,
+          "w": 2.5573
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.103,
+        "relativeArea": 1.869,
+        "thickness": 7.28,
+        "poreDiameter": 24.207,
+        "areaMean": 168.806
+      },
+      "selection_digest": "00fde3feb3f8e5f27f5b223a5a411edd1fc3f744aade8811d593d578bee3d584",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class2",
+      "method": "M2",
+      "excel_row": 1580,
+      "row_id": "class2:1580",
+      "raw_parameters": {
+        "c0": 0.05824,
+        "c1": 0.05824,
+        "c2": 0.05824,
+        "w": 4.13389
+      },
+      "effective_parameters": {
+        "method": "M2",
+        "c0": 0.05824,
+        "c1": 0.05824,
+        "c2": 0.05824,
+        "w": 4.13389,
+        "c_projected": 0.05824,
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.05824,
+          "c1": 0.05824,
+          "c2": 0.05824,
+          "w": 4.13389
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.057,
+        "relativeArea": 1.401,
+        "thickness": 5.099,
+        "poreDiameter": 24.718,
+        "areaMean": 93.901
+      },
+      "selection_digest": "012b0fa2132d7e23a6077e2df81e2eefc86786fa2accb1d5c29014b163d023bf",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class2",
+      "method": "M2",
+      "excel_row": 1651,
+      "row_id": "class2:1651",
+      "raw_parameters": {
+        "c0": 0.14644,
+        "c1": 0.14644,
+        "c2": 0.14644,
+        "w": 2.63006
+      },
+      "effective_parameters": {
+        "method": "M2",
+        "c0": 0.14644,
+        "c1": 0.14644,
+        "c2": 0.14644,
+        "w": 2.63006,
+        "c_projected": 0.14644,
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.14644,
+          "c1": 0.14644,
+          "c2": 0.14644,
+          "w": 2.63006
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.15,
+        "relativeArea": 2.181,
+        "thickness": 8.602,
+        "poreDiameter": 23.409,
+        "areaMean": 244.552
+      },
+      "selection_digest": "014af75673af6f37c39c5e1545dd957357c86c45c58e5bf937f8641934e77128",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class2",
+      "method": "M2",
+      "excel_row": 871,
+      "row_id": "class2:871",
+      "raw_parameters": {
+        "c0": 0.05171,
+        "c1": 0.05171,
+        "c2": 0.05171,
+        "w": 6.981524
+      },
+      "effective_parameters": {
+        "method": "M2",
+        "c0": 0.05171,
+        "c1": 0.05171,
+        "c2": 0.05171,
+        "w": 6.981524,
+        "c_projected": 0.05171,
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.05171,
+          "c1": 0.05171,
+          "c2": 0.05171,
+          "w": 6.981524
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.053,
+        "relativeArea": 1.321,
+        "thickness": 4.69,
+        "poreDiameter": 24.718,
+        "areaMean": 87.009
+      },
+      "selection_digest": "01504b32a8ba9186072d3b14aba3652b6a65fee703d23f2bdf3ff3461fa29e5c",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class2",
+      "method": "M2",
+      "excel_row": 1267,
+      "row_id": "class2:1267",
+      "raw_parameters": {
+        "c0": 0.192,
+        "c1": 0.192,
+        "c2": 0.192,
+        "w": 2.287
+      },
+      "effective_parameters": {
+        "method": "M2",
+        "c0": 0.192,
+        "c1": 0.192,
+        "c2": 0.192,
+        "w": 2.287,
+        "c_projected": 0.192,
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.192,
+          "c1": 0.192,
+          "c2": 0.192,
+          "w": 2.287
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.197,
+        "relativeArea": 2.432,
+        "thickness": 10.247,
+        "poreDiameter": 22.825,
+        "areaMean": 321.975
+      },
+      "selection_digest": "01516109b949298470d2888576869e0a6ffe39cef8eacf15fb02e8ee45ac76e1",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class2",
+      "method": "M2",
+      "excel_row": 1199,
+      "row_id": "class2:1199",
+      "raw_parameters": {
+        "c0": 0.054978,
+        "c1": 0.054978,
+        "c2": 0.054978,
+        "w": 3.97543
+      },
+      "effective_parameters": {
+        "method": "M2",
+        "c0": 0.054978,
+        "c1": 0.054978,
+        "c2": 0.054978,
+        "w": 3.97543,
+        "c_projected": 0.054978,
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.054978,
+          "c1": 0.054978,
+          "c2": 0.054978,
+          "w": 3.97543
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.054,
+        "relativeArea": 1.364,
+        "thickness": 5.099,
+        "poreDiameter": 24.92,
+        "areaMean": 88.352
+      },
+      "selection_digest": "01583a9e5ee18211ab1c402af4a9232886f50fe10585c028c92a268851b51f59",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class12",
+      "method": "M3",
+      "excel_row": 1390,
+      "row_id": "class12:1390",
+      "raw_parameters": {
+        "c0": 0.06514,
+        "c1": 0.03095,
+        "c2": 0.11326,
+        "w": 6.62127
+      },
+      "effective_parameters": {
+        "method": "M3",
+        "c0": 0.06514,
+        "c1": 0.03095,
+        "c2": 0.11326,
+        "w": 6.62127,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.06514,
+          "c1": 0.03095,
+          "c2": 0.11326,
+          "w": 6.62127
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.062,
+        "relativeArea": 1.399,
+        "thickness": 5.745,
+        "poreDiameter": 24.92,
+        "areaMean": 102.614
+      },
+      "selection_digest": "00351ab74c7245090687eee1f07f16898fac88fb6e3acff7a0f2939d435aea2c",
+      "role": "discovery"
+    },
+    {
+      "sheet": "class12",
+      "method": "M3",
+      "excel_row": 1685,
+      "row_id": "class12:1685",
+      "raw_parameters": {
+        "c0": 0.043538,
+        "c1": 0.124634,
+        "c2": 0.118852,
+        "w": 5.762998
+      },
+      "effective_parameters": {
+        "method": "M3",
+        "c0": 0.043538,
+        "c1": 0.124634,
+        "c2": 0.118852,
+        "w": 5.762998,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.043538,
+          "c1": 0.124634,
+          "c2": 0.118852,
+          "w": 5.762998
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.105,
+        "relativeArea": 1.76,
+        "thickness": 6.928,
+        "poreDiameter": 23.281,
+        "areaMean": 172.364
+      },
+      "selection_digest": "0037054e8a5e52eca435a7af91d42d663008b9e057fe032c5bbd96c5a01ba627",
+      "role": "discovery"
+    },
+    {
+      "sheet": "class12",
+      "method": "M3",
+      "excel_row": 665,
+      "row_id": "class12:665",
+      "raw_parameters": {
+        "c0": 0.191,
+        "c1": 0.126,
+        "c2": 0.149,
+        "w": 3.397
+      },
+      "effective_parameters": {
+        "method": "M3",
+        "c0": 0.191,
+        "c1": 0.126,
+        "c2": 0.149,
+        "w": 3.397,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.191,
+          "c1": 0.126,
+          "c2": 0.149,
+          "w": 3.397
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.153,
+        "relativeArea": 2.181,
+        "thickness": 8.062,
+        "poreDiameter": 23.108,
+        "areaMean": 249.407
+      },
+      "selection_digest": "0062922ba4c0e5679793163f414b253c1a1afc3152ed62bcc23598dadb2b9b05",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class12",
+      "method": "M3",
+      "excel_row": 1245,
+      "row_id": "class12:1245",
+      "raw_parameters": {
+        "c0": 0.127,
+        "c1": 0.103,
+        "c2": 0.116,
+        "w": 6.172
+      },
+      "effective_parameters": {
+        "method": "M3",
+        "c0": 0.127,
+        "c1": 0.103,
+        "c2": 0.116,
+        "w": 6.172,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.127,
+          "c1": 0.103,
+          "c2": 0.116,
+          "w": 6.172
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.116,
+        "relativeArea": 1.849,
+        "thickness": 6.403,
+        "poreDiameter": 23.601,
+        "areaMean": 189.34
+      },
+      "selection_digest": "00980337e4ea1770994f3dea921ba67a8a78d240aad861631bd7ea870c2afac4",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class12",
+      "method": "M3",
+      "excel_row": 26,
+      "row_id": "class12:26",
+      "raw_parameters": {
+        "c0": 0.16,
+        "c1": 0.119,
+        "c2": 0.196,
+        "w": 5.487
+      },
+      "effective_parameters": {
+        "method": "M3",
+        "c0": 0.16,
+        "c1": 0.119,
+        "c2": 0.196,
+        "w": 5.487,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.16,
+          "c1": 0.119,
+          "c2": 0.196,
+          "w": 5.487
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.154,
+        "relativeArea": 2.085,
+        "thickness": 8.124,
+        "poreDiameter": 22.561,
+        "areaMean": 251.562
+      },
+      "selection_digest": "00b293cf708f585bfbbd2639b829115957cca3b2a1857d88685771e6e4591076",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class12",
+      "method": "M3",
+      "excel_row": 540,
+      "row_id": "class12:540",
+      "raw_parameters": {
+        "c0": 0.119,
+        "c1": 0.079,
+        "c2": 0.171,
+        "w": 2.183
+      },
+      "effective_parameters": {
+        "method": "M3",
+        "c0": 0.119,
+        "c1": 0.079,
+        "c2": 0.171,
+        "w": 2.183,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.119,
+          "c1": 0.079,
+          "c2": 0.171,
+          "w": 2.183
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.116,
+        "relativeArea": 1.958,
+        "thickness": 9.11,
+        "poreDiameter": 24.515,
+        "areaMean": 191.022
+      },
+      "selection_digest": "00b5eab93d4838a1352a42e246a5a680d67b05bb6946dac5e6f40f02ea9dde3c",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class12",
+      "method": "M3",
+      "excel_row": 1544,
+      "row_id": "class12:1544",
+      "raw_parameters": {
+        "c0": 0.0743,
+        "c1": 0.1409,
+        "c2": 0.0694,
+        "w": 7.8932
+      },
+      "effective_parameters": {
+        "method": "M3",
+        "c0": 0.0743,
+        "c1": 0.1409,
+        "c2": 0.0694,
+        "w": 7.8932,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.0743,
+          "c1": 0.1409,
+          "c2": 0.0694,
+          "w": 7.8932
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.109,
+        "relativeArea": 1.779,
+        "thickness": 6.403,
+        "poreDiameter": 23,
+        "areaMean": 177.83
+      },
+      "selection_digest": "00df47f1b60274d4ebf3539cf14572e68cc2280e446db0475c42df9c9ea28fdf",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class12",
+      "method": "M3",
+      "excel_row": 74,
+      "row_id": "class12:74",
+      "raw_parameters": {
+        "c0": 0.13,
+        "c1": 0.048,
+        "c2": 0.109,
+        "w": 7.994
+      },
+      "effective_parameters": {
+        "method": "M3",
+        "c0": 0.13,
+        "c1": 0.048,
+        "c2": 0.109,
+        "w": 7.994,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.13,
+          "c1": 0.048,
+          "c2": 0.109,
+          "w": 7.994
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.088,
+        "relativeArea": 1.591,
+        "thickness": 5.745,
+        "poreDiameter": 24.372,
+        "areaMean": 143.691
+      },
+      "selection_digest": "00eea22f734e772863c429db477c007aea6d537c0f79eea6b105df6527819947",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class12",
+      "method": "M3",
+      "excel_row": 390,
+      "row_id": "class12:390",
+      "raw_parameters": {
+        "c0": 0.0994,
+        "c1": 0.109,
+        "c2": 0.0984,
+        "w": 6.9562
+      },
+      "effective_parameters": {
+        "method": "M3",
+        "c0": 0.0994,
+        "c1": 0.109,
+        "c2": 0.0984,
+        "w": 6.9562,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.0994,
+          "c1": 0.109,
+          "c2": 0.0984,
+          "w": 6.9562
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.107,
+        "relativeArea": 1.78,
+        "thickness": 6,
+        "poreDiameter": 23.601,
+        "areaMean": 174.824
+      },
+      "selection_digest": "012e675a7e5eb10a6b712cf2568c0e8235a8013fb3fcef4b8952203f8b1d2074",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class12",
+      "method": "M3",
+      "excel_row": 759,
+      "row_id": "class12:759",
+      "raw_parameters": {
+        "c0": 0.0455,
+        "c1": 0.101,
+        "c2": 0.0822,
+        "w": 5.8293
+      },
+      "effective_parameters": {
+        "method": "M3",
+        "c0": 0.0455,
+        "c1": 0.101,
+        "c2": 0.0822,
+        "w": 5.8293,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.0455,
+          "c1": 0.101,
+          "c2": 0.0822,
+          "w": 5.8293
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.084,
+        "relativeArea": 1.612,
+        "thickness": 5.831,
+        "poreDiameter": 23.728,
+        "areaMean": 137.454
+      },
+      "selection_digest": "012f7461d8d03defcec8aa3db47d43720751a18777232df1841f258a7a37d623",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class12",
+      "method": "M3",
+      "excel_row": 1571,
+      "row_id": "class12:1571",
+      "raw_parameters": {
+        "c0": 0.068,
+        "c1": 0.12,
+        "c2": 0.184,
+        "w": 4.47
+      },
+      "effective_parameters": {
+        "method": "M3",
+        "c0": 0.068,
+        "c1": 0.12,
+        "c2": 0.184,
+        "w": 4.47,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.068,
+          "c1": 0.12,
+          "c2": 0.184,
+          "w": 4.47
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.127,
+        "relativeArea": 1.915,
+        "thickness": 8.367,
+        "poreDiameter": 23.216,
+        "areaMean": 207.481
+      },
+      "selection_digest": "013d00e3193d77c6db8a46e17d8230b210d6c3e4db0cc0e87b2bed9c3f5b3586",
+      "role": "confirmation"
+    },
+    {
+      "sheet": "class12",
+      "method": "M3",
+      "excel_row": 61,
+      "row_id": "class12:61",
+      "raw_parameters": {
+        "c0": 0.0875519,
+        "c1": 0.0468522,
+        "c2": 0.1963282,
+        "w": 2.2002234
+      },
+      "effective_parameters": {
+        "method": "M3",
+        "c0": 0.0875519,
+        "c1": 0.0468522,
+        "c2": 0.1963282,
+        "w": 2.2002234,
+        "c_projected": [],
+        "projection_applied": false,
+        "projection_l2": 0,
+        "raw_parameters": {
+          "c0": 0.0875519,
+          "c1": 0.0468522,
+          "c2": 0.1963282,
+          "w": 2.2002234
+        }
+      },
+      "archived_descriptors": {
+        "relativeVolume": 0.099,
+        "relativeArea": 1.779,
+        "thickness": 9.381,
+        "poreDiameter": 25,
+        "areaMean": 165.179
+      },
+      "selection_digest": "0140d8551edf5b345f74a00edd90b982f2ffa077d437ae70ed517a8d2fe6340e",
+      "role": "confirmation"
+    }
+  ],
+  "selection_canonical_text": "workbook_sha256=b4544b09c2688af8bc7aeeca5140a5d4c1cfc1c5b262709c9618c030d90fa561\nselection_protocol=M04-v2-selection\nclass1|M1|1424|discovery|000af300e38946ba60a9e35b436244661c4e6a9878e90ff65ce662bffd2080d0\nclass1|M1|669|discovery|001def8fc9b4fbe7f6e731cfcef18c627c9c42d096df8f7ff18ee5b56a383817\nclass1|M1|944|confirmation|0090eda1c7713905bdc052af84959c06c3cd6bd284d82a811cb20cdf2cc9bf6e\nclass1|M1|447|confirmation|009d80cf67c2b9c4216440ae13446959562c18c3320b6c663c212ea643eac574\nclass1|M1|283|confirmation|00e5494d38728054bc7b2a83e0965f7ccdba3297ad4306669c5ae6b31a0bde1c\nclass1|M1|466|confirmation|01698a86db60e6df4b0ed1e3c0633a687048d9a3852f7ea1117dbe87f3052f90\nclass1|M1|904|confirmation|022fdabdaa2ffb911038f975049548fbe2ad7eb35467e18621f961ff2977517b\nclass1|M1|1128|confirmation|02bc62e1492aa7391503911b77275d9ad9e5cb4edcdd6d240b314292955120a5\nclass1|M1|1145|confirmation|02f65e1325c4f492772ce896cb8fdace1b611ab91768bcbc75262526b63a36b3\nclass1|M1|138|confirmation|02fb7cb7a1ae101d7abbfcafc739dac5fdfad395a7832cdcadde317837cf0cf7\nclass1|M1|763|confirmation|033a330a82c8cfac6cdadbe5ebacfd7124efaf9b3acda0d761a5c8e6d0d3fd9e\nclass1|M1|1310|confirmation|034c0cdd31f86db8cd8cc2efbe9e564ba59938c0d8276f04e2923b951507b27a\nclass2|M2|45|discovery|000e216b67af8ade64d007c9c8c67b5e54c97449668f08f2dc089a2c35a8baf4\nclass2|M2|833|discovery|002a2844c66b5c137385765f7cf10328679b4fc6fcffd6e446ed9146b8b074f4\nclass2|M2|1383|confirmation|002b6d5de161a0a01e19fceba4979f08790750dd7ccb19bb9cd300b03be1f89f\nclass2|M2|16|confirmation|002d686103eb15fba03fc66bfebd5f50f32b9a4ab4f7d6ebea2cf1dfa5e95999\nclass2|M2|1666|confirmation|00dcdb89ef75eea9e74a661e2fc30cd05a3fcadb6ed18b8b578d2355b1077426\nclass2|M2|1489|confirmation|00de5d5208eab7f7ca17eb32260753be6daddb19d9be5fe2012f70fa57c554a6\nclass2|M2|1145|confirmation|00fde3feb3f8e5f27f5b223a5a411edd1fc3f744aade8811d593d578bee3d584\nclass2|M2|1580|confirmation|012b0fa2132d7e23a6077e2df81e2eefc86786fa2accb1d5c29014b163d023bf\nclass2|M2|1651|confirmation|014af75673af6f37c39c5e1545dd957357c86c45c58e5bf937f8641934e77128\nclass2|M2|871|confirmation|01504b32a8ba9186072d3b14aba3652b6a65fee703d23f2bdf3ff3461fa29e5c\nclass2|M2|1267|confirmation|01516109b949298470d2888576869e0a6ffe39cef8eacf15fb02e8ee45ac76e1\nclass2|M2|1199|confirmation|01583a9e5ee18211ab1c402af4a9232886f50fe10585c028c92a268851b51f59\nclass12|M3|1390|discovery|00351ab74c7245090687eee1f07f16898fac88fb6e3acff7a0f2939d435aea2c\nclass12|M3|1685|discovery|0037054e8a5e52eca435a7af91d42d663008b9e057fe032c5bbd96c5a01ba627\nclass12|M3|665|confirmation|0062922ba4c0e5679793163f414b253c1a1afc3152ed62bcc23598dadb2b9b05\nclass12|M3|1245|confirmation|00980337e4ea1770994f3dea921ba67a8a78d240aad861631bd7ea870c2afac4\nclass12|M3|26|confirmation|00b293cf708f585bfbbd2639b829115957cca3b2a1857d88685771e6e4591076\nclass12|M3|540|confirmation|00b5eab93d4838a1352a42e246a5a680d67b05bb6946dac5e6f40f02ea9dde3c\nclass12|M3|1544|confirmation|00df47f1b60274d4ebf3539cf14572e68cc2280e446db0475c42df9c9ea28fdf\nclass12|M3|74|confirmation|00eea22f734e772863c429db477c007aea6d537c0f79eea6b105df6527819947\nclass12|M3|390|confirmation|012e675a7e5eb10a6b712cf2568c0e8235a8013fb3fcef4b8952203f8b1d2074\nclass12|M3|759|confirmation|012f7461d8d03defcec8aa3db47d43720751a18777232df1841f258a7a37d623\nclass12|M3|1571|confirmation|013d00e3193d77c6db8a46e17d8230b210d6c3e4db0cc0e87b2bed9c3f5b3586\nclass12|M3|61|confirmation|0140d8551edf5b345f74a00edd90b982f2ffa077d437ae70ed517a8d2fe6340e\n",
+  "selection_sha256": "11dc8784110734e65e1005edb4ccb65cb27c95d0c0a80ee2b8fdc634ba9f1b5e"
+}
