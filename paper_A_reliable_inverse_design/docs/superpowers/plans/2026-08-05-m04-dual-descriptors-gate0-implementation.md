@@ -328,7 +328,7 @@ git commit -m "feat(descriptors): reproduce Small legacy geometry metrics"
 - Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/core/compute_physical_m04_descriptors.m`
 - Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/tests/TestPhysicalDescriptors.m`
 
-- [ ] **Step 1: Write failing analytic and scale-law tests**
+- [x] **Step 1: Write failing analytic and scale-law tests**
 
 Build in-memory masks for all-solid, all-void, a slab, a cylindrical void, and a box. Test all failure branches explicitly. The scale-law test uses one fixed mask and two physical scales:
 
@@ -351,7 +351,7 @@ end
 
 Also assert 26 selected slice indices include endpoints, duplicates are retained when `Nz < 26`, empty slices are excluded, and anisotropic spacing is rejected.
 
-- [ ] **Step 2: Run the test and verify RED**
+- [x] **Step 2: Run the test and verify RED**
 
 ```powershell
 & 'F:\MATLAB\R2023b\bin\matlab.exe' -batch "cd('F:\small++\.worktrees\m03-continuous-csg-impl\paper_A_reliable_inverse_design\geometry_compiler_matlab'); r=runtests('tests/TestPhysicalDescriptors.m'); assertSuccess(r)"
@@ -359,7 +359,7 @@ Also assert 26 selected slice indices include endpoints, duplicates are retained
 
 Expected: undefined `compute_physical_m04_descriptors`.
 
-- [ ] **Step 3: Implement the physical algorithms and diagnostics**
+- [x] **Step 3: Implement the physical algorithms and diagnostics**
 
 Use the exact public signature `compute_physical_m04_descriptors(solid, spacingMm, mesh, boundsMm, definitionSha256)`, where `boundsMm` is a finite `3x2` matrix ordered x/y/z. Use validated M03 interior data only. Surface area is the sum of triangle cross-product areas; reference volume is the finite bounding-box volume:
 
@@ -394,11 +394,11 @@ values.areaMean = mean(areas);
 
 Reject all-solid, all-void, empty skeleton, empty area list, nonfinite mesh, non-watertight upstream status, and unequal x/y/z spacing using `MATLABGyroid:DescriptorProfileInvalid`. Store component counts, skeleton count, `largestCount`, slice indices, nonempty count, spacing, bounds, surface area, and triangle count in `diagnostics`.
 
-- [ ] **Step 4: Run physical tests and regressions**
+- [x] **Step 4: Run physical tests and regressions**
 
 Use the focused command from Step 2 followed by `run_tests`. Expected: all pass.
 
-- [ ] **Step 5: Commit the physical profile**
+- [x] **Step 5: Commit the physical profile**
 
 ```powershell
 git add paper_A_reliable_inverse_design/geometry_compiler_matlab/core/compute_physical_m04_descriptors.m paper_A_reliable_inverse_design/geometry_compiler_matlab/tests/TestPhysicalDescriptors.m
