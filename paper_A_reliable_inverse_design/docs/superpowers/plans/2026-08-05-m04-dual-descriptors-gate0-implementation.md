@@ -615,9 +615,17 @@ git commit -m "feat(gate0): freeze deterministic Small descriptor cases"
 **Files:**
 - Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/gate0/calibrate_legacy_scale.m`
 - Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/gate0/freeze_legacy_calibration.m`
+- Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/gate0/canonical_legacy_calibration_freeze.m`
+- Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/gate0/verify_legacy_calibration_freeze.m`
+- Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/gate0/legacy_calibration_contract.m`
+- Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/gate0/legacy_case_identity_sha256.m`
+- Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/gate0/validate_legacy_calibration_payload.m`
+- Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/gate0/canonical_small_gate0_selection.m`
+- Create: `paper_A_reliable_inverse_design/geometry_compiler_matlab/gate0/verify_small_gate0_selection.m`
+- Modify: `paper_A_reliable_inverse_design/geometry_compiler_matlab/gate0/select_small_gate0_rows.m`
 - Modify: `paper_A_reliable_inverse_design/geometry_compiler_matlab/tests/TestDescriptorGate0.m`
 
-- [ ] **Step 1: Write failing density, scale-law, and tamper tests**
+- [x] **Step 1: Write failing density, scale-law, and tamper tests**
 
 Use injected descriptor-computation functions so unit tests do not require 60 full TPMS evaluations. Assert the preregistered candidate order exactly `20, 24, 30, 32, 40, 48, 60, 64, 80, 96`; rank by pooled median, pooled p95, then lower density. Test threshold boundary equality, all three scale laws, nonpositive estimates, group disagreement, altered selection hash, confirmation override, and freeze mutation.
 
@@ -630,11 +638,11 @@ testCase.verifyLessThanOrEqual(cal.scale_statistics.mard,0.02);
 testCase.verifyLessThanOrEqual(cal.scale_statistics.p95,0.05);
 ```
 
-- [ ] **Step 2: Run focused tests and verify RED**
+- [x] **Step 2: Run focused tests and verify RED**
 
 Use the Task 5 test command. Expected: undefined calibration/freezing functions.
 
-- [ ] **Step 3: Implement preregistered error statistics and density selection**
+- [x] **Step 3: Implement preregistered error statistics and density selection**
 
 Use one relative-error implementation everywhere:
 
@@ -646,7 +654,7 @@ end
 
 For each density, pool only `relativeVolume` and `relativeArea` across six discovery cases. Compute percentile by a documented deterministic linear interpolation function, not a release-dependent default. A density is eligible only when each of the two descriptors independently has median `<=.02` and p95 `<=.05`. If none is eligible, return `M04_SCALE_NOT_IDENTIFIED` and do not produce a freeze.
 
-- [ ] **Step 4: Implement the single global scale and atomic freeze**
+- [x] **Step 4: Implement the single global scale and atomic freeze**
 
 At unit reference length calculate exactly:
 
@@ -662,7 +670,7 @@ Require all 18 estimates positive/finite, overall median deviation `<=.02`, dete
 
 `freeze_legacy_calibration` must refuse any existing file or directory. Its reader must recompute the digest and reject any override of scale, density, formulas, case identities, or tolerances with `M04_GATE0_NOT_FROZEN`.
 
-- [ ] **Step 5: Run focused tests and commit discovery freeze logic**
+- [x] **Step 5: Run focused tests and commit discovery freeze logic**
 
 Run Gate-0 tests plus `run_tests`, then:
 
