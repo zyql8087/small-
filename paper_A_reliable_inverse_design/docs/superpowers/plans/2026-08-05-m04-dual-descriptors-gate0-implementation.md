@@ -8,6 +8,8 @@
 
 **Tech Stack:** MATLAB R2023b, MATLAB Unit Test, Image Processing Toolbox, JSON, SHA-256, Python 3 standard library, Git.
 
+**Handoff memory:** `paper_A_reliable_inverse_design/geometry_compiler_matlab/docs/SIMULATION_EXPERIMENT_MEMORY.md`
+
 ---
 
 ## Execution rules and file map
