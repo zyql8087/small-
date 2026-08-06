@@ -6,7 +6,7 @@
 
 **Architecture:** Add a focused `gc_graphformer/` Python package because the active M04 worktree contains no Small++, PyG, Graph Transformer, or diffusion source. The graph builder consumes compiler-produced padded parameters, profile-separated descriptors, and finite-difference sensitivities; the geometry generator consumes a compiler callback and provides only an explicitly labelled analytic smoke compiler. The model uses PyG `TransformerConv(edge_dim=...)`, strain-query cross-attention, and amplitude–shape reconstruction. M03/M04 MATLAB artifacts remain read-only dependencies and are represented by a validated callback contract.
 
-**Tech Stack:** Python 3.9+, PyTorch, PyTorch Geometric, NumPy, pytest, JSON/NPZ, SHA-256.
+**Tech Stack:** Python 3.9+, PyTorch, PyTorch Geometric, NumPy, standard-library `unittest` (pytest-compatible tests), JSON/NPZ, SHA-256.
 
 **Authoritative inputs:** `docs/superpowers/specs/2026-07-28-paper-a-gc-graphformer-design.md`, `docs/superpowers/specs/2026-08-05-m04-dual-descriptors-abaqus-interface-design.md`, and `geometry_compiler_matlab/docs/SIMULATION_EXPERIMENT_MEMORY.md`.
 
@@ -35,7 +35,7 @@ def test_curve_decomposition_reconstructs_twenty_points():
 
 - [ ] **Step 2: Run the focused tests and verify RED**
 
-Run: `& 'F:\Anaconda\envs\GMM\python.exe' -m pytest tests/test_contracts.py -q`
+Run: `& 'F:\Anaconda\envs\GMM\python.exe' -m unittest discover -s tests -p 'test_contracts.py' -v`
 
 Expected: collection fails because `gc_graphformer.contracts` does not exist.
 
@@ -45,7 +45,7 @@ Define the fixed method IDs, four padded parameter names, five descriptor names,
 
 - [ ] **Step 4: Run the focused tests and verify GREEN**
 
-Run the same pytest command. Expected: all contract tests pass.
+Run the same unittest command. Expected: all contract tests pass.
 
 - [ ] **Step 5: Commit**
 
@@ -66,7 +66,7 @@ Test that each graph has exactly 11 nodes; node types are method, four padded va
 
 - [ ] **Step 2: Run the focused tests and verify RED**
 
-Run: `& 'F:\Anaconda\envs\GMM\python.exe' -m pytest tests/test_graph_builder.py -q`
+Run: `& 'F:\Anaconda\envs\GMM\python.exe' -m unittest discover -s tests -p 'test_graph_builder.py' -v`
 
 Expected: import or attribute failures for the missing builder.
 
@@ -76,7 +76,7 @@ Create a homogeneous `torch_geometric.data.Data` graph with fixed node ordering,
 
 - [ ] **Step 4: Run the focused tests and verify GREEN**
 
-Run: `& 'F:\Anaconda\envs\GMM\python.exe' -m pytest tests/test_graph_builder.py -q`
+Run: `& 'F:\Anaconda\envs\GMM\python.exe' -m unittest discover -s tests -p 'test_graph_builder.py' -v`
 
 Expected: all graph schema, direction, determinism, constraints, and batch-isolation tests pass.
 
@@ -101,7 +101,7 @@ Test deterministic records for a fixed seed/config, profile separation, compiler
 
 - [ ] **Step 2: Run the focused tests and verify RED**
 
-Run: `& 'F:\Anaconda\envs\GMM\python.exe' -m pytest tests/test_geometry_dataset.py -q`
+Run: `& 'F:\Anaconda\envs\GMM\python.exe' -m unittest discover -s tests -p 'test_geometry_dataset.py' -v`
 
 Expected: collection fails because the compiler and shard generator do not exist.
 
@@ -115,7 +115,7 @@ Use `numpy.random.Generator(PCG64(seed))`, deterministic method sampling, canoni
 
 - [ ] **Step 5: Run the focused tests and verify GREEN**
 
-Run the same pytest command. Expected: all manifest, determinism, shard, and profile-isolation tests pass.
+Run the same unittest command. Expected: all manifest, determinism, shard, and profile-isolation tests pass.
 
 - [ ] **Step 6: Commit**
 
@@ -138,7 +138,7 @@ Test primary-model output shape `[batch, 20]`, finite values, gradient flow thro
 
 - [ ] **Step 2: Run the focused tests and verify RED**
 
-Run: `& 'F:\Anaconda\envs\GMM\python.exe' -m pytest tests/test_model.py tests/test_baselines.py -q`
+Run: `& 'F:\Anaconda\envs\GMM\python.exe' -m unittest discover -s tests -p 'test_model.py' -v; & 'F:\Anaconda\envs\GMM\python.exe' -m unittest discover -s tests -p 'test_baselines.py' -v`
 
 Expected: import failures for the model modules.
 
@@ -173,7 +173,7 @@ Test method-conditioned inputs containing the target 20-point curve, response de
 
 - [ ] **Step 2: Run the focused tests and verify RED**
 
-Run: `& 'F:\Anaconda\envs\GMM\python.exe' -m pytest tests/test_diffusion_interface.py -q`
+Run: `& 'F:\Anaconda\envs\GMM\python.exe' -m unittest discover -s tests -p 'test_diffusion_interface.py' -v`
 
 Expected: missing-module failures.
 
@@ -183,7 +183,7 @@ Provide condition construction and a differentiable `project_padded_parameters`/
 
 - [ ] **Step 4: Run the focused tests and verify GREEN**
 
-Run the same pytest command. Expected: all interface tests pass.
+Run the same unittest command. Expected: all interface tests pass.
 
 - [ ] **Step 5: Commit**
 
@@ -208,7 +208,7 @@ Run, using the GMM environment:
 
 ```powershell
 & 'F:\Anaconda\envs\GMM\python.exe' -m compileall -q gc_graphformer tests
-& 'F:\Anaconda\envs\GMM\python.exe' -m pytest tests -q
+& 'F:\Anaconda\envs\GMM\python.exe' -m unittest discover -s tests -p 'test_*.py' -v
 & 'F:\Anaconda\envs\GMM\python.exe' -c "import gc_graphformer; print(gc_graphformer.__all__)"
 ```
 
