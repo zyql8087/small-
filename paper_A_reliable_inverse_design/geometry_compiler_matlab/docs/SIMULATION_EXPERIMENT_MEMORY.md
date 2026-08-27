@@ -17,6 +17,7 @@
 
 权威文档：
 
+- 项目进展与整体研究逻辑：`paper_A_reliable_inverse_design/docs/PROJECT_RECORD_AND_LEARNING_GUIDE.md`
 - 设计规格：`paper_A_reliable_inverse_design/docs/superpowers/specs/2026-08-05-m04-dual-descriptors-abaqus-interface-design.md`
 - 实施计划：`paper_A_reliable_inverse_design/docs/superpowers/plans/2026-08-05-m04-dual-descriptors-gate0-implementation.md`
 - M03 使用说明：`paper_A_reliable_inverse_design/geometry_compiler_matlab/docs/M03_USAGE.md`

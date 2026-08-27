@@ -29,6 +29,7 @@ tmp/
 tmp_artifacts/
 .workspace_cache/
 .worktrees/
+**/.qoder/repowiki/
 start_process_probe.txt
 
 # External third-party material
