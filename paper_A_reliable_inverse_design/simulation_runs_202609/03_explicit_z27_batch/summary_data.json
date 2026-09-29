@@ -1,0 +1,3087 @@
+{
+ "generated": "2026-09-27 12:40:05",
+ "note_author_curve": "test.xlsx s1..s20 (sha256 b4544b09...), s=N hypothesis (\u603b\u53cd\u529b N, \u672a\u9664\u9762\u79ef), 20 points at 1.25% strain steps; disclosure only, NOT an acceptance reference",
+ "note_implicit_ref": "M06 \u516d\u4f8b + M05 pilots \u7684\u9690\u5f0f x \u5411\u66f2\u7ebf(\u540c\u8bbe\u8ba1\u3001\u4e0d\u540c\u52a0\u8f7d\u8f74\u4e0e\u6c42\u89e3\u5668, \u4ec5\u5171\u540c\u5e94\u53d8\u533a\u95f4\u5185\u63a2\u7d22\u6027\u5bf9\u7167)",
+ "cases": [
+  {
+   "case_id": "m1_class1_763",
+   "job": "m08_m1_763",
+   "queue_order": 1,
+   "method": "M1",
+   "parent_design_id": "class1:763",
+   "rv": 0.106,
+   "mesh_source": "reuse_handoff",
+   "selection_kind": "zload12_selected",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 111775,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 121.5,
+   "solve_start_time": "2026-09-25 23:39:59",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 6.59930E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = (-4.010426E-01,-3.790791E-01, 7.680451E-01)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:137: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =         13",
+    "              MAIN (SEC) =         28",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m2_class2_1383",
+   "job": "m08_m2_1383",
+   "queue_order": 2,
+   "method": "M2",
+   "parent_design_id": "class2:1383",
+   "rv": 0.068,
+   "mesh_source": "reuse_handoff",
+   "selection_kind": "zload12_selected",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 61976,
+    "errors": []
+   },
+   "judgment": "completed_quasi_static_failed",
+   "status_detail": "completed",
+   "error_signature": [],
+   "final_step_time": 0.10000000149011612,
+   "final_u3_mm": -10.0,
+   "wall_s": 23732.4,
+   "solve_start_time": "2026-09-25 23:40:41",
+   "energy_gate": {
+    "ke_ratio_max": 0.9884290638576053,
+    "ke_ratio_max_at_time": 0.0005521737039089203,
+    "ae_ratio_max": 0.0,
+    "ae_ratio_max_at_time": 0.0,
+    "pd_ratio_max": 0.18822803531827403,
+    "pd_ratio_max_at_time": 16.774330139160156,
+    "allie_peak_Nmm": 89.1170654296875,
+    "allke_peak_Nmm": 1.1861833333969116,
+    "allae_peak_Nmm": 0.0,
+    "etotal_final_Nmm": null,
+    "quasi_static": "FAILED"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 4.16555E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = ( 1.058479E+00, 8.598572E-01, 6.016080E-01)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:198: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =         14",
+    "              MAIN (SEC) =      23702",
+    "  THE ANALYSIS HAS COMPLETED SUCCESSFULLY"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0,
+     0.029,
+     0.214,
+     0.6653,
+     1.448,
+     2.588,
+     4.0772,
+     5.8793999999999995,
+     7.9362,
+     10.1719,
+     12.5001,
+     14.8283,
+     17.064,
+     19.1208,
+     20.923,
+     22.4121,
+     23.552,
+     24.3347,
+     24.786,
+     24.971,
+     25.0
+    ],
+    "sigma_MPa": [
+     0.0,
+     -9.913869473243019e-05,
+     -0.0003603030178522548,
+     -0.0007596605624012564,
+     -0.001333215300585735,
+     -0.002167156706789344,
+     -0.003087185919961328,
+     -0.004017751997712846,
+     -0.004870312827360302,
+     -0.005624638696906672,
+     -0.006232432636870371,
+     -0.0067038666007799815,
+     -0.007101849968799487,
+     -0.007408589033544981,
+     -0.007611058237849164,
+     -0.007779896823835024,
+     -0.00791786458976901,
+     -0.00800975910470072,
+     -0.008121493076403112,
+     -0.008203357041859078,
+     -0.008298379537725834
+    ],
+    "n": 21
+   }
+  },
+  {
+   "case_id": "m3_class12_26",
+   "job": "m08_m3_26",
+   "queue_order": 3,
+   "method": "M3",
+   "parent_design_id": "class12:26",
+   "rv": 0.154,
+   "mesh_source": "reuse_handoff",
+   "selection_kind": "zload12_selected",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 87597,
+    "errors": []
+   },
+   "judgment": "completed_quasi_static_failed",
+   "status_detail": "completed",
+   "error_signature": [],
+   "final_step_time": 0.10000000149011612,
+   "final_u3_mm": -10.0,
+   "wall_s": null,
+   "solve_start_time": null,
+   "energy_gate": {
+    "ke_ratio_max": 1.1533126857569704,
+    "ke_ratio_max_at_time": 0.0016967493575066328,
+    "ae_ratio_max": 0.0,
+    "ae_ratio_max_at_time": 0.0,
+    "pd_ratio_max": 0.27613567807896167,
+    "pd_ratio_max_at_time": 142.05844116210938,
+    "allie_peak_Nmm": 514.4515991210938,
+    "allke_peak_Nmm": 1.9227185249328613,
+    "allae_peak_Nmm": 0.0,
+    "etotal_final_Nmm": null,
+    "quasi_static": "FAILED"
+   },
+   "com_values": null,
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 9.46376E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = ( 1.230742E+00, 8.849450E-01, 1.464893E+00)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:129: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:226: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =         15",
+    "              MAIN (SEC) =      60165",
+    "  THE ANALYSIS HAS COMPLETED SUCCESSFULLY"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0,
+     0.029,
+     0.2141,
+     0.6653,
+     1.4481000000000002,
+     2.5881000000000003,
+     4.077,
+     5.8793,
+     7.9362,
+     10.1719,
+     12.5001,
+     14.828199999999999,
+     17.064,
+     19.1208,
+     20.923,
+     22.4121,
+     23.552,
+     24.3347,
+     24.786,
+     24.971,
+     25.0
+    ],
+    "sigma_MPa": [
+     0.0,
+     -0.0002731216554109973,
+     -0.001138900789095286,
+     -0.003075901087078406,
+     -0.006339843558571268,
+     -0.010895782278013999,
+     -0.016334026531735244,
+     -0.02200676994383593,
+     -0.027403877584806294,
+     -0.03218205215029821,
+     -0.03617575604270193,
+     -0.03937637310001588,
+     -0.04185950206387286,
+     -0.04375016572086949,
+     -0.045144127795350285,
+     -0.04611878022742445,
+     -0.046821462105799,
+     -0.047284069004715906,
+     -0.047560916551269795,
+     -0.047803340542152066,
+     -0.04797440231353733
+    ],
+    "n": 21
+   }
+  },
+  {
+   "case_id": "m1_class1_944",
+   "job": "m08_m1_944",
+   "queue_order": 4,
+   "method": "M1",
+   "parent_design_id": "class1:944",
+   "rv": 0.123,
+   "mesh_source": "reuse_handoff",
+   "selection_kind": "zload12_selected",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 120560,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 90.0,
+   "solve_start_time": "2026-09-26 06:30:48",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 7.74565E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = (-2.134482E-01,-1.875150E-01,-7.640098E-01)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:132: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =          7",
+    "              MAIN (SEC) =          6",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m2_class2_45",
+   "job": "m08_m2_45",
+   "queue_order": 5,
+   "method": "M2",
+   "parent_design_id": "class2:45",
+   "rv": 0.179,
+   "mesh_source": "new_compile",
+   "selection_kind": "zload12_selected",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 98950,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "Excessive distortion of element number 829571 of instance PART-1-1",
+    "There is only one excessively distorted element",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 90.0,
+   "solve_start_time": "2026-09-26 06:45:28",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 1.13773E-05",
+    ".sta:37: Center of mass of model (based on unscaled mass) = ( 6.404745E-01, 3.245810E-01, 4.000846E-01)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:129: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:154: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =         12",
+    "              MAIN (SEC) =         13",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m3_class12_61",
+   "job": "m08_m3_61",
+   "queue_order": 6,
+   "method": "M3",
+   "parent_design_id": "class12:61",
+   "rv": 0.099,
+   "mesh_source": "reuse_handoff",
+   "selection_kind": "zload12_selected",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 73620,
+    "errors": []
+   },
+   "judgment": "practical_terminated",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "Process terminated by external request (SIGTERM or SIGINT received)."
+   ],
+   "final_step_time": 0.08000000566244125,
+   "final_u3_mm": -9.42080020904541,
+   "wall_s": 35600.0,
+   "solve_start_time": "2026-09-26 06:49:48",
+   "energy_gate": {
+    "ke_ratio_max": 3.2717044321991113,
+    "ke_ratio_max_at_time": 0.0015288214199244976,
+    "ae_ratio_max": 0.0,
+    "ae_ratio_max_at_time": 0.0,
+    "pd_ratio_max": 0.22600806614766658,
+    "pd_ratio_max_at_time": 19.81610107421875,
+    "allie_peak_Nmm": 87.6787338256836,
+    "allke_peak_Nmm": 1.666076898574829,
+    "allae_peak_Nmm": 0.0,
+    "etotal_final_Nmm": null,
+    "quasi_static": "FAILED"
+   },
+   "com_values": null,
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 6.36151E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = ( 2.693263E+00, 4.817952E-01, 4.395417E+00)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:129: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:222: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS"
+   ],
+   "sta_tail": [
+    "   313290  8.004E-02 8.004E-02  09:37:23 2.27152E-09      581737  4.430E-01 -3.672E-05  2.301E+03",
+    "INSTANCE WITH CRITICAL ELEMENT: PART-1-1",
+    "***ERROR: Process terminated by external request (SIGTERM or SIGINT received)."
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0,
+     0.029,
+     0.214,
+     0.6654,
+     1.4481000000000002,
+     2.588,
+     4.0772,
+     5.8795,
+     7.936,
+     10.1719,
+     12.5001,
+     14.8283,
+     17.0641,
+     19.1208,
+     20.923,
+     22.4121,
+     23.552
+    ],
+    "sigma_MPa": [
+     0.0,
+     -0.0001537693106541159,
+     -0.0004302449222222626,
+     -0.0009058329260236553,
+     -0.0016396531533099522,
+     -0.0025898099096112394,
+     -0.00365141333464722,
+     -0.004662177160985843,
+     -0.005506383162412493,
+     -0.006170612570035974,
+     -0.006677650083914024,
+     -0.0070834002244478085,
+     -0.00741395798851386,
+     -0.00767869664046394,
+     -0.007921153308094358,
+     -0.008116682189337903,
+     -0.008246271181325357
+    ],
+    "n": 17
+   }
+  },
+  {
+   "case_id": "m1_class1_1145",
+   "job": "m08_m1_1145",
+   "queue_order": 7,
+   "method": "M1",
+   "parent_design_id": "class1:1145",
+   "rv": 0.145,
+   "mesh_source": "reuse_handoff",
+   "selection_kind": "zload12_selected",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 130573,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 121.8,
+   "solve_start_time": "2026-09-27 00:34:49",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 9.09980E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = (-2.260815E-01,-2.207975E-01,-1.864954E+00)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:132: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =         35",
+    "              MAIN (SEC) =          8",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m2_class2_833",
+   "job": "m08_m2_833",
+   "queue_order": 8,
+   "method": "M2",
+   "parent_design_id": "class2:833",
+   "rv": 0.116,
+   "mesh_source": "new_compile",
+   "selection_kind": "zload12_selected",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 83554,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 278.2,
+   "solve_start_time": "2026-09-27 00:35:00",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 7.38383E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = ( 6.795573E-01, 3.276141E-01, 2.694677E-01)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:132: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =         34",
+    "              MAIN (SEC) =         14",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m3_class12_665",
+   "job": "m08_m3_665",
+   "queue_order": 9,
+   "method": "M3",
+   "parent_design_id": "class12:665",
+   "rv": 0.153,
+   "mesh_source": "reuse_handoff",
+   "selection_kind": "zload12_selected",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 94156,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 81.5,
+   "solve_start_time": "2026-09-27 00:41:41",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 9.69160E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = ( 5.855356E-01, 2.704493E-01,-7.965341E-01)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:132: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =         17",
+    "              MAIN (SEC) =         12",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m1_class1_1424",
+   "job": "m08_m1_1424",
+   "queue_order": 10,
+   "method": "M1",
+   "parent_design_id": "class1:1424",
+   "rv": 0.056,
+   "mesh_source": "reuse_handoff",
+   "selection_kind": "zload12_selected",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 83863,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": null,
+   "solve_start_time": null,
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": null,
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 3.50253E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = (-2.213074E-01,-2.145633E-01,-3.096075E+00)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:132: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =          5",
+    "              MAIN (SEC) =         24",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m2_class2_871",
+   "job": "m08_m2_871",
+   "queue_order": 11,
+   "method": "M2",
+   "parent_design_id": "class2:871",
+   "rv": 0.053,
+   "mesh_source": "new_compile",
+   "selection_kind": "zload12_selected",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 53580,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 213.1,
+   "solve_start_time": "2026-09-27 00:41:53",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 3.24375E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = ( 9.542745E-01, 8.045907E-01, 4.268322E-01)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:132: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =          5",
+    "              MAIN (SEC) =         22",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m3_class12_1390",
+   "job": "m08_m3_1390",
+   "queue_order": 12,
+   "method": "M3",
+   "parent_design_id": "class12:1390",
+   "rv": 0.062,
+   "mesh_source": "reuse_handoff",
+   "selection_kind": "zload12_selected",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 57822,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 41.5,
+   "solve_start_time": "2026-09-27 00:46:40",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 3.84715E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = ( 1.669092E+00, 8.034858E-01, 2.887098E+00)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:132: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =          6",
+    "              MAIN (SEC) =          3",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m1_class1_138",
+   "job": "m08_m1_138",
+   "queue_order": 13,
+   "method": "M1",
+   "parent_design_id": "class1:138",
+   "rv": 0.123,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 121215,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 119.6,
+   "solve_start_time": "2026-09-27 00:46:51",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 7.89876E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = (-3.428440E-02,-3.351810E-03, 1.842119E+00)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:129: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:152: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =         18",
+    "              MAIN (SEC) =          4",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m2_class2_1145",
+   "job": "m08_m2_1145",
+   "queue_order": 14,
+   "method": "M2",
+   "parent_design_id": "class2:1145",
+   "rv": 0.103,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 79681,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 121.6,
+   "solve_start_time": "2026-09-27 00:51:40",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 6.56119E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = ( 9.568791E-01, 3.621447E-01, 2.820682E-01)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:132: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =         30",
+    "              MAIN (SEC) =         37",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m3_class12_74",
+   "job": "m08_m3_74",
+   "queue_order": 15,
+   "method": "M3",
+   "parent_design_id": "class12:74",
+   "rv": 0.088,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 67650,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 324.0,
+   "solve_start_time": "2026-09-27 00:51:51",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 5.32504E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = ( 1.331994E+00, 9.208116E-01,-5.740869E-01)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:132: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =         23",
+    "              MAIN (SEC) =         18",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m1_class1_283",
+   "job": "m08_m1_283",
+   "queue_order": 16,
+   "method": "M1",
+   "parent_design_id": "class1:283",
+   "rv": 0.059,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 87946,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 61.7,
+   "solve_start_time": "2026-09-27 00:58:59",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 3.71580E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = (-2.584078E-01,-2.584057E-01,-1.049269E-01)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:132: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =          4",
+    "              MAIN (SEC) =          6",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m2_class2_1267",
+   "job": "m08_m2_1267",
+   "queue_order": 17,
+   "method": "M2",
+   "parent_design_id": "class2:1267",
+   "rv": 0.197,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 103776,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 170.9,
+   "solve_start_time": "2026-09-27 00:59:11",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 1.25405E-05",
+    ".sta:37: Center of mass of model (based on unscaled mass) = ( 8.810694E-01, 3.463560E-01, 6.404561E-01)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:129: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:152: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =         21",
+    "              MAIN (SEC) =          5",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m3_class12_540",
+   "job": "m08_m3_540",
+   "queue_order": 18,
+   "method": "M3",
+   "parent_design_id": "class12:540",
+   "rv": 0.116,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 82329,
+    "errors": []
+   },
+   "judgment": "deadline_terminated",
+   "status_detail": "deadline_terminated",
+   "error_signature": [
+    "Process terminated by external request (SIGTERM or SIGINT received)."
+   ],
+   "final_step_time": 0.06000002101063728,
+   "final_u3_mm": -6.825603485107422,
+   "wall_s": 40647.8,
+   "solve_start_time": "2026-09-27 01:05:58",
+   "energy_gate": {
+    "ke_ratio_max": 1.801892664992486,
+    "ke_ratio_max_at_time": 0.001436893013305962,
+    "ae_ratio_max": 0.0,
+    "ae_ratio_max_at_time": 0.0,
+    "pd_ratio_max": 0.2007917905337623,
+    "pd_ratio_max_at_time": 23.1121826171875,
+    "allie_peak_Nmm": 115.10521697998047,
+    "allke_peak_Nmm": 1.797147274017334,
+    "allae_peak_Nmm": 0.0,
+    "etotal_final_Nmm": null,
+    "quasi_static": "FAILED"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 7.38987E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = ( 1.886118E+00, 4.201096E-01, 2.098893E+00)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:129: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:217: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS"
+   ],
+   "sta_tail": [
+    "   175864  6.263E-02 6.263E-02  11:17:09 2.16807E-09      589167  1.390E+00 -2.438E-05  2.049E+03",
+    "INSTANCE WITH CRITICAL ELEMENT: PART-1-1",
+    "***ERROR: Process terminated by external request (SIGTERM or SIGINT received)."
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0,
+     0.029,
+     0.2141,
+     0.6653,
+     1.448,
+     2.5879,
+     4.0772,
+     5.8793999999999995,
+     7.9361,
+     10.171800000000001,
+     12.5001,
+     14.828199999999999,
+     17.064
+    ],
+    "sigma_MPa": [
+     0.0,
+     -0.00018621299005112057,
+     -0.0006179567697911715,
+     -0.0014824183312025418,
+     -0.0028592685334139878,
+     -0.004777398945349205,
+     -0.007002457313310968,
+     -0.00927002815054887,
+     -0.011346877032339471,
+     -0.013133613625080197,
+     -0.014537760548638303,
+     -0.015626624912879805,
+     -0.016452987135661522
+    ],
+    "n": 13
+   }
+  },
+  {
+   "case_id": "m1_class1_466",
+   "job": "m08_m1_466",
+   "queue_order": 19,
+   "method": "M1",
+   "parent_design_id": "class1:466",
+   "rv": 0.082,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 100765,
+    "errors": []
+   },
+   "judgment": "solver_error",
+   "status_detail": "solver_error",
+   "error_signature": [
+    "The ratio of deformation speed to wave speed exceeds 1.0000 in at",
+    "The fatal error will generate a new field output in the last"
+   ],
+   "final_step_time": 0.0,
+   "final_u3_mm": 0.0,
+   "wall_s": 130.1,
+   "solve_start_time": "2026-09-27 01:05:34",
+   "energy_gate": {
+    "quasi_static": "NOT_EVALUABLE_no_energy_history"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 5.06928E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = (-2.591876E-01,-2.598027E-01,-7.422504E-01)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:139: 2. Check stiffness (elastic modulus) and mass (density) definitions for"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =          8",
+    "              MAIN (SEC) =         59",
+    "  THE ANALYSIS HAS NOT BEEN COMPLETED"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0
+    ],
+    "sigma_MPa": [
+     0.0
+    ],
+    "n": 1
+   }
+  },
+  {
+   "case_id": "m2_class2_1489",
+   "job": "m08_m2_1489",
+   "queue_order": 20,
+   "method": "M2",
+   "parent_design_id": "class2:1489",
+   "rv": 0.027,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 38466,
+    "errors": []
+   },
+   "judgment": "completed_quasi_static_failed",
+   "status_detail": "completed",
+   "error_signature": [],
+   "final_step_time": 0.10000000149011612,
+   "final_u3_mm": -10.0,
+   "wall_s": 14328.4,
+   "solve_start_time": "2026-09-27 01:30:42",
+   "energy_gate": {
+    "ke_ratio_max": 1.6976962424994093,
+    "ke_ratio_max_at_time": 0.000146963051520288,
+    "ae_ratio_max": 0.0,
+    "ae_ratio_max_at_time": 0.0,
+    "pd_ratio_max": 0.12504340072380649,
+    "pd_ratio_max_at_time": 0.8340882658958435,
+    "allie_peak_Nmm": 6.6703901290893555,
+    "allke_peak_Nmm": 0.5898611545562744,
+    "allae_peak_Nmm": 0.0,
+    "etotal_final_Nmm": null,
+    "quasi_static": "FAILED"
+   },
+   "com_values": {
+    "cpus": "4",
+    "memory": "'6GB'",
+    "double": null,
+    "scratch": "'F:\\\\abaqus_scratch'"
+   },
+   "mass_scaling_grep": [
+    ".sta:36: Total mass (unscaled) in model = 1.69261E-06",
+    ".sta:37: Center of mass of model (based on unscaled mass) = ( 1.442178E+00, 9.267922E-01, 5.616774E-01)",
+    ".sta:40: About Center of Mass              About Origin",
+    ".sta:55: do not account for mass scaling.",
+    ".sta:109: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS",
+    ".sta:199: INCREMENT     TIME      TIME      TIME     INCREMENT     ELEMENT     ENERGY     ENERGY  CHNG MASS"
+   ],
+   "sta_tail": [
+    "              INIT (SEC) =          3",
+    "              MAIN (SEC) =      14290",
+    "  THE ANALYSIS HAS COMPLETED SUCCESSFULLY"
+   ],
+   "explicit_curve": {
+    "eps": [
+     0.0,
+     0.029,
+     0.214,
+     0.6653,
+     1.4481000000000002,
+     2.5881000000000003,
+     4.0772,
+     5.8793999999999995,
+     7.9363,
+     10.172,
+     12.5,
+     14.8285,
+     17.0642,
+     19.1209,
+     20.9232,
+     22.4122,
+     23.5522,
+     24.3348,
+     24.786,
+     24.9711,
+     25.0
+    ],
+    "sigma_MPa": [
+     0.0,
+     -1.9460925825502963e-05,
+     -6.44273799078654e-05,
+     -0.00012921557542007632,
+     -0.00019445233883510937,
+     -0.0002553803377400499,
+     -0.0003087403152780155,
+     -0.00036095478873647834,
+     -0.00040644168704879747,
+     -0.0004410513868415933,
+     -0.0004626941326487478,
+     -0.0004765394036796522,
+     -0.000489031112003957,
+     -0.0005022141133319735,
+     -0.0005117536940763756,
+     -0.0005124899263542204,
+     -0.0005082046497894765,
+     -0.0005073395351084287,
+     -0.000510738843372991,
+     -0.0005196572322232384,
+     -0.0005429844724194411
+    ],
+    "n": 21
+   }
+  },
+  {
+   "case_id": "m3_class12_759",
+   "job": "m08_m3_759",
+   "queue_order": 21,
+   "method": "M3",
+   "parent_design_id": "class12:759",
+   "rv": 0.084,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": false,
+   "mesh_gates": null,
+   "prep_failed": true,
+   "datacheck": {},
+   "judgment": "not_solved",
+   "status_detail": "",
+   "error_signature": [],
+   "final_step_time": null,
+   "final_u3_mm": null,
+   "wall_s": null,
+   "solve_start_time": null,
+   "energy_gate": {},
+   "com_values": null,
+   "mass_scaling_grep": [],
+   "sta_tail": [],
+   "explicit_curve": null
+  },
+  {
+   "case_id": "m1_class1_1128",
+   "job": "m08_m1_1128",
+   "queue_order": 22,
+   "method": "M1",
+   "parent_design_id": "class1:1128",
+   "rv": 0.143,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 128540,
+    "errors": []
+   },
+   "judgment": "not_solved",
+   "status_detail": "",
+   "error_signature": [],
+   "final_step_time": null,
+   "final_u3_mm": null,
+   "wall_s": null,
+   "solve_start_time": null,
+   "energy_gate": {},
+   "com_values": null,
+   "mass_scaling_grep": [],
+   "sta_tail": [],
+   "explicit_curve": null
+  },
+  {
+   "case_id": "m2_class2_1580",
+   "job": "m08_m2_1580",
+   "queue_order": 23,
+   "method": "M2",
+   "parent_design_id": "class2:1580",
+   "rv": 0.057,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 57679,
+    "errors": []
+   },
+   "judgment": "not_solved",
+   "status_detail": "",
+   "error_signature": [],
+   "final_step_time": null,
+   "final_u3_mm": null,
+   "wall_s": null,
+   "solve_start_time": null,
+   "energy_gate": {},
+   "com_values": null,
+   "mass_scaling_grep": [],
+   "sta_tail": [],
+   "explicit_curve": null
+  },
+  {
+   "case_id": "m3_class12_1571",
+   "job": "m08_m3_1571",
+   "queue_order": 24,
+   "method": "M3",
+   "parent_design_id": "class12:1571",
+   "rv": 0.127,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 78774,
+    "errors": []
+   },
+   "judgment": "not_solved",
+   "status_detail": "",
+   "error_signature": [],
+   "final_step_time": null,
+   "final_u3_mm": null,
+   "wall_s": null,
+   "solve_start_time": null,
+   "energy_gate": {},
+   "com_values": null,
+   "mass_scaling_grep": [],
+   "sta_tail": [],
+   "explicit_curve": null
+  },
+  {
+   "case_id": "m1_class1_1310",
+   "job": "m08_m1_1310",
+   "queue_order": 25,
+   "method": "M1",
+   "parent_design_id": "class1:1310",
+   "rv": 0.101,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 110156,
+    "errors": []
+   },
+   "judgment": "not_solved",
+   "status_detail": "",
+   "error_signature": [],
+   "final_step_time": null,
+   "final_u3_mm": null,
+   "wall_s": null,
+   "solve_start_time": null,
+   "energy_gate": {},
+   "com_values": null,
+   "mass_scaling_grep": [],
+   "sta_tail": [],
+   "explicit_curve": null
+  },
+  {
+   "case_id": "m2_class2_1651",
+   "job": "m08_m2_1651",
+   "queue_order": 26,
+   "method": "M2",
+   "parent_design_id": "class2:1651",
+   "rv": 0.15,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 93728,
+    "errors": []
+   },
+   "judgment": "not_solved",
+   "status_detail": "",
+   "error_signature": [],
+   "final_step_time": null,
+   "final_u3_mm": null,
+   "wall_s": null,
+   "solve_start_time": null,
+   "energy_gate": {},
+   "com_values": null,
+   "mass_scaling_grep": [],
+   "sta_tail": [],
+   "explicit_curve": null
+  },
+  {
+   "case_id": "m3_class12_1685",
+   "job": "m08_m3_1685",
+   "queue_order": 27,
+   "method": "M3",
+   "parent_design_id": "class12:1685",
+   "rv": 0.105,
+   "mesh_source": "new_compile",
+   "selection_kind": "supplement",
+   "mesh_staged": true,
+   "mesh_gates": true,
+   "prep_failed": false,
+   "datacheck": {
+    "gate_pass": true,
+    "n_warning_lines": 4,
+    "unstable_warning_lines": 1,
+    "distorted": 74441,
+    "errors": []
+   },
+   "judgment": "not_solved",
+   "status_detail": "",
+   "error_signature": [],
+   "final_step_time": null,
+   "final_u3_mm": null,
+   "wall_s": null,
+   "solve_start_time": null,
+   "energy_gate": {},
+   "com_values": null,
+   "mass_scaling_grep": [],
+   "sta_tail": [],
+   "explicit_curve": null
+  }
+ ],
+ "author_curves": {
+  "m1_class1_763": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    3.5092242,
+    6.8404393,
+    9.935193,
+    12.712681,
+    15.143591,
+    17.24846,
+    19.055769,
+    20.590366,
+    21.875692,
+    22.930445,
+    23.777063,
+    24.439636,
+    24.942152,
+    25.307741,
+    25.557947,
+    25.713623,
+    25.79892,
+    25.834084,
+    25.830576,
+    25.787914
+   ]
+  },
+  "m2_class2_1383": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    1.3442787,
+    2.562486,
+    3.6566641,
+    4.626882,
+    5.475718,
+    6.212741,
+    6.8529634,
+    7.412428,
+    7.905202,
+    8.342772,
+    8.733822,
+    9.085855,
+    9.404843,
+    9.695388,
+    9.960985,
+    10.204915,
+    10.429734,
+    10.637751,
+    10.830873,
+    11.010747
+   ]
+  },
+  "m3_class12_26": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    2.6705384,
+    5.1544642,
+    7.4089937,
+    9.383945,
+    11.061807,
+    12.46557,
+    13.62487,
+    14.563234,
+    15.298586,
+    15.847026,
+    16.22192,
+    16.406853,
+    16.398333,
+    16.332268,
+    16.264526,
+    16.198565,
+    16.133303,
+    16.066462,
+    15.997561,
+    15.926281
+   ]
+  },
+  "m1_class1_944": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    4.084214,
+    7.8700376,
+    11.282013,
+    14.248774,
+    16.776312,
+    18.91637,
+    20.729906,
+    22.264572,
+    23.553518,
+    24.626787,
+    25.508204,
+    26.223652,
+    26.802822,
+    27.274527,
+    27.665804,
+    27.999187,
+    28.294775,
+    28.568478,
+    28.837778,
+    29.114594
+   ]
+  },
+  "m2_class2_45": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    10.643064,
+    21.098501,
+    30.776018,
+    39.559532,
+    47.514103,
+    54.645493,
+    60.95819,
+    66.484184,
+    71.26274,
+    75.34966,
+    78.81224,
+    81.70246,
+    84.085144,
+    86.03681,
+    87.64305,
+    88.96549,
+    90.058266,
+    90.974915,
+    91.75617,
+    92.4282
+   ]
+  },
+  "m3_class12_61": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    0.8067975,
+    1.5334942,
+    2.1823957,
+    2.7529318,
+    3.2462595,
+    3.667683,
+    4.0238605,
+    4.321281,
+    4.5643272,
+    4.7549324,
+    4.895268,
+    4.9907236,
+    5.0520988,
+    5.0899262,
+    5.113146,
+    5.1281404,
+    5.138701,
+    5.1474,
+    5.1554327,
+    5.1628904
+   ]
+  },
+  "m1_class1_1145": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    5.420559,
+    10.649194,
+    15.580245,
+    20.03839,
+    23.99709,
+    27.514414,
+    30.634466,
+    33.384537,
+    35.792336,
+    37.88505,
+    39.694576,
+    41.252365,
+    42.590015,
+    43.738655,
+    44.72743,
+    45.580627,
+    46.320187,
+    46.96277,
+    47.520847,
+    48.005135
+   ]
+  },
+  "m2_class2_833": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    4.366011,
+    8.526149,
+    12.353285,
+    15.750742,
+    18.725178,
+    21.308096,
+    23.527615,
+    25.414783,
+    27.005257,
+    28.338102,
+    29.45155,
+    30.379467,
+    31.15254,
+    31.798483,
+    32.338036,
+    32.78902,
+    33.163353,
+    33.47361,
+    33.735844,
+    33.961166
+   ]
+  },
+  "m3_class12_665": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    2.264569,
+    4.2905316,
+    6.0275965,
+    7.4439435,
+    8.547337,
+    9.376608,
+    9.973186,
+    10.37814,
+    10.631291,
+    10.768508,
+    10.820724,
+    10.814742,
+    10.769602,
+    10.699958,
+    10.617538,
+    10.532412,
+    10.451102,
+    10.379866,
+    10.322119,
+    10.279524
+   ]
+  },
+  "m1_class1_1424": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    0.6828522,
+    1.273614,
+    1.7758957,
+    2.1942077,
+    2.5370085,
+    2.8161895,
+    3.045172,
+    3.235333,
+    3.396013,
+    3.5339048,
+    3.6540835,
+    3.7603164,
+    3.855103,
+    3.9405901,
+    4.0185213,
+    4.0901847,
+    4.15654,
+    4.2183714,
+    4.2763877,
+    4.331448
+   ]
+  },
+  "m2_class2_871": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    0.82325685,
+    1.559114,
+    2.2141771,
+    2.791638,
+    3.2966847,
+    3.7347238,
+    4.1138177,
+    4.444673,
+    4.7353816,
+    4.9929547,
+    5.2226214,
+    5.4286036,
+    5.614411,
+    5.7826605,
+    5.935184,
+    6.0738173,
+    6.2003493,
+    6.316204,
+    6.422651,
+    6.5210347
+   ]
+  },
+  "m3_class12_1390": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    1.4141084,
+    2.6534657,
+    3.706534,
+    4.5641,
+    5.2508836,
+    5.7985764,
+    6.2332187,
+    6.577397,
+    6.8510876,
+    7.0727663,
+    7.2579274,
+    7.4194226,
+    7.5675216,
+    7.710017,
+    7.8536706,
+    8.004315,
+    8.167913,
+    8.348058,
+    8.547152,
+    8.672053
+   ]
+  },
+  "m1_class1_138": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    4.940376,
+    9.664917,
+    14.03476,
+    17.914663,
+    21.282833,
+    24.160164,
+    26.572746,
+    28.547894,
+    30.121567,
+    31.340368,
+    32.26855,
+    32.97062,
+    33.499256,
+    33.898113,
+    34.19801,
+    34.420444,
+    34.581253,
+    34.691025,
+    34.755608,
+    34.777786
+   ]
+  },
+  "m2_class2_1145": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    2.6066332,
+    5.069182,
+    7.3417077,
+    9.382441,
+    11.193059,
+    12.792627,
+    14.201447,
+    15.443278,
+    16.540522,
+    17.5096,
+    18.365252,
+    19.123045,
+    19.797073,
+    20.399145,
+    20.940414,
+    21.429733,
+    21.87444,
+    22.28065,
+    22.653479,
+    22.996609
+   ]
+  },
+  "m3_class12_74": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    4.059155,
+    7.8980017,
+    11.459022,
+    14.651827,
+    17.437778,
+    19.848581,
+    21.925045,
+    23.710356,
+    25.243204,
+    26.559963,
+    27.694677,
+    28.674236,
+    29.52483,
+    30.269348,
+    30.925667,
+    31.508446,
+    32.031593,
+    32.5068,
+    32.9444,
+    33.352386
+   ]
+  },
+  "m1_class1_283": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    2.7793782,
+    5.3730245,
+    7.7479672,
+    9.847753,
+    11.638786,
+    13.138733,
+    14.383368,
+    15.414968,
+    16.271017,
+    16.986881,
+    17.59261,
+    18.11271,
+    18.566368,
+    18.968073,
+    19.328121,
+    19.65466,
+    19.953615,
+    20.22928,
+    20.485054,
+    20.723738
+   ]
+  },
+  "m2_class2_1267": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    11.234501,
+    22.207422,
+    32.27377,
+    41.476387,
+    49.821453,
+    57.261765,
+    63.80554,
+    69.51492,
+    74.459625,
+    78.699326,
+    82.29148,
+    85.28277,
+    87.736015,
+    89.72682,
+    91.3479,
+    92.67377,
+    93.78298,
+    94.74099,
+    95.60392,
+    96.43704
+   ]
+  },
+  "m3_class12_540": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    0.9143627,
+    1.6712545,
+    2.2755651,
+    2.7363503,
+    3.0832336,
+    3.3480678,
+    3.554897,
+    3.7212033,
+    3.8589582,
+    3.9766824,
+    4.0806475,
+    4.175238,
+    4.2640815,
+    4.350401,
+    4.4367123,
+    4.525049,
+    4.617135,
+    4.7142987,
+    4.8173676,
+    4.9270716
+   ]
+  },
+  "m1_class1_466": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    2.0351484,
+    3.921658,
+    5.6454554,
+    7.1867127,
+    8.539108,
+    9.707133,
+    10.710058,
+    11.569687,
+    12.308695,
+    12.947648,
+    13.504167,
+    13.99281,
+    14.425336,
+    14.81062,
+    15.155869,
+    15.466864,
+    15.748297,
+    16.004072,
+    16.23761,
+    16.45223
+   ]
+  },
+  "m2_class2_1489": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    0.073838994,
+    0.13919279,
+    0.19734648,
+    0.249297,
+    0.29561237,
+    0.33671242,
+    0.37305275,
+    0.40536946,
+    0.43429798,
+    0.4604353,
+    0.4842745,
+    0.5061583,
+    0.5264313,
+    0.5453536,
+    0.5631377,
+    0.5799787,
+    0.59603244,
+    0.6114124,
+    0.62623125,
+    0.64056396
+   ]
+  },
+  "m3_class12_759": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    2.5038054,
+    4.6616454,
+    6.429112,
+    7.8234186,
+    8.925895,
+    9.800977,
+    10.493207,
+    11.039094,
+    11.472245,
+    11.821958,
+    12.111277,
+    12.357693,
+    12.575806,
+    12.776625,
+    12.969367,
+    13.16205,
+    13.361747,
+    13.578363,
+    13.819569,
+    14.092157
+   ]
+  },
+  "m1_class1_1128": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    6.5532455,
+    12.852689,
+    18.699764,
+    23.922943,
+    28.528538,
+    32.556572,
+    36.06567,
+    39.109188,
+    41.738426,
+    44.001522,
+    45.943523,
+    47.603306,
+    49.01845,
+    50.225456,
+    51.251446,
+    52.117237,
+    52.850758,
+    53.47234,
+    54.003124,
+    54.45733
+   ]
+  },
+  "m2_class2_1580": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    0.8040391,
+    1.5234711,
+    2.1628215,
+    2.7274039,
+    3.2219133,
+    3.6511984,
+    4.023927,
+    4.349514,
+    4.6365795,
+    4.891938,
+    5.1212125,
+    5.3292627,
+    5.519594,
+    5.695034,
+    5.8578696,
+    6.0100756,
+    6.1532116,
+    6.288593,
+    6.4175496,
+    6.5408945
+   ]
+  },
+  "m1_class1_1310": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    2.3594038,
+    4.4437313,
+    6.223837,
+    7.685351,
+    8.867038,
+    9.827757,
+    10.613391,
+    11.255645,
+    11.778746,
+    12.203931,
+    12.550834,
+    12.83746,
+    13.078014,
+    13.286526,
+    13.474588,
+    13.652217,
+    13.825743,
+    13.998727,
+    14.176335,
+    14.370389
+   ]
+  },
+  "m2_class2_1651": {
+   "eps_pct": [
+    1.25,
+    2.5,
+    3.75,
+    5.0,
+    6.25,
+    7.5,
+    8.75,
+    10.0,
+    11.25,
+    12.5,
+    13.75,
+    15.0,
+    16.25,
+    17.5,
+    18.75,
+    20.0,
+    21.25,
+    22.5,
+    23.75,
+    25.0
+   ],
+   "s_N": [
+    6.854305,
+    13.489517,
+    19.586336,
+    25.063595,
+    29.97618,
+    34.33089,
+    38.142418,
+    41.439438,
+    44.275566,
+    46.706165,
+    48.78468,
+    50.561565,
+    52.07683,
+    53.366806,
+    54.464382,
+    55.403397,
+    56.213615,
+    56.928196,
+    57.57363,
+    58.176163
+   ]
+  }
+ },
+ "implicit_curves": {
+  "m1_class1_944": {
+   "eps": [
+    0.0,
+    0.625,
+    1.25,
+    1.875,
+    2.5,
+    2.6953125
+   ],
+   "sigma_MPa": [
+    0.0,
+    -0.0017582170579140666,
+    -0.003488632532520599,
+    -0.005188922121944062,
+    -0.006856123648632319,
+    -0.007368780110795328
+   ],
+   "n": 6
+  },
+  "m3_class12_665": {
+   "eps": [
+    0.0,
+    0.625,
+    1.25,
+    1.875,
+    2.5,
+    3.091992139816284
+   ],
+   "sigma_MPa": [
+    0.0,
+    -0.004508765263920477,
+    -0.009054329682514906,
+    -0.013605061402104468,
+    -0.018078098842634418,
+    -0.02214969186268938
+   ],
+   "n": 6
+  },
+  "m2_class2_1383": {
+   "eps": [
+    0.0,
+    0.625,
+    1.25,
+    1.875,
+    2.5,
+    3.125,
+    3.75,
+    4.375,
+    5.0,
+    5.625,
+    6.25,
+    6.875000000000001,
+    7.5,
+    8.125,
+    8.75,
+    9.375,
+    10.0,
+    10.625,
+    11.25,
+    11.875,
+    12.5,
+    13.125,
+    13.750000000000002,
+    14.374999999999998,
+    15.0,
+    15.625,
+    16.25,
+    16.875,
+    17.5,
+    18.125,
+    18.75,
+    19.375,
+    20.0,
+    20.625,
+    21.25,
+    21.875,
+    22.5,
+    23.125,
+    23.75,
+    24.20072078704834
+   ],
+   "sigma_MPa": [
+    0.0,
+    -0.0005619234874118817,
+    -0.0011045760605966494,
+    -0.0016280017902148458,
+    -0.0021318946436888098,
+    -0.0026156011932208113,
+    -0.003078485467982972,
+    -0.0035193951257159028,
+    -0.003936653883556218,
+    -0.004330209538426457,
+    -0.004701308533355473,
+    -0.005051014440538708,
+    -0.005380600959323516,
+    -0.005691413938451717,
+    -0.005984770710354326,
+    -0.006261729366161539,
+    -0.006523441611839189,
+    -0.00677087842604891,
+    -0.007005280891080315,
+    -0.007227503910948139,
+    -0.007438535373758839,
+    -0.00763915565502927,
+    -0.007830069744857013,
+    -0.008011849006769012,
+    -0.008185007257538927,
+    -0.008350134533933441,
+    -0.008507782993431459,
+    -0.008658298723185496,
+    -0.008802164131838026,
+    -0.008939644349193684,
+    -0.009071083647210116,
+    -0.009196858182597722,
+    -0.009317253892587586,
+    -0.009432547799090116,
+    -0.009542992020537185,
+    -0.009648793906437731,
+    -0.009750230693372402,
+    -0.009847422097500953,
+    -0.009940597674519153,
+    -0.010005431699355825
+   ],
+   "n": 40
+  },
+  "m1_class1_1424": {
+   "eps": [
+    0.0,
+    1.2,
+    2.4,
+    3.5999999999999996,
+    4.8,
+    6.0,
+    7.199999999999999,
+    8.4,
+    9.6,
+    10.8,
+    12.0,
+    13.200000000000001,
+    13.572000000000001
+   ],
+   "sigma_MPa": [
+    0.0,
+    -0.0007000463662916445,
+    -0.0013474780630843952,
+    -0.0019435026600859828,
+    -0.002486069437324261,
+    -0.0029737867187179744,
+    -0.003408742149304942,
+    -0.0037958959224579304,
+    -0.004141191758574934,
+    -0.004449869488178137,
+    -0.004726643396164718,
+    -0.004975794181596029,
+    -0.005047996378610833
+   ],
+   "n": 13
+  },
+  "m1_class1_763": {
+   "eps": [
+    0.0,
+    1.2,
+    2.4,
+    3.5999999999999996,
+    4.8,
+    6.0,
+    7.199999999999999,
+    7.824000000000001
+   ],
+   "sigma_MPa": [
+    0.0,
+    -0.0025479710187462246,
+    -0.005005713655774144,
+    -0.007341913581834944,
+    -0.009493765116010166,
+    -0.011441361815098788,
+    -0.013195546751021681,
+    -0.014036744224318625
+   ],
+   "n": 8
+  },
+  "m1_class1_1145": {
+   "eps": [
+    0.0,
+    1.2,
+    2.4,
+    3.5999999999999996,
+    4.8,
+    5.6672
+   ],
+   "sigma_MPa": [
+    0.0,
+    -0.004871265401481267,
+    -0.00965344414631113,
+    -0.014226552643047362,
+    -0.01840845779075659,
+    -0.021187905072947544
+   ],
+   "n": 6
+  },
+  "m3_class12_1390": {
+   "eps": [
+    0.0,
+    1.2,
+    2.4,
+    3.5999999999999996,
+    4.599
+   ],
+   "sigma_MPa": [
+    0.0,
+    -0.0007715545053524054,
+    -0.001472690320156147,
+    -0.0020973059347991806,
+    -0.002552874681158279
+   ],
+   "n": 5
+  },
+  "m3_class12_61": {
+   "eps": [
+    0.0,
+    1.2,
+    2.4,
+    3.5999999999999996,
+    4.8,
+    6.0,
+    7.199999999999999,
+    8.4,
+    9.6,
+    10.8,
+    12.0,
+    13.200000000000001,
+    14.399999999999999,
+    15.0
+   ],
+   "sigma_MPa": [
+    0.0,
+    -0.002876039082440333,
+    -0.0055825034410073296,
+    -0.00802498445474619,
+    -0.01012953271109705,
+    -0.011913985898016222,
+    -0.013420218430836144,
+    -0.01468168022036835,
+    -0.015731624503439436,
+    -0.01660370938730132,
+    -0.017336575195636073,
+    -0.017960595052914564,
+    -0.018502910785984455,
+    -0.018749957692033126
+   ],
+   "n": 14
+  },
+  "m3_class12_26": {
+   "eps": [
+    0.0,
+    1.2,
+    2.4,
+    3.5999999999999996,
+    4.8,
+    6.0,
+    7.199999999999999,
+    8.4,
+    9.6,
+    10.8,
+    12.0,
+    13.200000000000001,
+    14.399999999999999,
+    15.423
+   ],
+   "sigma_MPa": [
+    0.0,
+    -0.0053272556747408295,
+    -0.01056030525812595,
+    -0.015523528339413862,
+    -0.020023921384747664,
+    -0.024079294553765465,
+    -0.027761838847010376,
+    -0.031109138170925227,
+    -0.03414301246098375,
+    -0.03688402552348137,
+    -0.039353687108390434,
+    -0.04157251907621202,
+    -0.04356359725374631,
+    -0.04509805147276925
+   ],
+   "n": 14
+  }
+ }
+}

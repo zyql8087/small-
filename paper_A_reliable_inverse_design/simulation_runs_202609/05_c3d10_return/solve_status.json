@@ -1,0 +1,18 @@
+{
+ "last_step_time": 1.0,
+ "final_u1_mm": -9.600000381469727,
+ "final_eps": 0.24000000953674316,
+ "final_RF_N": -14.070352123977631,
+ "points": 41,
+ "completion_gate_step_time_1_0": true,
+ "completion_gate_eps_0_24": true,
+ "energies_present": [
+  "ALLIE",
+  "ALLSE",
+  "ALLKE",
+  "ALLAE",
+  "ALLWK",
+  "ALLPD",
+  "ALLSD"
+ ]
+}
