@@ -55,12 +55,19 @@ simulation_runs_202609/
 │   ├── VERIFICATION_NOTE.md               ← 三格对照(C3D4隐/C3D10隐/C3D4显)+ 复算方法
 │   ├── result.md / curve.csv / energies.csv / solve_status.json
 │   └── C3D10_QUICK_REPORT.md              ← C3D10 datacheck 根因(CAE 坐标截断)历史报告
-└── 06_plans/                        四份实验计划(按时间序)
-    ├── 2026-09-23-m05-m1m3-marlow-c3d4-validation.md
-    ├── 2026-09-23-m05-m3-hotzone-mesh-quality-draft.md
-    ├── 2026-09-25-m08-explicit-z27.md
-    └── 2026-09-29-m09-paper-aligned-pde-mesh.md   ← ★当前执行入口(师弟)
+├── 06_plans/                        四份实验计划(按时间序)
+│   ├── 2026-09-23-m05-m1m3-marlow-c3d4-validation.md
+│   ├── 2026-09-23-m05-m3-hotzone-mesh-quality-draft.md
+│   ├── 2026-09-25-m08-explicit-z27.md
+│   └── 2026-09-29-m09-paper-aligned-pde-mesh.md   ← ★当前执行入口(师弟)
+└── bigfiles/                        大文件本体(git 直传,共约 520MB)
+    ├── MANIFEST.md                         ← 逐文件 sha256/用途/来源(★先读)
+    ├── geometry_stl/                       6 个几何 STL(5 设计 + 短边清理版)
+    ├── solver_inps/                       6 个显式 z 求解模型 INP(含清洁网格验证模型)
+    └── experiment_inps/                    4 个 09-23 实验 INP(Marlow/热区/交叉)
 ```
+
+**bigfiles 说明**:ODB 结果文件(437MB–1.4GB)超过 GitHub 单文件 100MB 硬限未收录——用上述 INP 重跑即可再生;如需原 ODB,可走 GitHub Release 附件(单文件≤2GB)另行上传(需要时向 zyql 说一声)。
 
 ## 四、当前状态与下一步
 
