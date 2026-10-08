@@ -1,0 +1,118 @@
+{
+  "schema_version": "small-script-first-v1",
+  "decision_date": "2026-09-24",
+  "status": "historical_script_first_x_standard_not_current_route",
+  "superseded_by_record": "simulation_runs_202609/CURRENT_SIMULATION_SETTINGS.md",
+  "precedence": "Small public FEA-abaqus.py first; paper/SI supplementary where nonconflicting",
+  "source_script": "F:\\Inverse-design-of-graded-TPMS-main\\Inverse-design-of-graded-TPMS-main\\FEA-abaqus.py",
+  "source_sha256": "0b67a170770aff5bec78609c7911d4a8245e799ef47d365060587cc60f2e4435",
+  "geometry": {
+    "source": "reconstructed",
+    "gradient_axis": "z",
+    "specimen_mm": [
+      40,
+      40,
+      40
+    ]
+  },
+  "loading": {
+    "axis": "x",
+    "drive_u1_mm": -10.0,
+    "target_engineering_strain": 0.25,
+    "fixed_u1_mm": 0.0
+  },
+  "step": {
+    "solver": "Standard",
+    "procedure": "StaticStep",
+    "nlgeom": true,
+    "initialInc": 0.01,
+    "minInc": 0.001,
+    "maxNumInc": 1000,
+    "timePeriod": 1.0,
+    "maxInc": 1.0,
+    "stabilization": null
+  },
+  "boundary": {
+    "type": "six_face_displacement_not_strict_PBC",
+    "face_half_width_mm": 0.1,
+    "other_axis_bbox_mm": [
+      -21,
+      21
+    ],
+    "x_minus": "U1=0",
+    "x_plus": "U1=-10",
+    "y_both": "U2=0",
+    "z_both": "U3=0",
+    "contact": false
+  },
+  "material": {
+    "source": "existing gen_build_model.py author test-data block",
+    "type": "POLYNOMIAL",
+    "n": 2,
+    "poisson_ratio": 0.47,
+    "density_t_per_mm3": 1e-09,
+    "uniaxial_pairs": 1202,
+    "plastic_pairs": 11,
+    "replace_with_Marlow": false,
+    "replace_with_SI_coefficients": false
+  },
+  "mesh": {
+    "current_trial_element": "C3D4",
+    "formal_element_status": "undecided_pending_comparison",
+    "h_max_mm": 0.8,
+    "author_actual_mesh_unknown": true
+  },
+  "outputs": {
+    "field_numIntervals": 20,
+    "history_numIntervals": 20,
+    "field_variables": [
+      "U",
+      "LE",
+      "S",
+      "SENER",
+      "RF"
+    ],
+    "drive_history": [
+      "RF1",
+      "U1"
+    ],
+    "energy_history": [
+      "ALLIE",
+      "ALLSE",
+      "ALLKE",
+      "ALLAE"
+    ],
+    "extra_fields_are_project_diagnostic_additions": true
+  },
+  "postprocessing": {
+    "load_axis": "x",
+    "axial_strain_component": "LE11",
+    "reaction_component": "RF1",
+    "displacement_component": "U1",
+    "mechanism_partition_axis": "x",
+    "full_completion_target": 0.25,
+    "analysis_window": [
+      0.0,
+      0.24
+    ],
+    "analysis_window_note": "Retain separate prior mechanism window; 24% coverage is not completion of this 25% job. Pass window explicitly; do not infer solver completion from label admission.",
+    "strain_from": "actual driving-fixed displacement divided by initial span",
+    "stress_area_mm2": 1600
+  },
+  "resources": {
+    "numCpus": 2,
+    "numDomains": 2,
+    "scratch": "F:/abaqus_scratch",
+    "memory": "set at execution after current resource check; do not copy author 90%",
+    "max_concurrent_new_solves": 1
+  },
+  "known_differences": [
+    "Reconstructed geometry and C3D4 provisional mesh, author INP unavailable",
+    "Abaqus local 2025 vs author environment",
+    "Explicit diagnostic field/history variables added; interval counts restored to 20",
+    "Author 16CPU/8GPU/90% memory not copied",
+    "Rotational constraints omitted on continuum solid nodes without rotational DOFs"
+  ],
+  "generator": "simulation/abaqus/build_current_model.py",
+  "submit_automatically": false
+}

@@ -1,0 +1,285 @@
+{
+  "schema_version": "paper-a-simulation-history-record-v1",
+  "review_date": "2026-10-08",
+  "record_only": true,
+  "future_baseline": "M09",
+  "future_config": "simulation/abaqus/current_config.json",
+  "history_policy": "M08 and earlier are historical records only and must not be used as future experiment settings",
+  "m08_observed": {
+    "solver": "Explicit",
+    "nlgeom": true,
+    "gradient_axis": "z",
+    "loading_axis": "z",
+    "specimen_mm": [
+      40,
+      40,
+      40
+    ],
+    "target_engineering_strain": 0.25,
+    "drive_u3_mm": -10.0,
+    "fixed_u3_mm": 0.0,
+    "time_period_s": 0.1,
+    "amplitude": {
+      "type": "SMOOTH STEP",
+      "table": [
+        [
+          0,
+          0
+        ],
+        [
+          0.1,
+          1
+        ]
+      ]
+    },
+    "mesh": {
+      "route": "STL to gmsh",
+      "element": "C3D4",
+      "nominal_h_max_mm": 0.8
+    },
+    "boundary": {
+      "type": "six_face_normal_displacement_not_strict_PBC",
+      "A_ZPOS": "U3=-10",
+      "A_ZNEG": "U3=0",
+      "A_FIX_and_A_DRIVE": "U1=0",
+      "A_YNEG_and_A_YPOS": "U2=0",
+      "periodic_equations": false
+    },
+    "mass_scaling": {
+      "type": "Fixed Mass Scaling, BELOW MIN",
+      "target_dt_s": 1e-06
+    },
+    "material": {
+      "type": "POLYNOMIAL",
+      "n": 2,
+      "poisson_ratio": 0.47,
+      "density_t_per_mm3": 1e-09,
+      "uniaxial_pairs": 1202,
+      "plastic_pairs": 11,
+      "Marlow": false
+    },
+    "outputs": {
+      "field_num_intervals": 20,
+      "field": [
+        "U",
+        "S",
+        "SENER"
+      ],
+      "history_interval_s": 0.005,
+      "energy": [
+        "ALLIE",
+        "ALLKE",
+        "ALLAE",
+        "ALLPD",
+        "ETOTAL"
+      ],
+      "drive": [
+        "RF3",
+        "U3"
+      ],
+      "LE_requested": false
+    },
+    "resources": {
+      "command_precision": "double=both",
+      "cpus": 4,
+      "memory": "6GB",
+      "max_concurrent": 2,
+      "free_memory_launch_gate_GB": 16
+    },
+    "postprocessing": {
+      "strain": "-U3_drive_mm/40",
+      "stress": "RF3_total_N/1600",
+      "compression_RF3_sign": "negative",
+      "step_time_fraction_is_not_strain": true
+    },
+    "batch_counts": {
+      "solver_error": 15,
+      "completed_quasi_static_failed": 3,
+      "practical_terminated": 1,
+      "deadline_terminated": 1,
+      "not_solved": 7
+    },
+    "total_selected": 27,
+    "preprocessing_runnable": 26,
+    "attempted": 20,
+    "completed_25_percent": 3,
+    "completed_25_percent_all_failed_quasi_static": true,
+    "selected_case_results": [
+      {
+        "case_id": "m2_class2_1383",
+        "job": "m08_m2_1383",
+        "status": "completed_quasi_static_failed",
+        "final_step_time_s": 0.10000000149011612,
+        "curve_coverage_percent": 25.0,
+        "ke_over_ie_peak": 0.9884290638576053,
+        "quasi_static": "FAILED"
+      },
+      {
+        "case_id": "m3_class12_26",
+        "job": "m08_m3_26",
+        "status": "completed_quasi_static_failed",
+        "final_step_time_s": 0.10000000149011612,
+        "curve_coverage_percent": 25.0,
+        "ke_over_ie_peak": 1.1533126857569704,
+        "quasi_static": "FAILED"
+      },
+      {
+        "case_id": "m3_class12_61",
+        "job": "m08_m3_61",
+        "status": "practical_terminated",
+        "final_step_time_s": 0.08000000566244125,
+        "curve_coverage_percent": 23.552,
+        "ke_over_ie_peak": 3.2717044321991113,
+        "quasi_static": "FAILED"
+      },
+      {
+        "case_id": "m3_class12_540",
+        "job": "m08_m3_540",
+        "status": "deadline_terminated",
+        "final_step_time_s": 0.06000002101063728,
+        "curve_coverage_percent": 17.064,
+        "ke_over_ie_peak": 1.801892664992486,
+        "quasi_static": "FAILED"
+      },
+      {
+        "case_id": "m2_class2_1489",
+        "job": "m08_m2_1489",
+        "status": "completed_quasi_static_failed",
+        "final_step_time_s": 0.10000000149011612,
+        "curve_coverage_percent": 25.0,
+        "ke_over_ie_peak": 1.6976962424994093,
+        "quasi_static": "FAILED"
+      }
+    ],
+    "clean_case": {
+      "case_id": "m3_class12_26_clean",
+      "curve_coverage_percent": 25.0,
+      "ke_over_ie_peak_approx": 0.643,
+      "quasi_static": "FAILED",
+      "source": "04_startup_transient_fix/FIX_NOTES.md and cleaned_case/curve.csv"
+    }
+  },
+  "handoff": {
+    "folder_name": "M08_ODB结果包_20260929",
+    "local_path": "C:\\Users\\48186\\Desktop\\M08_ODB结果包_20260929",
+    "archives": [
+      {
+        "filename": "m08_m2_1383.odb.zip",
+        "archive_bytes": 420799020,
+        "entries": [
+          {
+            "name": "m08_m2_1383.odb",
+            "uncompressed_bytes": 420798892
+          }
+        ],
+        "verification": "ZIP directory only; no ODB-content read or ZIP-content hash"
+      },
+      {
+        "filename": "m08_m2_1489.odb.zip",
+        "archive_bytes": 242564112,
+        "entries": [
+          {
+            "name": "m08_m2_1489.odb",
+            "uncompressed_bytes": 242563984
+          }
+        ],
+        "verification": "ZIP directory only; no ODB-content read or ZIP-content hash"
+      },
+      {
+        "filename": "m08_m3_26.odb.zip",
+        "archive_bytes": 673150216,
+        "entries": [
+          {
+            "name": "m08_m3_26.odb",
+            "uncompressed_bytes": 673150092
+          }
+        ],
+        "verification": "ZIP directory only; no ODB-content read or ZIP-content hash"
+      },
+      {
+        "filename": "m08_m3_26_clean.odb.zip",
+        "archive_bytes": 610373892,
+        "entries": [
+          {
+            "name": "m08_m3_26_clean.odb",
+            "uncompressed_bytes": 610373756
+          }
+        ],
+        "verification": "ZIP directory only; no ODB-content read or ZIP-content hash"
+      },
+      {
+        "filename": "m08_m3_540.odb.zip",
+        "archive_bytes": 402653310,
+        "entries": [
+          {
+            "name": "m08_m3_540.odb",
+            "uncompressed_bytes": 402653184
+          }
+        ],
+        "verification": "ZIP directory only; no ODB-content read or ZIP-content hash"
+      },
+      {
+        "filename": "m08_m3_61.odb.zip",
+        "archive_bytes": 463470716,
+        "entries": [
+          {
+            "name": "m08_m3_61.odb",
+            "uncompressed_bytes": 463470592
+          }
+        ],
+        "verification": "ZIP directory only; no ODB-content read or ZIP-content hash"
+      }
+    ],
+    "readme": {
+      "filename": "README_说明.txt",
+      "sha256": "5116b2897bcf38499b9bf990b1577d95642fc81e1c6a51bcaa8ba01c99a9cf26"
+    },
+    "archive_content_hashes_verified": false,
+    "github_bigfiles_and_odb_hash_registration_verified": false
+  },
+  "sources": [
+    {
+      "id": "m08_adapter",
+      "path": "03_explicit_z27_batch/scripts/z_explicit_adapter.py",
+      "sha256": "0c94488df101f7ac905dbf7ea8115595d874774f40520a8f1e27aa7a6fe66567"
+    },
+    {
+      "id": "m08_scheduler",
+      "path": "03_explicit_z27_batch/scripts/m08_solver.py",
+      "sha256": "5ceaab39878e52bbb870fdbabf8b66ba431fd755d0a6562380741604de767a3b"
+    },
+    {
+      "id": "m08_summary",
+      "path": "03_explicit_z27_batch/summary_data.json",
+      "sha256": "37c3355cf8bcc9608da18e915b011f88f586f96a511b68ffdd7a636d3de66a07"
+    },
+    {
+      "id": "selection_manifest",
+      "path": "03_explicit_z27_batch/selection_manifest_m08.csv",
+      "sha256": "114ac7201f7de8ea0a64cbb8839f6a86f718047e12c264b52401875bc2be5188"
+    },
+    {
+      "id": "m09_plan",
+      "path": "06_plans/2026-09-29-m09-paper-aligned-pde-mesh.md",
+      "sha256": "1e9ca13f58c52ea1b2cd7ccd1a2617ca8121a66fdebd3caf57374bd799f7b191"
+    },
+    {
+      "id": "startup_fix",
+      "path": "04_startup_transient_fix/FIX_NOTES.md",
+      "sha256": "4f5b4521c961280fa8da7b8f2b6e1a2ebfd157b80d337cf14179b0a12ce00370"
+    }
+  ],
+  "validation_limits": [
+    "No new simulation submitted",
+    "No M09 acceptance return located in this review",
+    "No original INP, ODB, curves, ledger or summary JSON modified",
+    "Historical author s=N unit remains a working hypothesis",
+    "Equal c0/c1/c2 does not prove uniform M2 geometry when w is nonzero"
+  ],
+  "source_hash_normalization": "UTF-8 text; CRLF normalized to LF before SHA-256",
+  "m08_actual_inp": {
+    "local_path": "F:\\small++\\paper_A_reliable_inverse_design\\audits\\m08_explicit_z27_20260925\\cases\\m3_class12_26\\solver\\m08_m3_26_zexp.inp",
+    "sha256_raw": "1c7ce5dd5923b647579b22c13330c04d5b02af908f579e7d1fb64f63ef614a68",
+    "checked": "step, amplitude, boundary, output, material and element keyword cards; no solver execution"
+  }
+}
