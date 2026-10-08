@@ -1,0 +1,182 @@
+{
+  "schema_version": "paper-a-m09-settings-v1",
+  "decision_date": "2026-10-08",
+  "status": "selected_baseline_implementation_validation_pending",
+  "baseline_id": "M09",
+  "scope": "all_future_simulation_experiments",
+  "history_policy": "M08_and_earlier_are_records_only_not_future_experiment_settings",
+  "owner": "simulation_junior",
+  "record_only": true,
+  "generator": null,
+  "implementation_status": "no_validated_M09_generator_or_acceptance_return_found_in_this_review",
+  "submit_automatically": false,
+  "precedence": "User 2026-10-08 M09-only decision; current simulation record; M09 plan with execution corrections",
+  "source_record": "simulation_runs_202609/CURRENT_SIMULATION_SETTINGS.md",
+  "source_plan": "simulation_runs_202609/06_plans/2026-09-29-m09-paper-aligned-pde-mesh.md",
+  "legacy_config": "simulation/abaqus/script_first_config_20260924.json",
+  "geometry": {
+    "source": "reconstructed_graded_Gyroid_network",
+    "gradient_axis": "z",
+    "specimen_mm": [
+      40,
+      40,
+      40
+    ],
+    "actual_dimensions_must_be_recorded": true,
+    "identity_chain_required": true
+  },
+  "loading": {
+    "axis": "z",
+    "target_engineering_strain": 0.25,
+    "drive_displacement_rule": "U3=-0.25*actual_initial_height_H_mm",
+    "drive_u3_mm_at_H40": -10,
+    "reference_height_mm": 40,
+    "amplitude": {
+      "type": "SMOOTH STEP",
+      "table": [
+        [
+          0,
+          0
+        ],
+        [
+          0.1,
+          1
+        ]
+      ]
+    }
+  },
+  "step": {
+    "solver": "Explicit",
+    "procedure": "Dynamic, Explicit",
+    "nlgeom": true,
+    "time_period_s": 0.1,
+    "allowed_energy_gate_retry": {
+      "time_period_s": 0.2,
+      "max_retries": 1,
+      "separate_case_identity_required": true,
+      "amplitude_end_time_s": 0.2,
+      "history_interval_s_for_20_intervals": 0.01
+    }
+  },
+  "mesh": {
+    "generator": "MATLAB PDE Toolbox",
+    "input_surface": "reconstructed STL used as geometry boundary; remesh quality must be verified",
+    "normalized_HMax": 0.05,
+    "HMax_scale": "specimen_half_span_mm",
+    "HMax_rule": "0.05*specimen_half_span_mm",
+    "HMax_mm_at_half_span20": 1,
+    "HGrad": 1.2,
+    "geometric_order": "quadratic",
+    "selected_element": "C3D10",
+    "element_support_status": "pending_Explicit_version_compatibility_and_datacheck",
+    "node_ordering_status": "pending_independent_mapping_and_Jacobian_validation",
+    "no_automatic_C3D4_fallback": true,
+    "quality_requirements": {
+      "positive_oriented_volume": true,
+      "min_edge_over_HMax": 0.02,
+      "aspect_distribution_required": true,
+      "manifold_check_required": true,
+      "datacheck_required": true
+    },
+    "paper_mesh_scale_interpretation": "project_interpretation_not_confirmed_author_unit"
+  },
+  "boundary": {
+    "type": "xy_periodic_with_z_compression",
+    "bottom": {
+      "U1": 0,
+      "U2": 0,
+      "U3": 0
+    },
+    "top": {
+      "U1": 0,
+      "U2": 0,
+      "U3": "prescribed_smoothstep"
+    },
+    "periodic_axes": [
+      "x",
+      "y"
+    ],
+    "implementation_status": "pending_geometry_compatibility_DOF_constraints_and_independence_validation",
+    "solid_node_translation_DOFs_only": true,
+    "no_automatic_six_face_normal_fix_fallback": true,
+    "on_incompatible_geometry": "failed-bc_and_report_for_separate_decision"
+  },
+  "material": {
+    "source": "author TPU uniaxial and plastic data retained from validated source block",
+    "type": "POLYNOMIAL",
+    "n": 2,
+    "poisson_ratio": 0.47,
+    "density_t_per_mm3": 1e-9,
+    "uniaxial_pairs": 1202,
+    "plastic_pairs": 11,
+    "preserve_material_source_bytes": true,
+    "replace_with_Marlow": false
+  },
+  "mass_scaling": {
+    "enabled_by_default": false,
+    "default_target_dt_s": null,
+    "conditional_exception": {
+      "estimated_increment_count_greater_than": 20000000,
+      "added_mass_fraction_less_than": 0.01,
+      "target_dt_s": null,
+      "target_dt_must_be_chosen_and_recorded": true,
+      "separate_variant_required": true,
+      "energy_gate_still_required": true
+    },
+    "do_not_inherit_M08_dt_1e_minus6": true
+  },
+  "outputs": {
+    "field_num_intervals": 20,
+    "field_variables": [
+      "U",
+      "S",
+      "SENER"
+    ],
+    "history_time_interval_s": 0.005,
+    "drive_history": [
+      "RF3",
+      "U3"
+    ],
+    "energy_history": [
+      "ALLIE",
+      "ALLKE",
+      "ALLAE",
+      "ALLPD",
+      "ETOTAL"
+    ],
+    "LE33_requested": false,
+    "extra_mechanism_fields_require_versioned_request": true
+  },
+  "postprocessing": {
+    "load_axis": "z",
+    "reaction_component": "RF3",
+    "displacement_component": "U3",
+    "mechanism_partition_axis": "z",
+    "engineering_strain": "-(U3_top-U3_bottom)/actual_initial_height_H",
+    "stress": "sum_RF3_over_top_nodes/initial_nominal_area",
+    "reference_area_mm2": 1600,
+    "compression_sign": "negative_RF3_and_sigma_in_existing_CSV; disclose plotting_sign_changes",
+    "do_not_use_step_time_fraction_as_strain": true,
+    "legacy_24_percent_window_not_inherited": true
+  },
+  "acceptance": {
+    "full_completion_target": 0.25,
+    "ke_over_ie_peak_max": 0.05,
+    "evaluable_energy_interval_policy": "declare denominator and startup treatment before judging; no posthoc deletion of failing startup",
+    "first_validation_cases": [
+      "m3_class12_26",
+      "m2_class2_1383"
+    ],
+    "mesh_element_boundary_energy_checks_required": true,
+    "full_completion_is_not_quasi_static_acceptance": true,
+    "batch_expansion_after_two_case_validation_and_separate_budget_decision": true
+  },
+  "resources": {
+    "precision": "double=both",
+    "num_cpus": "record_for_junior_machine",
+    "memory": "M09 plan proposes 50% of machine memory; record actual setting",
+    "planned_wall_budget_hours": 12,
+    "on_budget_exceeded": "report_before_termination_or_other_changes",
+    "do_not_inherit_M08_concurrency_or_fixed_6GB": true
+  }
+}
